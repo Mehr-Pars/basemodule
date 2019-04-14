@@ -1,9 +1,9 @@
-package com.m2d.basemoduleholder
+package epeyk.mobile.module.basemoduleholder
 
 import android.app.Application
 import android.os.Build
 import androidx.multidex.MultiDexApplication
-import com.m2d.basemodule.retrofit.RetrofitUtil
+import epeyk.mobile.module.basemodule.retrofit.RetrofitUtil
 
 class App: MultiDexApplication() {
 

@@ -1,4 +1,4 @@
-package com.m2d.basemoduleholder.db.model
+package epeyk.mobile.module.basemoduleholder.db.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

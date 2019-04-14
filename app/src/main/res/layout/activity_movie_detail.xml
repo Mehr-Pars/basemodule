@@ -10,7 +10,7 @@
 
         <variable
             name="viewmodel"
-            type="com.m2d.basemoduleholder.ui.activity.movieDetail.MovieDetailActivityViewModel" />
+            type="epeyk.mobile.module.basemoduleholder.ui.activity.movieDetail.MovieDetailActivityViewModel" />
 
     </data>
 

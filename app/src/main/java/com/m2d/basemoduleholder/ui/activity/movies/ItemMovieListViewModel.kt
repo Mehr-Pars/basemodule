@@ -1,9 +1,9 @@
-package com.m2d.basemoduleholder.ui.activity.movies
+package epeyk.mobile.module.basemoduleholder.ui.activity.movies
 
 
 import android.content.Context
 import androidx.databinding.ObservableField
-import com.m2d.basemoduleholder.model.api.MovieListModel
+import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
 
 
 class ItemMovieListViewModel(application: Context, private val model: MovieListModel.Data) {

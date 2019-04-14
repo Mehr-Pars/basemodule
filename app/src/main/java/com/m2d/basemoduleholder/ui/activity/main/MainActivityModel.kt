@@ -1,9 +1,9 @@
-package com.m2d.basemoduleholder.ui.activity.main
+package epeyk.mobile.module.basemoduleholder.ui.activity.main
 
 import android.content.Context
-import com.m2d.basemodule.BaseModel
-import com.m2d.basemodule.retrofit.RetrofitUtil
-import com.m2d.basemoduleholder.ApiClient
+import epeyk.mobile.module.basemodule.BaseModel
+import epeyk.mobile.module.basemodule.retrofit.RetrofitUtil
+import epeyk.mobile.module.basemoduleholder.ApiClient
 
 class MainActivityModel(context: Context) : BaseModel(context) {
 

@@ -1,4 +1,4 @@
-package com.m2d.basemoduleholder.adapter
+package epeyk.mobile.module.basemoduleholder.adapter
 
 import android.view.View
 import android.view.ViewGroup
@@ -6,10 +6,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
-import com.m2d.basemoduleholder.BR
-import com.m2d.basemoduleholder.R
-import com.m2d.basemoduleholder.model.api.MovieListModel
-import com.m2d.basemoduleholder.ui.activity.movies.ItemMovieListViewModel
+import epeyk.mobile.module.basemoduleholder.BR
+import epeyk.mobile.module.basemoduleholder.R
+import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
+import epeyk.mobile.module.basemoduleholder.ui.activity.movies.ItemMovieListViewModel
 
 class AdapterMovieList2: BaseQuickAdapter<MovieListModel.Data, AdapterMovieList2.ViewHolder>(R.layout.item_movie_list_activity) {
     lateinit var viewmodel:ItemMovieListViewModel

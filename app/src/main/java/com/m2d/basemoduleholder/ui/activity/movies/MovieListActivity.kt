@@ -1,4 +1,4 @@
-package com.m2d.basemoduleholder.ui.activity.movies
+package epeyk.mobile.module.basemoduleholder.ui.activity.movies
 
 import android.content.Intent
 import android.view.View
@@ -7,13 +7,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-import com.m2d.basemodule.BaseActivity
-import com.m2d.basemoduleholder.CustomLoadMoreView
-import com.m2d.basemoduleholder.R
-import com.m2d.basemoduleholder.databinding.ActivityMovieListBinding
-import com.m2d.basemoduleholder.adapter.AdapterMovieList2
-import com.m2d.basemoduleholder.model.api.MovieListModel
-import com.m2d.basemoduleholder.ui.activity.movieDetail.MovieDetailActivity
+import epeyk.mobile.module.basemodule.BaseActivity
+import epeyk.mobile.module.basemoduleholder.CustomLoadMoreView
+import epeyk.mobile.module.basemoduleholder.R
+import epeyk.mobile.module.basemoduleholder.databinding.ActivityMovieListBinding
+import epeyk.mobile.module.basemoduleholder.adapter.AdapterMovieList2
+import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
+import epeyk.mobile.module.basemoduleholder.ui.activity.movieDetail.MovieDetailActivity
 import kotlinx.android.synthetic.main.activity_movie_list.*
 
 class MovieListActivity : BaseActivity<MovieListActivityViewModel>(),

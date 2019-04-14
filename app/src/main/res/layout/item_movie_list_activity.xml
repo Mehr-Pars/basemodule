@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="com.m2d.basemoduleholder.ui.activity.movies.ItemMovieListViewModel" />
+            type="epeyk.mobile.module.basemoduleholder.ui.activity.movies.ItemMovieListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

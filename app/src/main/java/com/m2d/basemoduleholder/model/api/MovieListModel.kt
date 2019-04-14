@@ -1,4 +1,4 @@
-package com.m2d.basemoduleholder.model.api
+package epeyk.mobile.module.basemoduleholder.model.api
 
 import com.google.gson.annotations.SerializedName
 

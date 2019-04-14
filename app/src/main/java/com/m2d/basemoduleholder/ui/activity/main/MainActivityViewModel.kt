@@ -1,12 +1,12 @@
-package com.m2d.basemoduleholder.ui.activity.main
+package epeyk.mobile.module.basemoduleholder.ui.activity.main
 
 import android.app.Application
 import android.content.Intent
 import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.m2d.basemodule.BaseViewModel
-import com.m2d.basemoduleholder.ui.activity.target.TargetActivity
+import epeyk.mobile.module.basemodule.BaseViewModel
+import epeyk.mobile.module.basemoduleholder.ui.activity.target.TargetActivity
 
 class MainActivityViewModel(application: Application) : BaseViewModel(application) {
 

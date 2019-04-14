@@ -1,4 +1,4 @@
-package com.m2d.basemoduleholder.adapter
+package epeyk.mobile.module.basemoduleholder.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -7,10 +7,10 @@ import android.content.Context
 import android.widget.FrameLayout
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.m2d.basemoduleholder.R
-import com.m2d.basemoduleholder.databinding.ItemMovieListActivityBinding
-import com.m2d.basemoduleholder.model.api.MovieListModel
-import com.m2d.basemoduleholder.ui.activity.movies.ItemMovieListViewModel
+import epeyk.mobile.module.basemoduleholder.R
+import epeyk.mobile.module.basemoduleholder.databinding.ItemMovieListActivityBinding
+import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
+import epeyk.mobile.module.basemoduleholder.ui.activity.movies.ItemMovieListViewModel
 
 
 class AdapterMovieList(private val context: Context) : RecyclerView.Adapter<AdapterMovieList.DataViewHolder>() {

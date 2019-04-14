@@ -1,10 +1,10 @@
-package com.m2d.basemoduleholder.ui.activity.movieDetail
+package epeyk.mobile.module.basemoduleholder.ui.activity.movieDetail
 
 import android.content.Context
-import com.m2d.basemodule.BaseModel
-import com.m2d.basemodule.retrofit.RetrofitUtil
-import com.m2d.basemoduleholder.ApiClient
-import com.m2d.basemoduleholder.model.api.MovieDetailModel
+import epeyk.mobile.module.basemodule.BaseModel
+import epeyk.mobile.module.basemodule.retrofit.RetrofitUtil
+import epeyk.mobile.module.basemoduleholder.ApiClient
+import epeyk.mobile.module.basemoduleholder.model.api.MovieDetailModel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 

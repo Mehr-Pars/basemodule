@@ -1,13 +1,13 @@
-package com.m2d.basemoduleholder.ui.activity.movieDetail
+package epeyk.mobile.module.basemoduleholder.ui.activity.movieDetail
 
 import android.app.Application
 import android.util.Log
 import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import com.m2d.basemodule.BaseViewModel
-import com.m2d.basemoduleholder.getRateInPersian
-import com.m2d.basemoduleholder.model.api.MovieDetailModel
+import epeyk.mobile.module.basemodule.BaseViewModel
+import epeyk.mobile.module.basemoduleholder.getRateInPersian
+import epeyk.mobile.module.basemoduleholder.model.api.MovieDetailModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 

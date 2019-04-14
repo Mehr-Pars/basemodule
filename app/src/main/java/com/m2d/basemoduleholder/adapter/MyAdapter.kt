@@ -1,4 +1,4 @@
-package com.m2d.basemoduleholder.adapter
+package epeyk.mobile.module.basemoduleholder.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -10,10 +10,10 @@ import android.text.method.TextKeyListener.clear
 import android.widget.FrameLayout
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.m2d.basemoduleholder.R
-import com.m2d.basemoduleholder.databinding.ItemTargetActivityBinding
-import com.m2d.basemoduleholder.adapter.model.DataModel
-import com.m2d.basemoduleholder.ui.activity.target.ItemTargetViewModel
+import epeyk.mobile.module.basemoduleholder.R
+import epeyk.mobile.module.basemoduleholder.databinding.ItemTargetActivityBinding
+import epeyk.mobile.module.basemoduleholder.adapter.model.DataModel
+import epeyk.mobile.module.basemoduleholder.ui.activity.target.ItemTargetViewModel
 
 
 class MyAdapter(private val context: Context) : RecyclerView.Adapter<MyAdapter.DataViewHolder>() {

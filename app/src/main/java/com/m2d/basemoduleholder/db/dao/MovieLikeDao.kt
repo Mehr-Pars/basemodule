@@ -1,7 +1,7 @@
-package com.m2d.basemoduleholder.db.dao
+package epeyk.mobile.module.basemoduleholder.db.dao
 
 import androidx.room.*
-import com.m2d.basemoduleholder.db.model.MovieLikeModelDB
+import epeyk.mobile.module.basemoduleholder.db.model.MovieLikeModelDB
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single

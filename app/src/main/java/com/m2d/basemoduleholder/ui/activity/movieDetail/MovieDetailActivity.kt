@@ -1,4 +1,4 @@
-package com.m2d.basemoduleholder.ui.activity.movieDetail
+package epeyk.mobile.module.basemoduleholder.ui.activity.movieDetail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,10 +6,10 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.m2d.basemodule.BaseActivity
-import com.m2d.basemoduleholder.R
+import epeyk.mobile.module.basemodule.BaseActivity
+import epeyk.mobile.module.basemoduleholder.R
 
-import com.m2d.basemoduleholder.databinding.ActivityMovieDetailBinding
+import epeyk.mobile.module.basemoduleholder.databinding.ActivityMovieDetailBinding
 
 class MovieDetailActivity : BaseActivity<MovieDetailActivityViewModel>() {
 

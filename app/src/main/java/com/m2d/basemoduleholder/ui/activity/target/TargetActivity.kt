@@ -1,15 +1,15 @@
-package com.m2d.basemoduleholder.ui.activity.target
+package epeyk.mobile.module.basemoduleholder.ui.activity.target
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.m2d.basemodule.BaseActivity
-import com.m2d.basemoduleholder.R
-import com.m2d.basemoduleholder.databinding.ActivityTargetBinding
-import com.m2d.basemoduleholder.adapter.MyAdapter
-import com.m2d.basemoduleholder.adapter.model.DataModel
+import epeyk.mobile.module.basemodule.BaseActivity
+import epeyk.mobile.module.basemoduleholder.R
+import epeyk.mobile.module.basemoduleholder.databinding.ActivityTargetBinding
+import epeyk.mobile.module.basemoduleholder.adapter.MyAdapter
+import epeyk.mobile.module.basemoduleholder.adapter.model.DataModel
 import kotlinx.android.synthetic.main.activity_target.*
 
 class TargetActivity : BaseActivity<TargetViewModel>() {

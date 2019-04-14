@@ -1,4 +1,4 @@
-package com.m2d.basemoduleholder
+package epeyk.mobile.module.basemoduleholder
 
 import android.content.Context
 import android.util.Log

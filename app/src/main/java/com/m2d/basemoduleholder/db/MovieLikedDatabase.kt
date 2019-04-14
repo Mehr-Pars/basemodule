@@ -1,11 +1,11 @@
-package com.m2d.basemoduleholder.db
+package epeyk.mobile.module.basemoduleholder.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.m2d.basemoduleholder.db.dao.MovieLikeDao
-import com.m2d.basemoduleholder.db.model.MovieLikeModelDB
+import epeyk.mobile.module.basemoduleholder.db.dao.MovieLikeDao
+import epeyk.mobile.module.basemoduleholder.db.model.MovieLikeModelDB
 
 @Database(
     entities = [MovieLikeModelDB::class],

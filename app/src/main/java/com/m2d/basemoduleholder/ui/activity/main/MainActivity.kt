@@ -1,15 +1,15 @@
-package com.m2d.basemoduleholder.ui.activity.main
+package epeyk.mobile.module.basemoduleholder.ui.activity.main
 
 import android.content.Intent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.m2d.basemodule.BaseActivity
-import com.m2d.basemoduleholder.R
-import com.m2d.basemoduleholder.databinding.ActivityMainBinding
-import com.m2d.basemoduleholder.ui.activity.dataBaseSample.list.MovieListWithLike
-import com.m2d.basemoduleholder.ui.activity.movies.MovieListActivity
-import com.m2d.basemoduleholder.ui.activity.target.TargetActivity
+import epeyk.mobile.module.basemodule.BaseActivity
+import epeyk.mobile.module.basemoduleholder.R
+import epeyk.mobile.module.basemoduleholder.databinding.ActivityMainBinding
+import epeyk.mobile.module.basemoduleholder.ui.activity.dataBaseSample.list.MovieListWithLike
+import epeyk.mobile.module.basemoduleholder.ui.activity.movies.MovieListActivity
+import epeyk.mobile.module.basemoduleholder.ui.activity.target.TargetActivity
 
 class MainActivity : BaseActivity<MainActivityViewModel>() {
 

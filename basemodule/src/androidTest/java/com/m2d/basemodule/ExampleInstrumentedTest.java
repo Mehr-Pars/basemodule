@@ -1,4 +1,4 @@
-package com.m2d.basemodule;
+package epeyk.mobile.module.basemodule;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.m2d.basemodule.test", appContext.getPackageName());
+        assertEquals("epeyk.mobile.module.basemodule.test", appContext.getPackageName());
     }
 }

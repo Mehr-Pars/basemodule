@@ -1,4 +1,4 @@
-package com.m2d.basemodule;
+package epeyk.mobile.module.basemodule;
 
 import org.junit.Test;
 

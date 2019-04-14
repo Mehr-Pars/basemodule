@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="com.m2d.basemoduleholder.ui.activity.target.TargetViewModel"/>
+            type="epeyk.mobile.module.basemoduleholder.ui.activity.target.TargetViewModel"/>
 
     </data>
 
