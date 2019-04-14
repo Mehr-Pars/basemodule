@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.m2d.basemoduleholder.ui.activity.movies.ItemMovieListViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageMovieCover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:imageUrl="@{viewmodel.cover}"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/textMovieName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black75"
+            android:padding="8dp"
+            android:text="@{viewmodel.name}"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/imageMovieCover"
+            tools:text="movieName" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
