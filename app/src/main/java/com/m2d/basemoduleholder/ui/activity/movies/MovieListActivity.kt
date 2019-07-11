@@ -10,8 +10,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import epeyk.mobile.module.basemodule.BaseActivity
 import epeyk.mobile.module.basemoduleholder.CustomLoadMoreView
 import epeyk.mobile.module.basemoduleholder.R
-import epeyk.mobile.module.basemoduleholder.databinding.ActivityMovieListBinding
 import epeyk.mobile.module.basemoduleholder.adapter.AdapterMovieList2
+import epeyk.mobile.module.basemoduleholder.databinding.ActivityMovieListBinding
 import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
 import epeyk.mobile.module.basemoduleholder.ui.activity.movieDetail.MovieDetailActivity
 import kotlinx.android.synthetic.main.activity_movie_list.*
@@ -47,7 +47,6 @@ class MovieListActivity : BaseActivity<MovieListActivityViewModel>(),
         empty_view = View.inflate(this, R.layout.empty_view, null)
         loading_view = View.inflate(this, R.layout.loading_view, null)
         load_more_view = View.inflate(this, R.layout.load_more_view, null)
-
     }
 
     override fun initAdapter() {
@@ -57,9 +56,13 @@ class MovieListActivity : BaseActivity<MovieListActivityViewModel>(),
             setOnLoadMoreListener(this@MovieListActivity, recyclerviewMovieList)
             setOnItemClickListener { adapter, _, position ->
                 //go to movie detail
-                startActivity(Intent(this@MovieListActivity,MovieDetailActivity::class.java).apply {
-                    putExtra("id",(adapter.data[position] as MovieListModel.Data).id)
-                })
+                startActivity(
+                    Intent(
+                        this@MovieListActivity,
+                        MovieDetailActivity::class.java
+                    ).apply {
+                        putExtra("id", (adapter.data[position] as MovieListModel.Data).id)
+                    })
             }
             setLoadMoreView(CustomLoadMoreView())
         }
@@ -84,9 +87,7 @@ class MovieListActivity : BaseActivity<MovieListActivityViewModel>(),
                 adapter.loadMoreComplete()
             }
         })
-
     }
-
 
     override fun onLoadMoreRequested() {
         if (page <= totalPage)

@@ -8,16 +8,15 @@ import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-class MovieListActivityModel(context: Context):BaseModel(context) {
+class MovieListActivityModel(context: Context) : BaseModel(context) {
 
-    private lateinit var client:ApiClient
+    private lateinit var client: ApiClient
 
     override fun initRetrofit() {
-        client=RetrofitUtil.createService(ApiClient::class.java)
+        client = RetrofitUtil.createService(ApiClient::class.java)
     }
 
-
-    fun getMovieList(page:Int): Observable<MovieListModel> {
+    fun getMovieList(page: Int): Observable<MovieListModel> {
         return client.getMovieList(page).subscribeOn(Schedulers.io())
     }
 }

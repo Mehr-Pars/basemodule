@@ -1,8 +1,6 @@
 package epeyk.mobile.module.basemoduleholder.ui.activity.movieDetail
 
 import android.app.Application
-import android.util.Log
-import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import epeyk.mobile.module.basemodule.BaseViewModel
@@ -19,14 +17,13 @@ class MovieDetailActivityViewModel(application: Application) : BaseViewModel(app
     private var albumIndex = 0
     var album = mutableListOf<String>()
 
-    var errorInLoadingData=MutableLiveData<Boolean>()
+    var errorInLoadingData = MutableLiveData<Boolean>()
 
 
     fun getMovieDetail(movieId: Int) {
         compositeDisposable.add(
             model.getMovieDetail(movieId)
                 .map {
-
                     topImage.set(it.poster)
                     it.rated = context.getRateInPersian(it.rated)
                     album.add(it.poster!!)
@@ -48,7 +45,7 @@ class MovieDetailActivityViewModel(application: Application) : BaseViewModel(app
 
                         override fun onError(e: Throwable) {
 //                            Log.v("masood", "error : " + e.message)
-                            errorInLoadingData.value=true
+                            errorInLoadingData.value = true
                         }
                     })
         )

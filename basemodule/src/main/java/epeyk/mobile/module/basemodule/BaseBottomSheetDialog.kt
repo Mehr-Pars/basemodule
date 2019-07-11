@@ -1,6 +1,5 @@
 package epeyk.mobile.module.basemodule
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,17 +11,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import epeyk.mobile.module.basemodule.retrofit.ErrorType
 
-import android.widget.FrameLayout
-import android.view.ViewTreeObserver
 
-
-
-abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFragment()  {
+abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFragment() {
 
     var viewModel: VM? = null
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         initArguments()
         initViewModel()
         return initViewAndBinding(inflater, container)
@@ -69,7 +68,10 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFra
      *
      * dont forget to add binding in your xml layout
      */
-    protected abstract fun initViewAndBinding(inflater: LayoutInflater, container: ViewGroup?): View?
+    protected abstract fun initViewAndBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): View?
 
 
     /**
@@ -108,8 +110,6 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFra
             }
         })
     }
-
-
 
 
 }
