@@ -9,6 +9,13 @@ import epeyk.mobile.module.basemodule.BaseViewModel
 import epeyk.mobile.module.basemoduleholder.ui.activity.target.TargetActivity
 
 class MainActivityViewModel(application: Application) : BaseViewModel(application) {
+    override fun initViews() {
+
+    }
+
+    override fun initAdapter() {
+
+    }
 
     var links= listOf<String>(
         "https://picsum.photos/400/250/?image=541",

@@ -10,6 +10,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 
 class MovieListActivityViewModel(application: Application) : BaseViewModel(application) {
+    override fun initViews() {
+
+    }
+
+    override fun initAdapter() {
+
+    }
+
     var model = MovieListActivityModel(context)
     var movieData = MutableLiveData<MovieListModel>()
 

@@ -7,6 +7,13 @@ import epeyk.mobile.module.basemodule.BaseViewModel
 import epeyk.mobile.module.basemoduleholder.adapter.MyAdapter
 
 class TargetViewModel(application: Application):BaseViewModel(application) {
+    override fun initViews() {
+
+    }
+
+    override fun initAdapter() {
+
+    }
 
 
     lateinit var adapter: MyAdapter

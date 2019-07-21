@@ -12,6 +12,12 @@ import io.reactivex.observers.DisposableObserver
 import io.reactivex.observers.ResourceSingleObserver
 
 class MovieListWithLikeViewModel(application: Application) : BaseViewModel(application) {
+    override fun initViews() {
+
+    }
+
+    override fun initAdapter() {
+    }
 
     var model = MovieListWithLikeModel(application)
     var movieData = MutableLiveData<MovieListModel>()

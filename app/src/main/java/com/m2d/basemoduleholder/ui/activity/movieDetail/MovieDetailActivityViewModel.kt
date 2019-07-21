@@ -10,6 +10,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 
 class MovieDetailActivityViewModel(application: Application) : BaseViewModel(application) {
+    override fun initViews() {
+
+    }
+
+    override fun initAdapter() {
+
+    }
 
     var model = MovieDetailActivityModel(context)
     var movieDetail = ObservableField<MovieDetailModel>()
