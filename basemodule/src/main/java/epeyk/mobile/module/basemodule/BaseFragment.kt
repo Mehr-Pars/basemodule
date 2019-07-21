@@ -14,9 +14,17 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
     protected var viewModel: VM? = null
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         initArguments()
         initViewModel()
+        initLayoutView()
+        initAdapter()
+        observeViewModelChange(viewModel)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         return initViewAndBinding(inflater, container)
     }
 
@@ -24,10 +32,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        initLayoutView()
-        initAdapter()
 
-        observeViewModelChange(viewModel)
     }
 
     /**
@@ -61,6 +66,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
     /**
      * initialize your adapter(s) here then assign to a recycler or viewpager
      */
+    @Deprecated("init adapter directly in viewModel")
     protected abstract fun initAdapter()
 
 

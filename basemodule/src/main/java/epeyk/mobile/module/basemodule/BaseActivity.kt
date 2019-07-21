@@ -51,6 +51,7 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
     /**
      * initialize your adapter(s) here then assign to a recycler or viewpager
      */
+    @Deprecated("init adapter directly in viewModel")
     protected abstract fun initAdapter()
 
     /**
