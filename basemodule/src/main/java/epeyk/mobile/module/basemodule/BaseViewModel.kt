@@ -16,8 +16,22 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     protected val compositeDisposable = CompositeDisposable()
     protected val context by lazy { application }
-     val error = MutableLiveData<Pair<ErrorType, ErrorHttp?>>()
+    val error = MutableLiveData<Pair<ErrorType, ErrorHttp?>>()
 
+    init {
+        initViews()
+        initAdapter()
+    }
+
+    /**
+     * initialize your views in here
+     */
+    protected abstract fun initViews()
+
+    /**
+     * initialize your adapter(s) here
+     */
+    protected abstract fun initAdapter()
 
     override fun onCleared() {
         super.onCleared()
@@ -26,10 +40,10 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    fun handleError( e: Throwable) {
+    fun handleError(e: Throwable) {
         Log.v("masood", "error : " + e.message)
         if (e is HttpException) {
-            error.value = Pair( ErrorType.HTTP_ERROR, errorHandle(e.response()))
+            error.value = Pair(ErrorType.HTTP_ERROR, errorHandle(e.response()))
         } else {
             error.value = Pair(ErrorType.OTHER_ERROR, null)
         }
@@ -40,7 +54,9 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
             if (response.errorBody() != null) {
                 val e = ErrorUtil.parseError(response)
                 when (e.message) {
-                    "player not found" -> {e.message = "اطلاعات یافت نشد"}
+                    "player not found" -> {
+                        e.message = "اطلاعات یافت نشد"
+                    }
                 }
                 ErrorHttp(e.statusCode, e.message)
             } else {
