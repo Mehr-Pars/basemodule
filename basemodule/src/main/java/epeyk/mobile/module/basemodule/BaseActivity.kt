@@ -1,6 +1,7 @@
 package epeyk.mobile.module.basemodule
 
 import android.os.Bundle
+import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -52,11 +53,12 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
      * initialize your adapter(s) here then assign to a recycler or viewpager
      */
     @Deprecated("init adapter directly in viewModel")
-    protected abstract fun initAdapter()
+    open fun initAdapter(){}
 
     /**
      *  observe your viewModel's liveData here
      */
+    @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
         viewModel?.error?.observe(this, Observer {
             // showErrorDialog(it)

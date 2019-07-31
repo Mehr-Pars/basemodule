@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import epeyk.mobile.module.basemodule.retrofit.ErrorType
@@ -67,9 +68,9 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
      * initialize your adapter(s) here then assign to a recycler or viewpager
      */
     @Deprecated("init adapter directly in viewModel")
-    protected abstract fun initAdapter()
+    open fun initAdapter(){}
 
-
+    @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
 
         viewModel?.error?.observe(this, Observer {
