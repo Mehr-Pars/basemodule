@@ -1,12 +1,10 @@
 package epeyk.mobile.module.basemoduleholder.ui.activity.main
 
 import android.app.Application
-import android.content.Intent
 import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import epeyk.mobile.module.basemodule.BaseViewModel
-import epeyk.mobile.module.basemoduleholder.ui.activity.target.TargetActivity
+import epeyk.mobile.module.basemodule.ui.BaseViewModel
 
 class MainActivityViewModel(application: Application) : BaseViewModel(application) {
     override fun initViews() {

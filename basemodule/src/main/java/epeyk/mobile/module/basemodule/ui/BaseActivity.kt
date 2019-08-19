@@ -1,11 +1,11 @@
-package epeyk.mobile.module.basemodule
+package epeyk.mobile.module.basemodule.ui
 
 import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import epeyk.mobile.module.basemodule.retrofit.ErrorType
+import epeyk.mobile.module.basemodule.data.network.retrofit.ErrorType
 
 abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), LifecycleOwner {
 

@@ -1,14 +1,12 @@
 package epeyk.mobile.module.basemoduleholder.ui.activity.dataBaseSample.list
 
 import android.content.Context
-import android.util.Log
-import epeyk.mobile.module.basemodule.BaseModel
-import epeyk.mobile.module.basemodule.retrofit.RetrofitUtil
+import epeyk.mobile.module.basemodule.ui.BaseModel
+import epeyk.mobile.module.basemodule.data.network.retrofit.RetrofitUtil
 import epeyk.mobile.module.basemoduleholder.ApiClient
 import epeyk.mobile.module.basemoduleholder.db.MovieLikedDatabase
 import epeyk.mobile.module.basemoduleholder.db.model.MovieLikeModelDB
 import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
-import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction

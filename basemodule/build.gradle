@@ -10,14 +10,13 @@ apply plugin: 'maven'
 
 def libraryGroupId = 'epeyk.mobile.lib'
 def libraryArtifactId = 'basemodule'
-def libraryVersion =  project.versionName
+def libraryVersion = project.versionName
 
 //upload new version command
 //gradlew.bat assembleRelease artifactoryPublish
 
 android {
     compileSdkVersion 28
-
 
 
     defaultConfig {
@@ -65,7 +64,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1'
 
-
+    api 'androidx.core:core-ktx:1.0.2'
     // Architecture Component
 //    implementation 'android.arch.lifecycle:extensions:1.1.1'
     api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'

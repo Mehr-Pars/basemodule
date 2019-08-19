@@ -1,4 +1,4 @@
-package epeyk.mobile.module.basemodule
+package epeyk.mobile.module.basemodule.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import epeyk.mobile.module.basemodule.retrofit.ErrorType
+import epeyk.mobile.module.basemodule.data.network.retrofit.ErrorType
 
 abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
 

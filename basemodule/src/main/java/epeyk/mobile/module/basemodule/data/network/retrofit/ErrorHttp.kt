@@ -1,4 +1,4 @@
-package epeyk.mobile.module.basemodule.retrofit
+package epeyk.mobile.module.basemodule.data.network.retrofit
 
 import com.google.gson.annotations.SerializedName
 

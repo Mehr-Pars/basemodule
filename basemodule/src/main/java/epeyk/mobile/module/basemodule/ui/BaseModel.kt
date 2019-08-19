@@ -1,4 +1,4 @@
-package epeyk.mobile.module.basemodule
+package epeyk.mobile.module.basemodule.ui
 
 import android.content.Context
 

@@ -1,4 +1,4 @@
-package epeyk.mobile.module.basemodule
+package epeyk.mobile.module.basemodule.data.network
 
 /**
  * Created by bootiyar on 8/18/2019 - 9:42 AM.

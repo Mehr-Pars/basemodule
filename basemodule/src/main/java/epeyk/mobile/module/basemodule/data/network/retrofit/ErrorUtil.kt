@@ -1,4 +1,4 @@
-package epeyk.mobile.module.basemodule.retrofit
+package epeyk.mobile.module.basemodule.data.network.retrofit
 
 import okhttp3.ResponseBody
 import retrofit2.Converter
