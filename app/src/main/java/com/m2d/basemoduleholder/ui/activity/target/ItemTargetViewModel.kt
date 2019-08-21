@@ -1,10 +1,8 @@
 package epeyk.mobile.module.basemoduleholder.ui.activity.target
 
-import android.app.Application
 import android.content.Context
 import android.widget.Toast
 import androidx.databinding.ObservableField
-import epeyk.mobile.module.basemodule.BaseViewModel
 import epeyk.mobile.module.basemoduleholder.adapter.model.DataModel
 
 class ItemTargetViewModel(application: Context,private val dataModel: DataModel) {

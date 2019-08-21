@@ -1,4 +1,4 @@
-package epeyk.mobile.module.basemodule
+package epeyk.mobile.module.basemodule.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,8 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import epeyk.mobile.module.basemodule.retrofit.ErrorType
+import epeyk.mobile.module.basemodule.R
+import epeyk.mobile.module.basemodule.data.network.retrofit.ErrorType
 
 
 abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFragment() {

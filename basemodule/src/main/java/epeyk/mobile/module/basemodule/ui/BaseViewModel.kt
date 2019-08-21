@@ -1,12 +1,12 @@
-package epeyk.mobile.module.basemodule
+package epeyk.mobile.module.basemodule.ui
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import epeyk.mobile.module.basemodule.retrofit.ErrorHttp
-import epeyk.mobile.module.basemodule.retrofit.ErrorType
-import epeyk.mobile.module.basemodule.retrofit.ErrorUtil
+import epeyk.mobile.module.basemodule.data.network.retrofit.ErrorHttp
+import epeyk.mobile.module.basemodule.data.network.retrofit.ErrorType
+import epeyk.mobile.module.basemodule.data.network.retrofit.ErrorUtil
 import io.reactivex.disposables.CompositeDisposable
 import retrofit2.HttpException
 import retrofit2.Response
@@ -42,8 +42,8 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
 
     fun handleError(e: Throwable) {
         Log.v("masood", "error : " + e.message)
-        if (e is HttpException) {
-            error.value = Pair(ErrorType.HTTP_ERROR, errorHandle(e.response()))
+        if (e is HttpException && e.response() != null) {
+            error.value = Pair(ErrorType.HTTP_ERROR, errorHandle(e.response()!!))
         } else {
             error.value = Pair(ErrorType.OTHER_ERROR, null)
         }

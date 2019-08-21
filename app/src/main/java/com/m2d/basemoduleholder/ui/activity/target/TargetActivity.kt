@@ -1,11 +1,9 @@
 package epeyk.mobile.module.basemoduleholder.ui.activity.target
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import epeyk.mobile.module.basemodule.BaseActivity
+import epeyk.mobile.module.basemodule.ui.BaseActivity
 import epeyk.mobile.module.basemoduleholder.R
 import epeyk.mobile.module.basemoduleholder.databinding.ActivityTargetBinding
 import epeyk.mobile.module.basemoduleholder.adapter.MyAdapter

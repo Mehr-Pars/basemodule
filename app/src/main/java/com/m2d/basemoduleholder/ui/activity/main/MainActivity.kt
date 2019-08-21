@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import epeyk.mobile.module.basemodule.BaseActivity
+import epeyk.mobile.module.basemodule.ui.BaseActivity
 import epeyk.mobile.module.basemoduleholder.R
 import epeyk.mobile.module.basemoduleholder.databinding.ActivityMainBinding
 import epeyk.mobile.module.basemoduleholder.ui.activity.dataBaseSample.list.MovieListWithLike

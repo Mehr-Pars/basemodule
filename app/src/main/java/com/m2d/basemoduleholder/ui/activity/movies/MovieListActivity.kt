@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chad.library.adapter.base.BaseQuickAdapter
-import epeyk.mobile.module.basemodule.BaseActivity
+import epeyk.mobile.module.basemodule.ui.BaseActivity
 import epeyk.mobile.module.basemoduleholder.CustomLoadMoreView
 import epeyk.mobile.module.basemoduleholder.R
 import epeyk.mobile.module.basemoduleholder.adapter.AdapterMovieList2

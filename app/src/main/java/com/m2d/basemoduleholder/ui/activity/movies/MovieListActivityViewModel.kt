@@ -3,8 +3,7 @@ package epeyk.mobile.module.basemoduleholder.ui.activity.movies
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import epeyk.mobile.module.basemodule.BaseViewModel
-import epeyk.mobile.module.basemoduleholder.getRateInPersian
+import epeyk.mobile.module.basemodule.ui.BaseViewModel
 import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver

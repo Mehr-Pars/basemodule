@@ -1,14 +1,14 @@
 package epeyk.mobile.module.basemoduleholder.ui.activity.movieDetail
 
 import android.content.Context
-import epeyk.mobile.module.basemodule.BaseModel
-import epeyk.mobile.module.basemodule.retrofit.RetrofitUtil
+import epeyk.mobile.module.basemodule.ui.BaseModel
+import epeyk.mobile.module.basemodule.data.network.retrofit.RetrofitUtil
 import epeyk.mobile.module.basemoduleholder.ApiClient
 import epeyk.mobile.module.basemoduleholder.model.api.MovieDetailModel
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-class MovieDetailActivityModel(context: Context):BaseModel(context) {
+class MovieDetailActivityModel(context: Context): BaseModel(context) {
 
     lateinit var client: ApiClient
 

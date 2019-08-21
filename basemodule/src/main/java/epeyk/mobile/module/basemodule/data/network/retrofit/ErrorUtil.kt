@@ -1,4 +1,4 @@
-package epeyk.mobile.module.basemodule.retrofit
+package epeyk.mobile.module.basemodule.data.network.retrofit
 
 import okhttp3.ResponseBody
 import retrofit2.Converter
@@ -12,9 +12,9 @@ object ErrorUtil {
             val converter: Converter<ResponseBody, Error> = RetrofitUtil.getRetrofit()
                     .responseBodyConverter(Error::class.java, arrayOfNulls<Annotation>(0))
 
-            if (response.errorBody() != null) {
-                converter.convert(response.errorBody()!!)
-            } else {
+            response.errorBody()?.let {
+                converter.convert(it)
+            } ?: run {
                 Error(500, "خطا غیرمنتظره")
             }
         } catch (e: Exception) {

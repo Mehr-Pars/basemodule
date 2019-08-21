@@ -1,15 +1,12 @@
 package epeyk.mobile.module.basemoduleholder.ui.activity.dataBaseSample.list
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import epeyk.mobile.module.basemodule.BaseViewModel
+import epeyk.mobile.module.basemodule.ui.BaseViewModel
 import epeyk.mobile.module.basemoduleholder.db.model.MovieLikeModelDB
 import epeyk.mobile.module.basemoduleholder.model.api.MovieListModel
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
-import io.reactivex.observers.ResourceSingleObserver
 
 class MovieListWithLikeViewModel(application: Application) : BaseViewModel(application) {
     override fun initViews() {
