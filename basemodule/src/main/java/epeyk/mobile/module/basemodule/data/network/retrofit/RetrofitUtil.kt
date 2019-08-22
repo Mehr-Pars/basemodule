@@ -4,13 +4,14 @@ import android.os.Build
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import okhttp3.*
+import okhttp3.CipherSuite
+import okhttp3.ConnectionSpec
+import okhttp3.OkHttpClient
+import okhttp3.TlsVersion
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -38,13 +39,15 @@ object RetrofitUtil {
         if (debug) {
             logging.level = HttpLoggingInterceptor.Level.BODY
             httpClient.addInterceptor(logging)
-                .addNetworkInterceptor {
-                    val request = it.request()
-                        .newBuilder()
-                        .addHeader("Connection", "close")
-                        .build()
-                    return@addNetworkInterceptor it.proceed(request)
-                }
+        }
+        httpClient.addNetworkInterceptor {
+            val request = it.request()
+                .newBuilder()
+                .addHeader("Connection", "close")
+                .addHeader("Authorization", authToken)
+                .addHeader("Content-Type", "application/json")
+                .build()
+            return@addNetworkInterceptor it.proceed(request)
         }
         Log.d("bootiyar:baseModule", "RetrofitUtil:init")
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT || Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
@@ -58,16 +61,14 @@ object RetrofitUtil {
                     CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
                 )
                 .build()
-            httpClient.connectionSpecs(listOf(ConnectionSpec.MODERN_TLS, ConnectionSpec.CLEARTEXT, spec))
+            httpClient.connectionSpecs(
+                listOf(
+                    ConnectionSpec.MODERN_TLS,
+                    ConnectionSpec.CLEARTEXT,
+                    spec
+                )
+            )
         }
-        httpClient.addInterceptor(logging)
-            .addNetworkInterceptor {
-                val request = it.request()
-                    .newBuilder()
-                    .addHeader("Authorization", authToken)
-                    .build()
-                return@addNetworkInterceptor it.proceed(request)
-            }
         builder = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
