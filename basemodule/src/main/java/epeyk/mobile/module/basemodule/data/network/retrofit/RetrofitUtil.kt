@@ -36,12 +36,16 @@ object RetrofitUtil {
 
     fun getRetrofit() = retrofit
 
-    fun init(baseUrl: String, debug: Boolean) {
+    fun init(baseUrl: String, authToken: String, debug: Boolean) {
         if (debug) {
             logging.level = HttpLoggingInterceptor.Level.BODY
             httpClient.addInterceptor(logging)
                 .addNetworkInterceptor {
-                    var request = it.request().newBuilder().addHeader("Connection", "close").build()
+                    val request = it.request()
+                        .newBuilder()
+                        .header("Connection", "close")
+                        .header("Authorization", authToken)
+                        .build()
                     return@addNetworkInterceptor it.proceed(request)
                 }
         }
