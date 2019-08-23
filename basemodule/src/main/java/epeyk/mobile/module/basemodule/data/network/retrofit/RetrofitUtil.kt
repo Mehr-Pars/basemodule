@@ -47,7 +47,16 @@ object RetrofitUtil {
                 .addHeader("Authorization", authToken)
                 .addHeader("Content-Type", "application/json")
                 .build()
-            return@addNetworkInterceptor it.proceed(request)
+
+            val response = it.proceed(request)
+            if (response.code() == 429) { // Too Many Requests Error
+                // todo : consider this error as warning and handle response
+                return@addNetworkInterceptor response.newBuilder()
+                    .code(200) // faking status code
+                    .build()
+            }
+
+            return@addNetworkInterceptor response
         }
         Log.d("bootiyar:baseModule", "RetrofitUtil:init")
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT || Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN) {
