@@ -1,7 +1,11 @@
 package epeyk.mobile.module.basemodule.data.network.retrofit
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.security.ProviderInstaller
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.CipherSuite
@@ -35,7 +39,18 @@ object RetrofitUtil {
 
     fun getRetrofit() = retrofit
 
-    fun init(baseUrl: String, authToken: String, debug: Boolean) {
+    fun init(context: Context, baseUrl: String, authToken: String, debug: Boolean) {
+        if (Build.VERSION.SDK_INT in 16..21) {
+            // install required certificates for android Api lower than 21
+            try {
+                ProviderInstaller.installIfNeeded(context)
+            } catch (e: GooglePlayServicesRepairableException) {
+                e.printStackTrace()
+            } catch (e: GooglePlayServicesNotAvailableException) {
+                e.printStackTrace()
+            }
+        }
+
         if (debug) {
             logging.level = HttpLoggingInterceptor.Level.BODY
             httpClient.addInterceptor(logging)
