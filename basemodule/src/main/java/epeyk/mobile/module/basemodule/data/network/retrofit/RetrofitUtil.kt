@@ -56,11 +56,13 @@ object RetrofitUtil {
             httpClient.addInterceptor(logging)
         }
         httpClient.addNetworkInterceptor {
-            val request = it.request()
+            val req = it.request()
                 .newBuilder()
                 .addHeader("Connection", "close")
-                .addHeader("Authorization", authToken)
                 .addHeader("Content-Type", "application/json")
+            if (!authToken.isNullOrEmpty())
+                req.addHeader("Authorization", authToken)
+            val request = req
                 .build()
 
             val response = it.proceed(request)
