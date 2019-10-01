@@ -59,6 +59,7 @@ object RetrofitUtil {
         }
 
         if (debug) {
+            logging.level = HttpLoggingInterceptor.Level.HEADERS
             logging.level = HttpLoggingInterceptor.Level.BODY
             httpClient.addInterceptor(logging)
         }
