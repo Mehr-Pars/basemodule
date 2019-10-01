@@ -40,6 +40,13 @@ object RetrofitUtil {
     fun getRetrofit() = retrofit
 
     fun init(context: Context, baseUrl: String, authToken: String, debug: Boolean) {
+        init(context, baseUrl, authToken, null, debug)
+    }
+
+    fun init(
+        context: Context, baseUrl: String, authToken: String,
+        headers: List<Pair<String, String>>?, debug: Boolean
+    ) {
         if (Build.VERSION.SDK_INT in 16..21) {
             // install required certificates for android Api lower than 21
             try {
@@ -61,9 +68,13 @@ object RetrofitUtil {
                 .addHeader("Connection", "close")
                 .addHeader("Content-Type", "application/json")
             if (!authToken.isNullOrEmpty())
-                req.addHeader("Authorization", authToken)
-            val request = req
-                .build()
+                req.addHeader("Authorization", "Bearer $authToken")
+            headers?.let { it ->
+                for (item in it)
+                    req.addHeader(item.first, item.second)
+            }
+
+            val request = req.build()
 
             val response = it.proceed(request)
             if (response.code() == 429) { // Too Many Requests Error

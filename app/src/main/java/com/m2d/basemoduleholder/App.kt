@@ -9,6 +9,6 @@ class App: MultiDexApplication() {
         super.onCreate()
 
 
-        RetrofitUtil.init("http://moviesapi.ir/", "authToken", true)
+        RetrofitUtil.init(this,"http://moviesapi.ir/", "authToken", true)
     }
 }
