@@ -17,14 +17,14 @@ class AdapterMovieListWithLike: BaseQuickAdapter<MovieListModel.Data, AdapterMov
     R.layout.item_movie_list_activity_with_like) {
     lateinit var viewmodel:ItemMovieListWithLikeViewModel
 
-    override fun convert(helper: ViewHolder?, item: MovieListModel.Data?) {
+    override fun convert(helper: ViewHolder, item: MovieListModel.Data?) {
 
-        helper?.addOnClickListener(R.id.imageLike)
+        helper.addOnClickListener(R.id.imageLike)
 
-        val binding = helper?.binding
+        val binding = helper.binding
         viewmodel= ItemMovieListWithLikeViewModel(item!!)
-        binding?.setVariable(BR.viewmodel,viewmodel)
-        binding?.executePendingBindings()
+        binding.setVariable(BR.viewmodel,viewmodel)
+        binding.executePendingBindings()
     }
 
     override fun getItemView(layoutResId: Int, parent: ViewGroup): View {

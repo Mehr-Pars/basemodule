@@ -14,11 +14,11 @@ import epeyk.mobile.module.basemoduleholder.ui.activity.movies.ItemMovieListView
 class AdapterMovieList2: BaseQuickAdapter<MovieListModel.Data, AdapterMovieList2.ViewHolder>(R.layout.item_movie_list_activity) {
     lateinit var viewmodel:ItemMovieListViewModel
 
-    override fun convert(helper: ViewHolder?, item: MovieListModel.Data?) {
-        val binding = helper?.binding
+    override fun convert(helper: ViewHolder, item: MovieListModel.Data?) {
+        val binding = helper.binding
         viewmodel=ItemMovieListViewModel(mContext,item!!)
-        binding?.setVariable(BR.viewmodel,viewmodel)
-        binding?.executePendingBindings()
+        binding.setVariable(BR.viewmodel,viewmodel)
+        binding.executePendingBindings()
     }
 
     override fun getItemView(layoutResId: Int, parent: ViewGroup): View {
