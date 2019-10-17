@@ -1,19 +1,25 @@
 package epeyk.mobile.module.basemodule.ui
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import epeyk.mobile.module.basemodule.R
 import epeyk.mobile.module.basemodule.data.network.retrofit.ErrorType
 
 abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
 
     protected var viewModel: VM? = null
-
+    private var networkErrorDialogShown = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -72,7 +78,6 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
 
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
-
         viewModel?.error?.observe(this, Observer {
             Log.v("masood", "BaseFragment error: " + it?.second?.message)
             if (it?.first == ErrorType.HTTP_ERROR)
@@ -83,6 +88,37 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
 //                showErrorDialog(it!!.first, null)
             }
         })
+
+        viewModel?.networkError?.observe(this, Observer { hasError->
+            if (hasError)
+                showNetworkErrorDialog()
+        })
+    }
+
+    private fun showNetworkErrorDialog() {
+        if (!networkErrorDialogShown && context != null) {
+            networkErrorDialogShown = true
+
+            val dialog = Dialog(context!!)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.setCancelable(false)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setContentView(R.layout.dialog_network_error)
+
+            dialog.findViewById<TextView>(R.id.cancel).setOnClickListener {
+                networkErrorDialogShown = false
+                viewModel?.cancelRequestQueue()
+                dialog.dismiss()
+            }
+            dialog.findViewById<TextView>(R.id.retry).setOnClickListener {
+                networkErrorDialogShown = false
+                viewModel?.retryOnRequestQueue()
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
     }
 
 }

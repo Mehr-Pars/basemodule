@@ -8,14 +8,10 @@ abstract class BaseModel(val context: Context) {
         getInstance()
     }
 
-
     private fun getInstance() {
-
         initRetrofit()
-
     }
 
+    open fun initRetrofit() {}
 
-
-    protected abstract fun initRetrofit()
 }

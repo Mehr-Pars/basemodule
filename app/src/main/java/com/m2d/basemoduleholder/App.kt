@@ -1,9 +1,9 @@
 package epeyk.mobile.module.basemoduleholder
 
-import androidx.multidex.MultiDexApplication
+import epeyk.mobile.module.basemodule.BaseApp
 import epeyk.mobile.module.basemodule.data.network.retrofit.RetrofitUtil
 
-class App: MultiDexApplication() {
+class App: BaseApp() {
 
     override fun onCreate() {
         super.onCreate()

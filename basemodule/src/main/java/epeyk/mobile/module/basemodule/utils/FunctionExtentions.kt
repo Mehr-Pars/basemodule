@@ -33,7 +33,3 @@ fun isConnectingToInternet(context: Context): Boolean {
 
     return false
 }
-
-fun Context.safeRequest(request: () -> Unit) {
-    // todo implement
-}

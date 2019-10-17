@@ -15,7 +15,7 @@ class MainActivityViewModel(application: Application) : BaseViewModel(applicatio
 
     }
 
-    var links= listOf<String>(
+    var links = listOf<String>(
         "https://picsum.photos/400/250/?image=541",
         "https://picsum.photos/400/250/?image=542",
         "https://picsum.photos/400/250/?image=543",
@@ -25,53 +25,51 @@ class MainActivityViewModel(application: Application) : BaseViewModel(applicatio
         "https://picsum.photos/400/250/?image=547",
         "https://picsum.photos/400/250/?image=548",
         "https://picsum.photos/400/250/?image=549",
-        "https://picsum.photos/400/250/?image=550")
-    var currentIndex=0
+        "https://picsum.photos/400/250/?image=550"
+    )
+    var currentIndex = 0
 
-    var topImageUrl=ObservableField<String>("")
-    var name=ObservableField<String>("")
-    var lastName=ObservableField<String>("")
-    var nameLastName=ObservableField<String>("")
-    var gotoRecyclerSampleActivity=MutableLiveData<Boolean>()
-    var gotoMovies=MutableLiveData<Boolean>()
-    var gotoMoviesDB=MutableLiveData<Boolean>()
+    var topImageUrl = ObservableField<String>("")
+    var name = ObservableField<String>("")
+    var lastName = ObservableField<String>("")
+    var nameLastName = ObservableField<String>("")
+    var gotoRecyclerSampleActivity = MutableLiveData<Boolean>()
+    var gotoMovies = MutableLiveData<Boolean>()
+    var gotoMoviesDB = MutableLiveData<Boolean>()
 
 
-    fun getLink(){
+    fun getLink() {
         topImageUrl.set(links[currentIndex])
     }
 
-    fun loadAnotherImage()
-    {
+    fun loadAnotherImage() {
         currentIndex++
         topImageUrl.set(links[currentIndex])
 
-        if(currentIndex==links.size-1)
-            currentIndex=0
+        if (currentIndex == links.size - 1)
+            currentIndex = 0
     }
 
-    fun showNameAndLastName(){
-        nameLastName.set(name.get()+" "+lastName.get())
+    fun showNameAndLastName() {
+        nameLastName.set(name.get() + " " + lastName.get())
     }
 
-    fun showToast()
-    {
-        Toast.makeText(context,"sample toast : "+name.get()+" "+lastName.get(),Toast.LENGTH_SHORT).show()
-        gotoRecyclerSampleActivity.value=true
+    fun showToast() {
+        Toast.makeText(
+            context,
+            "sample toast : " + name.get() + " " + lastName.get(),
+            Toast.LENGTH_SHORT
+        ).show()
+        gotoRecyclerSampleActivity.value = true
     }
 
-    fun goToMovies()
-    {
-        gotoMovies.value=true
+    fun goToMovies() {
+        gotoMovies.value = true
     }
 
-    fun goToMoviesWithDB()
-    {
-        gotoMoviesDB.value=true
+    fun goToMoviesWithDB() {
+        safeRequest {
+            gotoMoviesDB.value = true
+        }
     }
-
-
-
-
-
 }
