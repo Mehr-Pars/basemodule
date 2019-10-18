@@ -15,12 +15,10 @@ import io.reactivex.schedulers.Schedulers
 open class BaseApp : MultiDexApplication() {
     val isConnectedToNetwork = ObservableField<Boolean>().apply { set(false) }
     val isConnectedToInternet = ObservableField<Boolean>().apply { set(false) }
-    val settings: InternetObservingSettings by lazy {
-        InternetObservingSettings.builder()
-            .host("www.google.com")
-            .strategy(SocketInternetObservingStrategy())
-            .build()
-    }
+    var settings = InternetObservingSettings.builder()
+        .host("www.google.com")
+        .strategy(SocketInternetObservingStrategy())
+        .build()
 
     override fun onCreate() {
         super.onCreate()

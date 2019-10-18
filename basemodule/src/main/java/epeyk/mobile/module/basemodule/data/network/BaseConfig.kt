@@ -6,6 +6,7 @@ package epeyk.mobile.module.basemodule.data.network
  */
 open class BaseConfig {
     open var baseUrl: String? = ""
+    open var networkCheckUrl: String? = "www.google.com"
     open var apiUrl: String? = ""
     open var authToken: String? = ""
     open var profileId: String? = ""
