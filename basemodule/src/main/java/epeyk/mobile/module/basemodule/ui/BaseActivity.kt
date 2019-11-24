@@ -6,17 +6,25 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.Window
-import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import epeyk.mobile.module.basemodule.BaseApp
 import epeyk.mobile.module.basemodule.R
 import epeyk.mobile.module.basemodule.data.network.retrofit.ErrorType
+import epeyk.mobile.module.basemodule.utils.LocaleUtils
 
 abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), LifecycleOwner {
     protected var viewModel: VM? = null
     private var networkErrorDialogShown = false
+
+    /**
+     * set app default app locale if Locale initialized
+     */
+    init {
+        BaseApp.appLocale?.let { LocaleUtils.updateConfig(this) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

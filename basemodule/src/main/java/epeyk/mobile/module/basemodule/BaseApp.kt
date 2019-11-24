@@ -8,20 +8,31 @@ import androidx.multidex.MultiDexApplication
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.InternetObservingSettings
 import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.strategy.SocketInternetObservingStrategy
+import epeyk.mobile.module.basemodule.utils.LocaleUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 
 
 open class BaseApp : MultiDexApplication() {
     val isConnectedToNetwork = ObservableField<Boolean>().apply { set(false) }
     val isConnectedToInternet = ObservableField<Boolean>().apply { set(false) }
-    var settings = InternetObservingSettings.builder()
-        .host("www.google.com")
-        .strategy(SocketInternetObservingStrategy())
-        .build()
+
+    companion object{
+        var appLocale: Locale? = null
+        var settings = InternetObservingSettings.builder()
+            .host("www.google.com")
+            .strategy(SocketInternetObservingStrategy())
+            .build()
+    }
 
     override fun onCreate() {
         super.onCreate()
+
+        appLocale?.let { locale ->
+            LocaleUtils.setLocale(locale)
+            LocaleUtils.updateConfig(this, baseContext.resources.configuration)
+        }
 
         checkNetworkConnectivity()
     }
