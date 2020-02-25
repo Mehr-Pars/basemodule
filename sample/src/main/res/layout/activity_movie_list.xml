@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="epeyk.mobile.sample.activity.movies.MovieListActivityViewModel"/>
+            type="mehrpars.mobile.sample.activity.movies.MovieListActivityViewModel"/>
     </data>
 
 

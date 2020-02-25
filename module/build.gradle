@@ -15,10 +15,10 @@ def libraryVersion = project.versionName
 android {
     signingConfigs {
         release {
-            keyAlias 'epeyk mobile'
-            keyPassword 'epeyk2014'
-            storeFile file('C:/key.android')
-            storePassword 'epeyk2014'
+            storeFile file('C:\\mehrpars.jks')
+            storePassword 'mehrpars2019'
+            keyAlias = 'Mehr Pars'
+            keyPassword 'mehrpars2019'
         }
     }
 
@@ -138,13 +138,13 @@ publishing {
 }
 
 artifactory {
-    contextUrl = 'http://maven.worthnet.ir:8081/artifactory'
+    contextUrl = 'http://maven2.mpars.ir/artifactory'
     publish {
         repository {
             repoKey = 'libs-release-local'
 
-            username = artifactory_username
-            password = artifactory_password
+            username = mpars_artifactory_username
+            password = mpars_artifactory_password
         }
         defaults {
             publications('aar')

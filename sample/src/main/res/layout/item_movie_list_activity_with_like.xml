@@ -8,7 +8,7 @@
 
         <variable
             name="viewmodel"
-            type="epeyk.mobile.sample.activity.dataBaseSample.list.ItemMovieListWithLikeViewModel" />
+            type="mehrpars.mobile.sample.activity.dataBaseSample.list.ItemMovieListWithLikeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="epeyk.mobile.sample.activity.target.ItemTargetViewModel" />
+            type="mehrpars.mobile.sample.activity.target.ItemTargetViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
