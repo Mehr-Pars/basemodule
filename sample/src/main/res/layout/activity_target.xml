@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="epeyk.mobile.sample.activity.target.TargetViewModel"/>
+
+    </data>
+
+    <androidx.recyclerview.widget.RecyclerView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/recyclerTarget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adapter="@{viewmodel.adapter}"
+        tools:listitem="@layout/item_target_activity"
+        tools:context=".activity.target.TargetActivity">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</layout>
+

@@ -2,7 +2,7 @@
 
 Add to _build.gradle_ (app):
 ```groovy
-implementation 'epeyk.mobile.lib:basemodule:1.0.4'
+implementation 'epeyk.mobile.lib:basemodule:1.2.5'
 ```
 
 Add to _build.gradle_ (Project):
@@ -22,5 +22,8 @@ allprojects {
 }
 ```
  
-## License
-Arzesh
+## License  
+[Mehr Pars ICT][mp]
+
+
+[mp]: https://www.worthnet.ir
