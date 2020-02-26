@@ -1,5 +1,6 @@
 import java.io.File
 import java.io.InputStream
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 // region Readme generator
@@ -48,8 +49,12 @@ val dimenSmallPath = "module\\src\\main\\res\\values-small\\dimens.xml"
 val dimenLargePath = "module\\src\\main\\res\\values-large\\dimens.xml"
 
 fun extractNumbers(input: String): String {
-    val pattern = Pattern.compile("[^0-9]")
-    return pattern.matcher(input).replaceAll("")
+    val pattern = Pattern.compile("[0-9]*\\.?[0-9]+")
+    val matcher: Matcher = pattern.matcher(input)
+    return if (matcher.find())
+        matcher.group()
+    else
+        "0"
 }
 
 fun generateDimens(multiply: Float, filePath: String) {
@@ -65,10 +70,9 @@ fun generateDimens(multiply: Float, filePath: String) {
                     val dimen = line.substring(start, end)
 
                     val number = extractNumbers(dimen)
-                    val unit = dimen.replace(number, "")
 
-                    val finalValue = "%.1f".format((number.toInt()) * multiply)
-                    val finalDimen = finalValue + unit
+                    val finalValue = "%.1f".format((number.toDouble()) * multiply)
+                    val finalDimen = dimen.replace(number, finalValue)
 
                     out.println(line.replace(dimen, finalDimen))
                 } else {
