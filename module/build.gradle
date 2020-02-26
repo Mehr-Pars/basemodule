@@ -134,12 +134,23 @@ task generateSources {
     }
 }
 
-task assembleAndPublish {
+task assembleModule {
     doFirst {
-        def script = "gradlew.bat assembleRelease artifactoryPublish".execute()
+        def script = "gradlew.bat assemble".execute()
         script.in.eachLine { line -> println line }
         script.err.eachLine { line -> println "ERROR: " + line }
         script.waitFor()
     }
 }
-assembleAndPublish.dependsOn generateSources
+
+task publishModule {
+    doFirst {
+        def script = "gradlew.bat artifactoryPublish".execute()
+        script.in.eachLine { line -> println line }
+        script.err.eachLine { line -> println "ERROR: " + line }
+        script.waitFor()
+    }
+}
+
+assembleModule.dependsOn generateSources
+publishModule.dependsOn assembleModule

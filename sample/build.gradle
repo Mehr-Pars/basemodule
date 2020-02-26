@@ -15,7 +15,7 @@ android {
     }
     compileSdkVersion project.targetSdkVersion.toInteger()
     defaultConfig {
-        applicationId "mehrpars.mobile.${project.librarySampleName}"
+        applicationId project.sampleApplicationId
         minSdkVersion project.minSdkVersion.toInteger()
         targetSdkVersion project.targetSdkVersion.toInteger()
         versionCode 1
@@ -39,8 +39,9 @@ android {
 }
 
 dependencies {
+    // load library from repository
+//    implementation project.libraryGroup + ':' + project.libraryName + ':' + project.versionName
     implementation project(':module')
-//    implementation 'mehrpars.mobile.lib:librarysample:$project.versionName'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

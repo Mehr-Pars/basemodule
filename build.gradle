@@ -19,6 +19,13 @@ allprojects {
     repositories {
         google() // make it first element
         jcenter()
+        maven {
+            url "http://maven2.mpars.ir/artifactory/libs-release-local"
+            credentials {
+                username = "${mpars_artifactory_username}"
+                password = "${mpars_artifactory_password}"
+            }
+        }
     }
 }
 
