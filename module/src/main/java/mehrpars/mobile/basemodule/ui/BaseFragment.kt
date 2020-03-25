@@ -56,7 +56,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
     /**
      * get your arguments here
      */
-    protected abstract fun initArguments()
+    open fun initArguments() {}
 
 
     /**

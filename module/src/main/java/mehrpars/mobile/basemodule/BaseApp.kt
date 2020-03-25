@@ -10,6 +10,7 @@ import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.Inter
 import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.strategy.SocketInternetObservingStrategy
 import mehrpars.mobile.basemodule.utils.LocaleUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 
@@ -18,9 +19,9 @@ open class BaseApp : MultiDexApplication() {
     val isConnectedToNetwork = ObservableField<Boolean>().apply { set(false) }
     val isConnectedToInternet = ObservableField<Boolean>().apply { set(false) }
 
-    companion object{
+    companion object {
         var appLocale: Locale? = null
-        var settings = InternetObservingSettings.builder()
+        var settings: InternetObservingSettings = InternetObservingSettings.builder()
             .host("www.google.com")
             .strategy(SocketInternetObservingStrategy())
             .build()
@@ -37,6 +38,15 @@ open class BaseApp : MultiDexApplication() {
         checkNetworkConnectivity()
     }
 
+    fun initNetworkCheckUrl(networkCheckUrl: String) {
+        settings = InternetObservingSettings.builder()
+            .host(networkCheckUrl)
+            .strategy(SocketInternetObservingStrategy())
+            .build()
+
+        checkInternetConnectivity()
+    }
+
     @SuppressLint("CheckResult")
     private fun checkNetworkConnectivity() {
         // observe network connectivity
@@ -48,12 +58,12 @@ open class BaseApp : MultiDexApplication() {
                 if (connectivity.state() == NetworkInfo.State.CONNECTED) {
                     checkInternetConnectivity()
                     isConnectedToNetwork.set(true)
-                    Log.i("NetworkState", "----connected: true")
+                    Log.i("NetworkState", "----connected(${settings.host()}): true")
                 } else {
                     isConnectedToNetwork.set(false)
-                    Log.i("NetworkState", "----connected: false")
+                    Log.i("NetworkState", "----connected(${settings.host()}): false")
                     isConnectedToInternet.set(false)
-                    Log.i("InternetState", "----connected: false")
+                    Log.i("InternetState", "----connected(${settings.host()}): false")
                 }
             }
     }
@@ -65,7 +75,7 @@ open class BaseApp : MultiDexApplication() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { hasInternetAccess ->
                 isConnectedToInternet.set(hasInternetAccess)
-                Log.i("InternetState", "----connected: $hasInternetAccess")
+                Log.i("InternetState", "----connected(${settings.host()}): $hasInternetAccess")
             }
     }
 
