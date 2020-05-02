@@ -102,6 +102,9 @@ dependencies {
 
     //dataBinding
     kapt 'com.android.databinding:compiler:3.2.0-alpha10'
+
+    // countly log service
+    implementation 'ly.count.android:sdk:20.04'
 }
 
 publishing {

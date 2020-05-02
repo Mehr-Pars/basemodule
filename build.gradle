@@ -21,6 +21,7 @@ allprojects {
         jcenter()
         maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
+        maven { url "http://dl.bintray.com/countly/maven" }
         maven {
             url "http://maven2.mpars.ir/artifactory/libs-release-local"
             credentials {

@@ -12,6 +12,9 @@ import mehrpars.mobile.basemodule.utils.LocaleUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import ly.count.android.sdk.Countly
+import ly.count.android.sdk.CountlyConfig
+import ly.count.android.sdk.DeviceId
 import java.util.*
 
 
@@ -45,6 +48,15 @@ open class BaseApp : MultiDexApplication() {
             .build()
 
         checkInternetConnectivity()
+    }
+
+    fun initCountly(serverUrl: String, apiKey: String) {
+        // setup countly for crash reporting
+        val config = CountlyConfig(this, apiKey, serverUrl)
+        config.setLoggingEnabled(BuildConfig.DEBUG)
+            .enableCrashReporting()
+            .setIdMode(DeviceId.Type.OPEN_UDID)
+        Countly.sharedInstance().init(config)
     }
 
     @SuppressLint("CheckResult")

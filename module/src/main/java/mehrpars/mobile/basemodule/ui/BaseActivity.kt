@@ -10,6 +10,7 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import ly.count.android.sdk.Countly
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
@@ -113,6 +114,18 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
 
             dialog.show()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // set countly onStart for accurate application session tracking.
+        Countly.sharedInstance().onStart(this)
+    }
+
+    override fun onStop() {
+        // set countly onStop for accurate application session tracking.
+        Countly.sharedInstance().onStop()
+        super.onStop()
     }
 
 }
