@@ -22,7 +22,7 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     val error = MutableLiveData<Pair<ErrorType, ErrorHttp?>>()
 
     val networkError = SingleLiveEvent<Boolean>()
-    private val requestQueue = LinkedList<() -> Unit>()
+    private val requestQueue = LinkedList<SimpleRequest>()
     private val application: BaseApp by lazy {
         if (app !is BaseApp)
             throw Exception("application must be of type BaseApp, open manifest and set application -> name to BaseApp or just extend your application from BaseApp")
@@ -59,11 +59,27 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
         return error
     }
 
-    protected fun safeRequest(request: () -> Unit) {
+    protected fun safeRequest(onExecuteAction: () -> Unit) {
+        safeRequest(onExecuteAction, null)
+    }
+
+    protected fun safeRequest(onExecuteAction: () -> Unit, onCancelAction: (() -> Unit)? = null) {
+        safeRequest(object : SimpleRequest() {
+            override fun onExecute() {
+                onExecuteAction()
+            }
+
+            override fun onCancel() {
+                onCancelAction?.invoke()
+            }
+        })
+    }
+
+    protected fun safeRequest(simpleRequest: SimpleRequest) {
         if (application.isConnectedToInternet()) {
-            request()
+            simpleRequest.onExecute()
         } else {
-            requestQueue.add(request)
+            requestQueue.add(simpleRequest)
             networkError.postValue(true)
         }
     }
@@ -76,7 +92,9 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun cancelRequestQueue() {
-        requestQueue.clear()
+        for (i in requestQueue.indices) {
+            requestQueue.remove().onCancel()
+        }
     }
 
     override fun onCleared() {
@@ -87,4 +105,9 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    abstract class SimpleRequest {
+        abstract fun onExecute()
+
+        open fun onCancel() {}
+    }
 }

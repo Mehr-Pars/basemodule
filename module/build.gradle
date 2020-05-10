@@ -28,7 +28,7 @@ android {
         targetSdkVersion project.targetSdkVersion.toInteger()
         versionCode project.versionCode.toInteger()
         versionName project.versionName
-        testInstrumentationRunner "androidx.test_activity.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
         vectorDrawables.useSupportLibrary = true
         dataBinding.enabled true
@@ -57,8 +57,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'com.android.support.test_activity:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test_activity.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
 
     // Multidex
@@ -102,6 +102,9 @@ dependencies {
 
     //dataBinding
     kapt 'com.android.databinding:compiler:3.2.0-alpha10'
+
+    // countly log service
+    implementation 'ly.count.android:sdk:20.04'
 }
 
 publishing {
