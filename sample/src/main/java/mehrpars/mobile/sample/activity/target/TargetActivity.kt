@@ -32,9 +32,11 @@ class TargetActivity : BaseActivity<TargetViewModel>() {
     override fun initViews() {
         recyclerTarget.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        initAdapter()
     }
 
-    override fun initAdapter() {
+    private fun initAdapter() {
         adapter = MyAdapter(this).apply {
             setNewData(makeAdapterData())
         }

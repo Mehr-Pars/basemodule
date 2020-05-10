@@ -33,7 +33,6 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
         initViewModel()
         initBinding()
         initViews()
-        initAdapter()
 
         observeViewModelChange(viewModel)
     }
@@ -60,13 +59,6 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
      * initialize your views in here
      */
     protected abstract fun initViews()
-
-    /**
-     * initialize your adapter(s) here then assign to a recycler or viewpager
-     */
-    @Deprecated("init adapter directly in viewModel")
-    open fun initAdapter() {
-    }
 
     /**
      *  observe your viewModel's liveData here

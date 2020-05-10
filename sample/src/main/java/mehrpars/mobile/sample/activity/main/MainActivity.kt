@@ -38,9 +38,6 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
 
     }
 
-    override fun initAdapter() {
-
-    }
 
     override fun observeViewModelChange(viewModel: MainActivityViewModel?) {
         super.observeViewModelChange(viewModel)

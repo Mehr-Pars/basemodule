@@ -47,9 +47,10 @@ class MovieListActivity : BaseActivity<MovieListActivityViewModel>(),
         empty_view = View.inflate(this, R.layout.empty_view, null)
         loading_view = View.inflate(this, R.layout.loading_view, null)
         load_more_view = View.inflate(this, R.layout.load_more_view, null)
+        initAdapter()
     }
 
-    override fun initAdapter() {
+    private fun initAdapter() {
         adapter = AdapterMovieList2().apply {
             setEnableLoadMore(true)
             emptyView = loading_view

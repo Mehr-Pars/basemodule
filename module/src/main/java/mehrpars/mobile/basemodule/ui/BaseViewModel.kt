@@ -4,12 +4,12 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.disposables.CompositeDisposable
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorHttp
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorUtil
 import mehrpars.mobile.basemodule.utils.SingleLiveEvent
-import io.reactivex.disposables.CompositeDisposable
 import retrofit2.HttpException
 import retrofit2.Response
 import java.util.*
@@ -24,24 +24,11 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     val networkError = SingleLiveEvent<Boolean>()
     private val requestQueue = LinkedList<() -> Unit>()
     private val application: BaseApp by lazy {
-        if (app !is BaseApp) throw Exception("application must be of type BaseApp, open manifest and set application -> name to BaseApp or just extend your application from BaseApp")
-        app as BaseApp
+        if (app !is BaseApp)
+            throw Exception("application must be of type BaseApp, open manifest and set application -> name to BaseApp or just extend your application from BaseApp")
+        else
+            app
     }
-
-    init {
-        initViews()
-        initAdapter()
-    }
-
-    /**
-     * initialize your views in here
-     */
-    protected abstract fun initViews()
-
-    /**
-     * initialize your adapter(s) here
-     */
-    protected abstract fun initAdapter()
 
     fun handleError(e: Throwable) {
         Log.v("masood", "error : " + e.message)

@@ -32,10 +32,6 @@ class MovieDetailActivity : BaseActivity<MovieDetailActivityViewModel>() {
 
     }
 
-    override fun initAdapter() {
-
-    }
-
     override fun observeViewModelChange(viewModel: MovieDetailActivityViewModel?) {
         super.observeViewModelChange(viewModel)
 

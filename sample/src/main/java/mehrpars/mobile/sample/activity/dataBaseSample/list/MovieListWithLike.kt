@@ -50,9 +50,10 @@ class MovieListWithLike : BaseActivity<MovieListWithLikeViewModel>(),
     override fun initViews() {
         recyclerViewMovieListWithLink.layoutManager = GridLayoutManager(this, 2)
         likedList = mutableListOf()
+        initAdapter()
     }
 
-    override fun initAdapter() {
+    private fun initAdapter() {
         adapter = AdapterMovieListWithLike().apply {
             setEnableLoadMore(true)
             emptyView = loading_view

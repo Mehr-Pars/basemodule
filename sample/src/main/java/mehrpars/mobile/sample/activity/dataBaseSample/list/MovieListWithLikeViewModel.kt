@@ -9,13 +9,6 @@ import mehrpars.mobile.sample.api.MovieListModel
 import mehrpars.mobile.sample.db.model.MovieLikeModelDB
 
 class MovieListWithLikeViewModel(application: Application) : BaseViewModel(application) {
-    override fun initViews() {
-
-    }
-
-    override fun initAdapter() {
-    }
-
     var model = MovieListWithLikeModel(application)
     var movieData = MutableLiveData<MovieListModel>()
 

@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.view.View" />
+
         <import type="android.text.TextUtils" />
 
         <variable
@@ -22,7 +23,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{!TextUtils.isEmpty(viewmodel.movieDetail.get().title) ? View.VISIBLE : View.GONE}">
+            android:visibility="@{!TextUtils.isEmpty(viewmodel.movieDetail.title) ? View.VISIBLE : View.GONE}">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -46,11 +47,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/circle_back"
-                    app:srcCompat="@drawable/ic_arrow_right"
+                    android:onClick="@{()->viewmodel.nextImage()}"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintRight_toRightOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:onClick="@{()->viewmodel.nextImage()}"/>
+                    app:srcCompat="@drawable/ic_arrow_right" />
 
 
                 <ImageView
@@ -58,11 +59,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
                     android:background="@drawable/circle_back"
-                    app:srcCompat="@drawable/ic_arrow_left"
+                    android:onClick="@{()->viewmodel.prevImage()}"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView"
                     app:layout_constraintLeft_toLeftOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:onClick="@{()->viewmodel.prevImage()}"/>
+                    app:srcCompat="@drawable/ic_arrow_left" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -70,7 +71,7 @@
                     android:background="@color/black75"
                     android:padding="8dp"
                     android:singleLine="true"
-                    android:text='@{viewmodel.movieDetail.get().title +" ("+ viewmodel.movieDetail.get().year+")"}'
+                    android:text='@{viewmodel.movieDetail.title +" ("+ viewmodel.movieDetail.year +")"}'
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView" />
 
@@ -89,7 +90,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text='@{"Plot : "+viewmodel.movieDetail.get().plot}' />
+                            android:text='@{"Plot : "+viewmodel.movieDetail.plot}' />
 
                         <View
                             android:layout_width="match_parent"
@@ -101,7 +102,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text='@{"Director : "+viewmodel.movieDetail.get().director}' />
+                            android:text='@{"Director : "+viewmodel.movieDetail.director}' />
 
                         <View
                             android:layout_width="match_parent"
@@ -114,7 +115,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text='@{"IMDB Rating (meta score) : "+viewmodel.movieDetail.get().imdbRating +" ("+ viewmodel.movieDetail.get().metascore+")"}' />
+                            android:text='@{"IMDB Rating (meta score) : "+viewmodel.movieDetail.imdbRating +" ("+ viewmodel.movieDetail.metascore+")"}' />
 
                         <View
                             android:layout_width="match_parent"
@@ -126,7 +127,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text='@{"Actors : "+viewmodel.movieDetail.get().actors}' />
+                            android:text='@{"Actors : "+viewmodel.movieDetail.actors}' />
 
                         <View
                             android:layout_width="match_parent"
@@ -138,7 +139,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text='@{"Award(s) : "+viewmodel.movieDetail.get().awards}' />
+                            android:text='@{"Award(s) : "+viewmodel.movieDetail.awards}' />
 
                         <View
                             android:layout_width="match_parent"
@@ -150,7 +151,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text='@{"Genres : "+viewmodel.movieDetail.get().genres.toString()}' />
+                            android:text='@{"Genres : "+viewmodel.movieDetail.genres.toString()}' />
 
                     </LinearLayout>
 
@@ -165,7 +166,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="@{TextUtils.isEmpty(viewmodel.movieDetail.get().title) ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{TextUtils.isEmpty(viewmodel.movieDetail.title) ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
 </layout>

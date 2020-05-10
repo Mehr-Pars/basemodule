@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
-            type="mehrpars.mobile.sample.activity.movies.MovieListActivityViewModel"/>
+            type="mehrpars.mobile.sample.activity.movies.MovieListActivityViewModel" />
     </data>
 
 

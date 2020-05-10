@@ -23,10 +23,9 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initArguments()
         initViewModel()
+        initArguments()
         initLayoutView()
-        initAdapter()
         observeViewModelChange(viewModel)
     }
 
@@ -37,7 +36,6 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
 
     }
@@ -54,27 +52,21 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
 
 
     /**
-     * get your arguments here
-     */
-    protected abstract fun initArguments()
-
-
-    /**
      * initialize your viewModel in here
      */
     protected abstract fun initViewModel()
 
 
     /**
+     * get your arguments here
+     */
+    protected abstract fun initArguments()
+
+
+    /**
      * If you want init view set in this function
      */
     protected abstract fun initLayoutView()
-
-    /**
-     * initialize your adapter(s) here then assign to a recycler or viewpager
-     */
-    @Deprecated("init adapter directly in viewModel")
-    open fun initAdapter(){}
 
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
@@ -89,7 +81,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
             }
         })
 
-        viewModel?.networkError?.observe(this, Observer { hasError->
+        viewModel?.networkError?.observe(this, Observer { hasError ->
             if (hasError)
                 showNetworkErrorDialog()
         })

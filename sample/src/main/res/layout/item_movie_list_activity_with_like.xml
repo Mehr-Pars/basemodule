@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -32,22 +31,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black75"
+            android:maxLines="1"
             android:padding="8dp"
             android:text="@{viewmodel.name}"
-            android:maxLines="1"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/imageMovieCover"
             tools:text="movieName" />
 
         <ImageView
             android:id="@+id/imageLike"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:src="@drawable/ic_heart_empty"
-            android:src='@{viewmodel.liked.get() ? @drawable/ic_heart_fill : @drawable/ic_heart_empty}'/>
+            android:layout_margin="8dp"
+            android:src='@{viewmodel.liked ? @drawable/ic_heart_fill : @drawable/ic_heart_empty}'
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_heart_empty" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -10,14 +10,6 @@ import mehrpars.mobile.sample.api.MovieDetailModel
 import mehrpars.mobile.sample.getRateInPersian
 
 class MovieDetailActivityViewModel(application: Application) : BaseViewModel(application) {
-    override fun initViews() {
-
-    }
-
-    override fun initAdapter() {
-
-    }
-
     var model = MovieDetailActivityModel(context)
     var movieDetail = ObservableField<MovieDetailModel>()
     var topImage = ObservableField<String>("")

@@ -20,7 +20,7 @@ android {
         targetSdkVersion project.targetSdkVersion.toInteger()
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test_activity.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         signingConfig signingConfigs.release
@@ -51,8 +51,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test:runner:1.3.0-alpha04'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha04'
+    androidTestImplementation 'androidx.test_activity:runner:1.3.0-alpha04'
+    androidTestImplementation 'androidx.test_activity.espresso:espresso-core:3.3.0-alpha04'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
     implementation 'androidx.room:room-runtime:2.2.4'
     kapt 'androidx.room:room-compiler:2.2.4'
