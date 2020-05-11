@@ -24,12 +24,16 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initViewModel()
-        initArguments()
+        arguments?.let { getArguments(it) }
         initLayoutView()
         observeViewModelChange(viewModel)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
         return initViewAndBinding(inflater, container)
     }
@@ -50,18 +54,18 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
      */
     protected abstract fun initViewAndBinding(inflater: LayoutInflater, container: ViewGroup?): View
 
-
     /**
      * initialize your viewModel in here
      */
     protected abstract fun initViewModel()
 
-
     /**
      * get your arguments here
      */
-    protected abstract fun initArguments()
-
+    @CallSuper
+    open fun getArguments(arguments: Bundle) {
+        viewModel?.handleArguments(arguments)
+    }
 
     /**
      * If you want init view set in this function

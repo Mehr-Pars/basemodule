@@ -17,7 +17,7 @@ class MovieDetailActivityModel(context: Context) : BaseModel(context) {
     }
 
 
-    fun getMovieDetail(movieId: Int): Observable<MovieDetailModel> {
+    fun getMovieDetail(movieId: String): Observable<MovieDetailModel> {
         return client.getMovieDetail(movieId).subscribeOn(Schedulers.io())
     }
 }

@@ -27,10 +27,6 @@ class MovieListActivity : BaseActivity<MovieListActivityViewModel>(),
     private var page = 1
     private var totalPage = 1
 
-    override fun getBundle() {
-
-    }
-
     override fun initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_list)
         binding.viewmodel = viewModel

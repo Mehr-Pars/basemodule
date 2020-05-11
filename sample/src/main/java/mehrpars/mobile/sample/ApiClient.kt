@@ -18,7 +18,7 @@ interface ApiClient {
 
     @GET("/api/v1/movies/{id}")
     fun getMovieDetail(
-        @Path("id") movieId: Int
+        @Path("id") movieId: String
     ): Observable<MovieDetailModel>
 
 

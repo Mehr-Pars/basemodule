@@ -15,11 +15,6 @@ class TargetActivity : BaseActivity<TargetViewModel>() {
     lateinit var binding: ActivityTargetBinding
     lateinit var adapter: MyAdapter
 
-
-    override fun getBundle() {
-
-    }
-
     override fun initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_target)
         binding.viewmodel = viewModel

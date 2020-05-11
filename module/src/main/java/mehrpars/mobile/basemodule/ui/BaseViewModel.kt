@@ -1,6 +1,8 @@
 package mehrpars.mobile.basemodule.ui
 
 import android.app.Application
+import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -29,6 +31,26 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
         else
             app
     }
+
+    init {
+        this.initAdapter()
+    }
+
+    /**
+     * initialize your adapter(s) here
+     */
+    protected open fun initAdapter() {
+    }
+
+    /**
+     * handle passed arguments here
+     */
+    open fun handleArguments(arguments: Bundle) {}
+
+    /**
+     * handle passed intent here
+     */
+    open fun handleIntent(intent: Intent) {}
 
     fun handleError(e: Throwable) {
         Log.v("masood", "error : " + e.message)

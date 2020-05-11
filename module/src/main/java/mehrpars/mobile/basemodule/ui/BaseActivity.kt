@@ -1,6 +1,7 @@
 package mehrpars.mobile.basemodule.ui
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -30,8 +31,8 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        getBundle()
         initViewModel()
+        handleIntent(intent)
         initBinding()
         initViews()
 
@@ -39,9 +40,12 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
     }
 
     /**
-     * get your intent bundle here
+     * get your passed intent here
      */
-    protected abstract fun getBundle()
+    @CallSuper
+    open fun handleIntent(intent: Intent) {
+        viewModel?.handleIntent(intent)
+    }
 
     /**
      * make binding object of your class then

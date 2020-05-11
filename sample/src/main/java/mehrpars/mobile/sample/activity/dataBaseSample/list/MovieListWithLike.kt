@@ -29,10 +29,6 @@ class MovieListWithLike : BaseActivity<MovieListWithLikeViewModel>(),
     private var totalPage = 1
     lateinit var likedList: MutableList<MovieLikeModelDB>
 
-    override fun getBundle() {
-
-    }
-
     override fun initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_list_with_like)
         binding.viewmodel = viewModel

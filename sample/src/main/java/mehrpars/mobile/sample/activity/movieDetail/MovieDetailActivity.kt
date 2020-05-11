@@ -10,13 +10,7 @@ import mehrpars.mobile.sample.R
 import mehrpars.mobile.sample.databinding.ActivityMovieDetailBinding
 
 class MovieDetailActivity : BaseActivity<MovieDetailActivityViewModel>() {
-
     lateinit var binding: ActivityMovieDetailBinding
-    var movieId = 0
-
-    override fun getBundle() {
-        movieId = intent.getIntExtra("id", 1)
-    }
 
     override fun initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
@@ -25,7 +19,7 @@ class MovieDetailActivity : BaseActivity<MovieDetailActivityViewModel>() {
 
     override fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(MovieDetailActivityViewModel::class.java)
-        viewModel?.getMovieDetail(movieId)
+        viewModel?.getMovieDetail()
     }
 
     override fun initViews() {

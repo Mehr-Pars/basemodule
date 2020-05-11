@@ -1,6 +1,7 @@
 package mehrpars.mobile.sample.activity.movieDetail
 
 import android.app.Application
+import android.content.Intent
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,11 +16,15 @@ class MovieDetailActivityViewModel(application: Application) : BaseViewModel(app
     var topImage = ObservableField<String>("")
     private var albumIndex = 0
     var album = mutableListOf<String>()
+    lateinit var movieId: String
 
     var errorInLoadingData = MutableLiveData<Boolean>()
 
+    override fun handleIntent(intent: Intent) {
+        movieId = intent.getStringExtra("id") ?: "1"
+    }
 
-    fun getMovieDetail(movieId: Int) {
+    fun getMovieDetail() {
         compositeDisposable.add(
             model.getMovieDetail(movieId)
                 .map {

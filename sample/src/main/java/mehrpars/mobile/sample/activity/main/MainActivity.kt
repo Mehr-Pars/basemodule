@@ -15,18 +15,9 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
 
     lateinit var binding: ActivityMainBinding
 
-
-    override fun getBundle() {
-
-    }
-
     override fun initBinding() {
-        binding = DataBindingUtil.setContentView(
-            this,
-            R.layout.activity_main
-        )
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.viewmodel = viewModel
-
     }
 
     override fun initViewModel() {

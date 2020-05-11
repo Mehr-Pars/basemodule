@@ -23,8 +23,8 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFra
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initArguments()
         initViewModel()
+        arguments?.let { handleArguments(it) }
         return initViewAndBinding(inflater, container)
     }
 
@@ -78,7 +78,9 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFra
     /**
      * get your arguments here
      */
-    protected abstract fun initArguments()
+    private fun handleArguments(arguments: Bundle) {
+        viewModel?.handleArguments(arguments)
+    }
 
 
     /**

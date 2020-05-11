@@ -30,6 +30,9 @@ class MainActivityViewModel(application: Application) : BaseViewModel(applicatio
     var gotoMovies = MutableLiveData<Boolean>()
     var gotoMoviesDB = MutableLiveData<Boolean>()
 
+    override fun initAdapter() {
+        super.initAdapter()
+    }
 
     fun getLink() {
         topImageUrl.set(links[currentIndex])
