@@ -30,6 +30,15 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
             app
     }
 
+    init {
+        this.initAdapter()
+    }
+
+    /**
+     * initialize your adapter(s) here
+     */
+    open fun initAdapter() {}
+
     fun handleError(e: Throwable) {
         Log.v("masood", "error : " + e.message)
         if (e is HttpException && e.response() != null) {
