@@ -8,55 +8,75 @@ import androidx.multidex.MultiDexApplication
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.InternetObservingSettings
 import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.strategy.SocketInternetObservingStrategy
-import mehrpars.mobile.basemodule.utils.LocaleUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ly.count.android.sdk.Countly
 import ly.count.android.sdk.CountlyConfig
 import ly.count.android.sdk.DeviceId
+import mehrpars.mobile.basemodule.utils.LocaleUtils
 import java.util.*
 
 
-open class BaseApp : MultiDexApplication() {
+abstract class BaseApp : MultiDexApplication() {
     val isConnectedToNetwork = ObservableField<Boolean>().apply { set(false) }
     val isConnectedToInternet = ObservableField<Boolean>().apply { set(false) }
+    lateinit var settings: InternetObservingSettings
 
     companion object {
         var appLocale: Locale? = null
-        var settings: InternetObservingSettings = InternetObservingSettings.builder()
-            .host("www.google.com")
-            .strategy(SocketInternetObservingStrategy())
-            .build()
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        appLocale?.let { locale ->
-            LocaleUtils.setLocale(locale)
-            LocaleUtils.updateConfig(this, baseContext.resources.configuration)
-        }
+        initAppLocale()
+        initCountly()
+        initNetworkCheckUrl()
 
         checkNetworkConnectivity()
     }
 
-    fun initNetworkCheckUrl(networkCheckUrl: String) {
-        settings = InternetObservingSettings.builder()
-            .host(networkCheckUrl)
-            .strategy(SocketInternetObservingStrategy())
-            .build()
-
-        checkInternetConnectivity()
+    /**
+     * set default application Locale
+     * */
+    open fun initAppLocale() {
+        appLocale = Locale("en", "US")
+        LocaleUtils.setLocale(appLocale!!)
+        LocaleUtils.updateConfig(this, baseContext.resources.configuration)
     }
 
-    fun initCountly(serverUrl: String, apiKey: String) {
+    abstract fun getCountlyServerUrl(): String?
+
+    abstract fun getCountlyApiKey(): String?
+
+    /**
+     * setup countly for crash reporting
+     * */
+    open fun initCountly() {
+        if (getCountlyServerUrl().isNullOrEmpty() || getCountlyApiKey().isNullOrEmpty()) {
+            Log.i("Countly", "----countly SERVER_URL or API_KEY is empty")
+            return
+        }
+
         // setup countly for crash reporting
-        val config = CountlyConfig(this, apiKey, serverUrl)
+        val config = CountlyConfig(this, getCountlyApiKey(), getCountlyServerUrl())
         config.setLoggingEnabled(BuildConfig.DEBUG)
             .enableCrashReporting()
             .setIdMode(DeviceId.Type.OPEN_UDID)
         Countly.sharedInstance().init(config)
+    }
+
+    abstract fun getNetworkCheckUrl(): String?
+
+    open fun initNetworkCheckUrl() {
+        getNetworkCheckUrl()?.let { networkCheckUrl ->
+            settings = InternetObservingSettings.builder()
+                .host(networkCheckUrl)
+                .strategy(SocketInternetObservingStrategy())
+                .build()
+
+            checkInternetConnectivity()
+        }
     }
 
     @SuppressLint("CheckResult")

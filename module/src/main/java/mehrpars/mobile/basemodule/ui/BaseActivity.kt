@@ -114,13 +114,13 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
 
     override fun onStart() {
         super.onStart()
-        // set countly onStart for accurate application session tracking.
-        Countly.sharedInstance().onStart(this)
+        if (Countly.sharedInstance().isInitialized) // set countly onStart for accurate application session tracking.
+            Countly.sharedInstance().onStart(this)
     }
 
     override fun onStop() {
-        // set countly onStop for accurate application session tracking.
-        Countly.sharedInstance().onStop()
+        if (Countly.sharedInstance().isInitialized) // set countly onStop for accurate application session tracking.
+            Countly.sharedInstance().onStop()
         super.onStop()
     }
 
