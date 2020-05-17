@@ -60,6 +60,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    // navigation component
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Multidex
     api 'com.android.support:multidex:1.0.3'

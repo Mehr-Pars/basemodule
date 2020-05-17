@@ -17,14 +17,13 @@ import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
 
 abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
-
     protected var viewModel: VM? = null
     private var networkErrorDialogShown = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initViewModel()
-        arguments?.let { getArguments(it) }
+        arguments?.let { handleArguments(it) }
         initLayoutView()
         observeViewModelChange(viewModel)
     }
@@ -63,7 +62,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
      * get your arguments here
      */
     @CallSuper
-    open fun getArguments(arguments: Bundle) {
+    open fun handleArguments(arguments: Bundle) {
         viewModel?.handleArguments(arguments)
     }
 
@@ -95,7 +94,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
         if (!networkErrorDialogShown && context != null) {
             networkErrorDialogShown = true
 
-            val dialog = Dialog(context!!)
+            val dialog = Dialog(requireContext())
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setCanceledOnTouchOutside(false)
             dialog.setCancelable(false)

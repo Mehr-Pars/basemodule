@@ -2,11 +2,14 @@ package mehrpars.mobile.basemodule
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Bundle
 import androidx.annotation.RequiresPermission
 import androidx.databinding.Observable
+import androidx.navigation.NavArgs
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import java.lang.reflect.Method
 
 fun Disposable.disposedBy(disposable: CompositeDisposable) {
     disposable.add(this)
@@ -32,4 +35,10 @@ fun isConnectingToInternet(context: Context): Boolean {
     }
 
     return false
+}
+
+inline fun <reified Args : NavArgs> Bundle.getSafeArguments(): Args {
+    val method: Method = Args::class.java.getMethod("fromBundle", Bundle::class.java)
+
+    return method.invoke(null, this) as Args
 }
