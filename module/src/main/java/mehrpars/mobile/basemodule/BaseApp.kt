@@ -18,8 +18,8 @@ import java.util.*
 
 
 abstract class BaseApp : MultiDexApplication() {
-    val isConnectedToNetwork = ObservableField<Boolean>().apply { set(false) }
-    val isConnectedToInternet = ObservableField<Boolean>().apply { set(false) }
+    val isConnectedToNetwork = ObservableField<Boolean>()
+    val isConnectedToInternet = ObservableField<Boolean>()
     lateinit var settings: InternetObservingSettings
 
     companion object {
@@ -112,11 +112,11 @@ abstract class BaseApp : MultiDexApplication() {
     }
 
     fun isConnectedToNetwork(): Boolean {
-        return isConnectedToNetwork.get() ?: false
+        return isConnectedToNetwork.get() == true
     }
 
     fun isConnectedToInternet(): Boolean {
-        val connected = isConnectedToInternet.get() ?: false
+        val connected = isConnectedToInternet.get() == true
         if (!connected) checkInternetConnectivity()
         return connected
     }

@@ -7,6 +7,9 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorHttp
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
@@ -24,6 +27,7 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     val error = MutableLiveData<Pair<ErrorType, ErrorHttp?>>()
 
     val networkError = SingleLiveEvent<Boolean>()
+    var networkCheckDelay: Long = 1500
     private val requestQueue = LinkedList<SimpleRequest>()
     private val application: BaseApp by lazy {
         if (app !is BaseApp)
@@ -98,11 +102,16 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     protected fun safeRequest(simpleRequest: SimpleRequest) {
-        if (application.isConnectedToInternet()) {
-            simpleRequest.onExecute()
-        } else {
-            requestQueue.add(simpleRequest)
-            networkError.postValue(true)
+        GlobalScope.launch {
+            if (!application.isConnectedToInternet()) // wait for network check
+                delay(networkCheckDelay)
+
+            if (application.isConnectedToInternet()) {
+                simpleRequest.onExecute()
+            } else {
+                requestQueue.add(simpleRequest)
+                networkError.postValue(true)
+            }
         }
     }
 
