@@ -7,9 +7,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorHttp
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
@@ -107,7 +105,7 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
                 delay(networkCheckDelay)
 
             if (application.isConnectedToInternet()) {
-                simpleRequest.onExecute()
+                withContext(Dispatchers.Main) { simpleRequest.onExecute() }
             } else {
                 requestQueue.add(simpleRequest)
                 networkError.postValue(true)
