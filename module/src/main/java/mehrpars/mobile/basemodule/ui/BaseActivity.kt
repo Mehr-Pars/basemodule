@@ -32,12 +32,34 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
         super.onCreate(savedInstanceState)
 
         initViewModel()
+
         handleIntent(intent)
+
         initBinding()
+
+        initAdapter()
+
         initViews()
 
         observeViewModelChange(viewModel)
     }
+
+    override fun onStart() {
+        super.onStart()
+        if (Countly.sharedInstance().isInitialized) // set countly onStart for accurate application session tracking.
+            Countly.sharedInstance().onStart(this)
+    }
+
+    override fun onStop() {
+        if (Countly.sharedInstance().isInitialized) // set countly onStop for accurate application session tracking.
+            Countly.sharedInstance().onStop()
+        super.onStop()
+    }
+    
+    /**
+     * initialize your viewModel in here
+     */
+    protected abstract fun initViewModel()
 
     /**
      * get your passed intent here
@@ -56,9 +78,9 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
     protected abstract fun initBinding()
 
     /**
-     * initialize your viewModel in here
+     * initialize your adapter(s) here then assign to a recycler or viewpager
      */
-    protected abstract fun initViewModel()
+    protected open fun initAdapter() {}
 
     /**
      * initialize your views in here
@@ -110,18 +132,6 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
 
             dialog.show()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (Countly.sharedInstance().isInitialized) // set countly onStart for accurate application session tracking.
-            Countly.sharedInstance().onStart(this)
-    }
-
-    override fun onStop() {
-        if (Countly.sharedInstance().isInitialized) // set countly onStop for accurate application session tracking.
-            Countly.sharedInstance().onStop()
-        super.onStop()
     }
 
 }

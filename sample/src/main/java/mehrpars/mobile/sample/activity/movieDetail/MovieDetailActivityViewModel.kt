@@ -22,9 +22,10 @@ class MovieDetailActivityViewModel(application: Application) : BaseViewModel(app
 
     override fun handleIntent(intent: Intent) {
         movieId = intent.getStringExtra("id") ?: "1"
+        getMovieDetail()
     }
 
-    fun getMovieDetail() {
+    private fun getMovieDetail() {
         compositeDisposable.add(
             model.getMovieDetail(movieId)
                 .map {

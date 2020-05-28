@@ -24,17 +24,16 @@ class TargetActivity : BaseActivity<TargetViewModel>() {
         viewModel = ViewModelProviders.of(this).get(TargetViewModel::class.java)
     }
 
+    override fun initAdapter() {
+        adapter = MyAdapter(this).apply {
+            setNewData(makeAdapterData())
+        }
+    }
+
     override fun initViews() {
         recyclerTarget.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        initAdapter()
-    }
-
-    private fun initAdapter() {
-        adapter = MyAdapter(this).apply {
-            setNewData(makeAdapterData())
-        }
         viewModel?.adapter = adapter
     }
 

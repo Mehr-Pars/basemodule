@@ -1,5 +1,6 @@
 package mehrpars.mobile.sample
 
+import androidx.appcompat.app.AppCompatDelegate
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.data.network.retrofit.RetrofitUtil
 
@@ -10,6 +11,7 @@ class App : BaseApp() {
 
         RetrofitUtil.init(this, "http://moviesapi.ir/", "authToken", true)
 
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
 
     override fun getCountlyServerUrl(): String? {

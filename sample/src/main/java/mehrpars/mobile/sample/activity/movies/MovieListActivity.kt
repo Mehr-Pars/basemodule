@@ -38,15 +38,8 @@ class MovieListActivity : BaseActivity<MovieListActivityViewModel>(),
 
     }
 
-    override fun initViews() {
-        recyclerviewMovieList.layoutManager = GridLayoutManager(this, 2)
-        empty_view = View.inflate(this, R.layout.empty_view, null)
+    override fun initAdapter() {
         loading_view = View.inflate(this, R.layout.loading_view, null)
-        load_more_view = View.inflate(this, R.layout.load_more_view, null)
-        initAdapter()
-    }
-
-    private fun initAdapter() {
         adapter = AdapterMovieList2().apply {
             setEnableLoadMore(true)
             emptyView = loading_view
@@ -63,6 +56,12 @@ class MovieListActivity : BaseActivity<MovieListActivityViewModel>(),
             }
             setLoadMoreView(CustomLoadMoreView())
         }
+    }
+
+    override fun initViews() {
+        recyclerviewMovieList.layoutManager = GridLayoutManager(this, 2)
+        empty_view = View.inflate(this, R.layout.empty_view, null)
+        load_more_view = View.inflate(this, R.layout.load_more_view, null)
         recyclerviewMovieList.adapter = adapter
     }
 

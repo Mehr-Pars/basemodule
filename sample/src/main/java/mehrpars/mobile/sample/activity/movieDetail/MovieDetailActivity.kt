@@ -19,7 +19,6 @@ class MovieDetailActivity : BaseActivity<MovieDetailActivityViewModel>() {
 
     override fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(MovieDetailActivityViewModel::class.java)
-        viewModel?.getMovieDetail()
     }
 
     override fun initViews() {

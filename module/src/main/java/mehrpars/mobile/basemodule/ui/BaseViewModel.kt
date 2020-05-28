@@ -19,11 +19,9 @@ import java.util.*
 
 
 abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
-
     protected val compositeDisposable = CompositeDisposable()
     protected val context by lazy { application }
     val error = MutableLiveData<Pair<ErrorType, ErrorHttp?>>()
-
     val networkError = SingleLiveEvent<Boolean>()
     var networkCheckDelay: Long = 1500
     private val requestQueue = LinkedList<SimpleRequest>()

@@ -20,38 +20,29 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
     protected var viewModel: VM? = null
     private var networkErrorDialogShown = false
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
         initViewModel()
+
         arguments?.let { handleArguments(it) }
-        initLayoutView()
-        observeViewModelChange(viewModel)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-
         return initViewAndBinding(inflater, container)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
+        initAdapter()
 
+        initLayoutView()
+
+        observeViewModelChange(viewModel)
     }
-
-    /**
-     * Inflate view in function
-     *
-     * make binding object of your class then
-     * initialize binding in here
-     *
-     * dont forget to add binding in your xml layout
-     */
-    protected abstract fun initViewAndBinding(inflater: LayoutInflater, container: ViewGroup?): View
 
     /**
      * initialize your viewModel in here
@@ -67,13 +58,28 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
     }
 
     /**
+     * Inflate view in function
+     *
+     * make binding object of your class then
+     * initialize binding in here
+     *
+     * dont forget to add binding in your xml layout
+     */
+    protected abstract fun initViewAndBinding(inflater: LayoutInflater, container: ViewGroup?): View
+
+    /**
+     * initialize your adapter(s) here then assign to a recycler or viewpager
+     */
+    protected open fun initAdapter() {}
+
+    /**
      * If you want init view set in this function
      */
     protected abstract fun initLayoutView()
 
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
-        viewModel?.error?.observe(this, Observer {
+        viewModel?.error?.observe(viewLifecycleOwner, Observer {
             Log.v("masood", "BaseFragment error: " + it?.second?.message)
             if (it?.first == ErrorType.HTTP_ERROR)
                 it.second?.let { errorHttp ->
@@ -84,7 +90,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
             }
         })
 
-        viewModel?.networkError?.observe(this, Observer { hasError ->
+        viewModel?.networkError?.observe(viewLifecycleOwner, Observer { hasError ->
             if (hasError)
                 showNetworkErrorDialog()
         })

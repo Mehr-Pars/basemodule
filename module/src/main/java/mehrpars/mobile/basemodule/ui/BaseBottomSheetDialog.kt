@@ -1,65 +1,93 @@
 package mehrpars.mobile.basemodule.ui
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
+import androidx.annotation.CallSuper
 import androidx.lifecycle.Observer
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
 
 
 abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFragment() {
-
     var viewModel: VM? = null
+    private var networkErrorDialogShown = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setStyle(STYLE_NORMAL, R.style.BottomSheetDialogTheme)
+
+        initViewModel()
+
+        arguments?.let { handleArguments(it) }
+    }
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        initViewModel()
-        arguments?.let { handleArguments(it) }
         return initViewAndBinding(inflater, container)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        view.viewTreeObserver.addOnGlobalLayoutListener {
+//
+//            val d = dialog as BottomSheetDialog
+//            val bottomSheetInternal = d.findViewById<View>(R.id.design_bottom_sheet)
+//            val behavior = BottomSheetBehavior.from(bottomSheetInternal!!)
+//            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+//            behavior.skipCollapsed = false
+//
+//            bottomSheetInternal.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+//            bottomSheetInternal.minimumHeight = context!!.resources.displayMetrics.heightPixels
+//
+//            behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+//                override fun onStateChanged(bottomSheet: View, newState: Int) {
+//                    if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+//                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+//                    }
+//                }
+//
+//                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                }
+//            })
+//        }
+    }
 
-        initLayoutView()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         initAdapter()
 
+        initLayoutView()
+
         observeViewModelChange(viewModel)
-
-        view.viewTreeObserver.addOnGlobalLayoutListener {
-
-            val d = dialog as BottomSheetDialog
-            val bottomSheetInternal = d.findViewById<View>(R.id.design_bottom_sheet)
-            val behavior = BottomSheetBehavior.from(bottomSheetInternal!!)
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            behavior.skipCollapsed = false
-
-            bottomSheetInternal.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-            bottomSheetInternal.minimumHeight = context!!.resources.displayMetrics.heightPixels
-
-            behavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                }
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                }
-            })
-        }
     }
+
+    /**
+     * initialize your viewModel in here
+     */
+    protected abstract fun initViewModel()
+
+
+    /**
+     * get your arguments here
+     */
+    private fun handleArguments(arguments: Bundle) {
+        viewModel?.handleArguments(arguments)
+    }
+
 
     /**
      * Inflate view in function
@@ -76,33 +104,19 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFra
 
 
     /**
-     * get your arguments here
+     * initialize your adapter(s) here then assign to a recycler or viewpager
      */
-    private fun handleArguments(arguments: Bundle) {
-        viewModel?.handleArguments(arguments)
-    }
-
-
-    /**
-     * initialize your viewModel in here
-     */
-    protected abstract fun initViewModel()
-
+    protected open fun initAdapter() {}
 
     /**
      * If you want init view set in this function
      */
     protected abstract fun initLayoutView()
 
-    /**
-     * initialize your adapter(s) here then assign to a recycler or viewpager
-     */
-    protected abstract fun initAdapter()
 
-
+    @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
-
-        viewModel?.error?.observe(this, Observer {
+        viewModel?.error?.observe(viewLifecycleOwner, Observer {
             Log.v("masood", "BaseFragment error: " + it?.second?.message)
             if (it?.first == ErrorType.HTTP_ERROR)
                 it.second?.let { errorHttp ->
@@ -112,7 +126,37 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?> : BottomSheetDialogFra
 //                showErrorDialog(it!!.first, null)
             }
         })
+
+        viewModel?.networkError?.observe(viewLifecycleOwner, Observer { hasError ->
+            if (hasError)
+                showNetworkErrorDialog()
+        })
     }
 
+    private fun showNetworkErrorDialog() {
+        if (!networkErrorDialogShown && context != null) {
+            networkErrorDialogShown = true
+
+            val dialog = Dialog(requireContext())
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.setCancelable(false)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setContentView(R.layout.dialog_network_error)
+
+            dialog.findViewById<TextView>(R.id.cancel).setOnClickListener {
+                networkErrorDialogShown = false
+                viewModel?.cancelRequestQueue()
+                dialog.dismiss()
+            }
+            dialog.findViewById<TextView>(R.id.retry).setOnClickListener {
+                networkErrorDialogShown = false
+                viewModel?.retryOnRequestQueue()
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+    }
 
 }

@@ -38,18 +38,12 @@ class MovieListWithLike : BaseActivity<MovieListWithLikeViewModel>(),
     override fun initViewModel() {
         viewModel = ViewModelProviders.of(this).get(MovieListWithLikeViewModel::class.java)
         empty_view = View.inflate(this, R.layout.empty_view, null)
-        loading_view = View.inflate(this, R.layout.loading_view, null)
         load_more_view = View.inflate(this, R.layout.load_more_view, null)
 
     }
 
-    override fun initViews() {
-        recyclerViewMovieListWithLink.layoutManager = GridLayoutManager(this, 2)
-        likedList = mutableListOf()
-        initAdapter()
-    }
-
-    private fun initAdapter() {
+    override fun initAdapter() {
+        loading_view = View.inflate(this, R.layout.loading_view, null)
         adapter = AdapterMovieListWithLike().apply {
             setEnableLoadMore(true)
             emptyView = loading_view
@@ -69,6 +63,11 @@ class MovieListWithLike : BaseActivity<MovieListWithLikeViewModel>(),
             }
             setLoadMoreView(CustomLoadMoreView())
         }
+    }
+
+    override fun initViews() {
+        recyclerViewMovieListWithLink.layoutManager = GridLayoutManager(this, 2)
+        likedList = mutableListOf()
         recyclerViewMovieListWithLink.adapter = adapter
     }
 
