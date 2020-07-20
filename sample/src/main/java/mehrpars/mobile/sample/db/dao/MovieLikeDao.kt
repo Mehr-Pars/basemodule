@@ -1,7 +1,7 @@
 package mehrpars.mobile.sample.db.dao
 
 import androidx.room.*
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import mehrpars.mobile.sample.db.model.MovieLikeModelDB
 
 @Dao

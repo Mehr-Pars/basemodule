@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.Intent
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.observers.DisposableObserver
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.observers.DisposableObserver
 import mehrpars.mobile.basemodule.ui.BaseViewModel
 import mehrpars.mobile.sample.api.MovieDetailModel
 import mehrpars.mobile.sample.getRateInPersian

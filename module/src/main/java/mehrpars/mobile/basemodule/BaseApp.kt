@@ -33,7 +33,7 @@ abstract class BaseApp : MultiDexApplication() {
         initCountly()
         initNetworkCheckUrl()
 
-        checkNetworkConnectivity()
+//        checkNetworkConnectivity()
     }
 
     /**
@@ -69,13 +69,15 @@ abstract class BaseApp : MultiDexApplication() {
     abstract fun getNetworkCheckUrl(): String?
 
     open fun initNetworkCheckUrl() {
+        isConnectedToNetwork.set(false)
+        isConnectedToInternet.set(false)
         getNetworkCheckUrl()?.let { networkCheckUrl ->
             settings = InternetObservingSettings.builder()
                 .host(networkCheckUrl)
                 .strategy(SocketInternetObservingStrategy())
                 .build()
 
-            checkInternetConnectivity()
+            checkNetworkConnectivity()
         }
     }
 

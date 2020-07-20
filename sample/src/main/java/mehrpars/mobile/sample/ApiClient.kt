@@ -1,6 +1,6 @@
 package mehrpars.mobile.sample
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import mehrpars.mobile.sample.api.MovieDetailModel
 import mehrpars.mobile.sample.api.MovieListModel
 import retrofit2.http.GET
@@ -9,7 +9,6 @@ import retrofit2.http.Query
 
 
 interface ApiClient {
-
 
     @GET("/api/v1/movies?")
     fun getMovieList(

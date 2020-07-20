@@ -1,8 +1,8 @@
 package mehrpars.mobile.sample.activity.movies
 
 import android.content.Context
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import mehrpars.mobile.basemodule.data.network.retrofit.RetrofitUtil
 import mehrpars.mobile.basemodule.ui.BaseModel
 import mehrpars.mobile.sample.ApiClient
