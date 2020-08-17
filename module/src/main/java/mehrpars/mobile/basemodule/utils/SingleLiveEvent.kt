@@ -1,5 +1,10 @@
 package mehrpars.mobile.basemodule.utils
 
+/**
+* SingleLiveEvent to help you work with LiveData and events
+* https://proandroiddev.com/singleliveevent-to-help-you-work-with-livedata-and-events-5ac519989c70
+* */
+
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer

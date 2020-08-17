@@ -1,28 +1,25 @@
 package mehrpars.mobile.sample
 
-import androidx.appcompat.app.AppCompatDelegate
 import mehrpars.mobile.basemodule.BaseApp
-import mehrpars.mobile.basemodule.data.network.retrofit.RetrofitUtil
+import mehrpars.mobile.sample.data.network.RetrofitConfig
+
 
 class App : BaseApp() {
+    override fun getCountlyApiKey(): String? {
+        return AppConfig.countlyApiKey
+    }
+
+    override fun getCountlyServerUrl(): String? {
+        return AppConfig.countlyServerUrl
+    }
+
+    override fun getNetworkCheckUrl(): String? {
+        return AppConfig.networkCheckUrl
+    }
 
     override fun onCreate() {
         super.onCreate()
 
-        RetrofitUtil.init(this, "http://moviesapi.ir/", "authToken", true)
-
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-    }
-
-    override fun getCountlyServerUrl(): String? {
-        return "http://5.63.8.226"
-    }
-
-    override fun getCountlyApiKey(): String? {
-        return "your_api_key"
-    }
-
-    override fun getNetworkCheckUrl(): String? {
-        return "moviesapi.ir"
+        RetrofitConfig.init(this)
     }
 }

@@ -37,25 +37,23 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    // todo using this version for lower android API support (remove after upgrading min support to api 21+)
+    configurations.all {
+        resolutionStrategy.force "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+        resolutionStrategy.force "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    }
 }
 
 dependencies {
     implementation project(':module')
 //    implementation project.libraryGroup + ':' + project.libraryName + ':' + project.versionName
 
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation "junit:junit:$junitVersion"
-    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
-    implementation "androidx.recyclerview:recyclerview:$supportVersion"
-    implementation "com.google.android.material:material:$supportVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$testEspresso"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "androidx.appcompat:appcompat:$supportVersion"
-    implementation "androidx.core:core-ktx:$coreVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
-    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
-    implementation "androidx.room:room-rxjava2:$roomVersion"
-    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'
 }

@@ -3,27 +3,19 @@ package mehrpars.mobile.basemodule.ui
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 import mehrpars.mobile.basemodule.BaseApp
-import mehrpars.mobile.basemodule.data.network.retrofit.ErrorHttp
-import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
-import mehrpars.mobile.basemodule.data.network.retrofit.ErrorUtil
-import mehrpars.mobile.basemodule.utils.SingleLiveEvent
-import retrofit2.HttpException
-import retrofit2.Response
 import java.util.*
 
 
 abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     protected val compositeDisposable = CompositeDisposable()
     protected val context by lazy { application }
-    val error = MutableLiveData<Pair<ErrorType, ErrorHttp?>>()
-    val networkError = SingleLiveEvent<Boolean>()
-    var networkCheckDelay: Long = 1500
+    private val networkCheckDelay: Long = 1500
+    val error = MutableLiveData<Error>()
     private val requestQueue = LinkedList<SimpleRequest>()
     private val application: BaseApp by lazy {
         if (app !is BaseApp)
@@ -52,35 +44,6 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
      */
     open fun handleIntent(intent: Intent) {}
 
-    fun handleError(e: Throwable) {
-        Log.v("masood", "error : " + e.message)
-        if (e is HttpException && e.response() != null) {
-            error.value = Pair(ErrorType.HTTP_ERROR, errorHandle(e.response()!!))
-        } else {
-            error.value = Pair(ErrorType.OTHER_ERROR, null)
-        }
-    }
-
-    fun <T> errorHandle(response: Response<T>): ErrorHttp {
-        val error = try {
-            if (response.errorBody() != null) {
-                val e = ErrorUtil.parseError(response)
-                when (e.message) {
-                    "player not found" -> {
-                        e.message = "اطلاعات یافت نشد"
-                    }
-                }
-                ErrorHttp(e.statusCode, e.message)
-            } else {
-                ErrorHttp(500, "خطای غیر منتظره!")
-            }
-        } catch (e: Exception) {
-            ErrorHttp(500, "مشکلی در ارتباط با سرور وجود دارد")
-        }
-        // Timber.d(error.message)
-        return error
-    }
-
     protected fun safeRequest(onExecuteAction: () -> Unit) {
         safeRequest(onExecuteAction, null)
     }
@@ -106,7 +69,7 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
                 withContext(Dispatchers.Main) { simpleRequest.onExecute() }
             } else {
                 requestQueue.add(simpleRequest)
-                networkError.postValue(true)
+                error.postValue(Error(ErrorType.CONNECTION_ERROR))
             }
         }
     }
@@ -137,4 +100,14 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
 
         open fun onCancel() {}
     }
+
+    enum class ErrorType {
+        DEFAULT, NETWORK_ERROR, CONNECTION_ERROR
+    }
+
+    data class Error(
+        val type: ErrorType = ErrorType.DEFAULT,
+        var errorMessage: String? = "",
+        var rawError: Throwable? = null
+    )
 }

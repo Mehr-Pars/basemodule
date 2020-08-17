@@ -4,17 +4,14 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import mehrpars.mobile.basemodule.R
-import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
 
 abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
     protected var viewModel: VM? = null
@@ -63,7 +60,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
      * make binding object of your class then
      * initialize binding in here
      *
-     * dont forget to add binding in your xml layout
+     * do not forget to add binding in your xml layout
      */
     protected abstract fun initViewAndBinding(inflater: LayoutInflater, container: ViewGroup?): View
 
@@ -77,23 +74,24 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
      */
     protected abstract fun initLayoutView()
 
+    /**
+     *  observe your viewModel's liveData here
+     */
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
         viewModel?.error?.observe(viewLifecycleOwner, Observer {
-            Log.v("masood", "BaseFragment error: " + it?.second?.message)
-            if (it?.first == ErrorType.HTTP_ERROR)
-                it.second?.let { errorHttp ->
-                    //                    showErrorDialog(it.first, errorHttp)
-                }
-            else {
-//                showErrorDialog(it!!.first, null)
-            }
+            handleError(it)
         })
+    }
 
-        viewModel?.networkError?.observe(viewLifecycleOwner, Observer { hasError ->
-            if (hasError)
-                showNetworkErrorDialog()
-        })
+    /**
+     *  handle errors passed from ViewModel (ie, network errors etc)
+     */
+    @CallSuper
+    open fun handleError(error: BaseViewModel.Error) {
+        if (error.type == BaseViewModel.ErrorType.CONNECTION_ERROR) {
+            showNetworkErrorDialog()
+        }
     }
 
     private fun showNetworkErrorDialog() {
@@ -107,12 +105,12 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.setContentView(R.layout.dialog_network_error)
 
-            dialog.findViewById<TextView>(R.id.cancel).setOnClickListener {
+            dialog.findViewById<View>(R.id.cancel).setOnClickListener {
                 networkErrorDialogShown = false
                 viewModel?.cancelRequestQueue()
                 dialog.dismiss()
             }
-            dialog.findViewById<TextView>(R.id.retry).setOnClickListener {
+            dialog.findViewById<View>(R.id.retry).setOnClickListener {
                 networkErrorDialogShown = false
                 viewModel?.retryOnRequestQueue()
                 dialog.dismiss()

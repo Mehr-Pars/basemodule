@@ -60,24 +60,38 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$testEspresso"
     implementation "com.google.android.gms:play-services-auth:$playServicesVersion"
+    implementation "com.android.support:multidex:$multidexVersion"
     api "androidx.core:core-ktx:$coreVersion"
+    api "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshVersion"
+    api "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    api "androidx.appcompat:appcompat:$supportVersion"
     api "com.google.android.material:material:$supportVersion"
-    api "com.android.support:multidex:$multidexVersion"
+
+    // lifecycle components
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     api "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
+    //dataBinding
+    kapt "com.android.databinding:compiler:$dataBindingSupport"
+
+    // paging library
+    api "androidx.paging:paging-runtime-ktx:$pagingVersion"
+//    implementation "androidx.paging:paging-rxjava2-ktx:$pagingVersion"
+
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
 
     // room
     kapt "androidx.room:room-compiler:$roomVersion"
-    implementation "androidx.room:room-runtime:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
+//    api "androidx.room:room-rxjava3:$roomVersion"
+    api "androidx.room:room-runtime:$roomVersion"
+    api "androidx.room:room-ktx:$roomVersion"
 
     // navigation component
-    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    api "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     // Rx
     api "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
@@ -85,10 +99,11 @@ dependencies {
 
     // Network
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    api "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
     api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    api "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
-    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$retrofitAdapterVersion" // RxJava3 Adapter for retrofit
+//    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$retrofitAdapterVersion"
+    // RxJava3 Adapter for retrofit
 
     // reactive network check
     implementation "com.github.pwittchen:reactivenetwork-rx2:$reactiveNetworkVersion"
@@ -96,9 +111,6 @@ dependencies {
     //imageLoader
     api "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
-
-    //dataBinding
-    kapt "com.android.databinding:compiler:3.2.0-alpha10"
 
     // countly log service
     implementation "ly.count.android:sdk:$countlyVersion"

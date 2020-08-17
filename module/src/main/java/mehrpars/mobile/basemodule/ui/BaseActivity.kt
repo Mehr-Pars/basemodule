@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import ly.count.android.sdk.Countly
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.R
-import mehrpars.mobile.basemodule.data.network.retrofit.ErrorType
 import mehrpars.mobile.basemodule.utils.LocaleUtils
 
 abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), LifecycleOwner {
@@ -55,7 +54,7 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
             Countly.sharedInstance().onStop()
         super.onStop()
     }
-    
+
     /**
      * initialize your viewModel in here
      */
@@ -93,19 +92,18 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
         viewModel?.error?.observe(this, Observer {
-            // showErrorDialog(it)
-            if (it?.first == ErrorType.HTTP_ERROR)
-                it.second?.let { errorHttp ->
-                    //                    showErrorDialog(it.first, errorHttp)
-                }
-            else {
-//                showErrorDialog(it!!.first, null)
-            }
+            handleError(it)
         })
+    }
 
-        viewModel?.networkError?.observe(this, Observer { hasError ->
-            if (hasError) showNetworkErrorDialog()
-        })
+    /**
+     *  handle errors passed from ViewModel (ie, network errors etc)
+     */
+    @CallSuper
+    open fun handleError(error: BaseViewModel.Error) {
+        if (error.type == BaseViewModel.ErrorType.CONNECTION_ERROR) {
+            showNetworkErrorDialog()
+        }
     }
 
     private fun showNetworkErrorDialog() {
