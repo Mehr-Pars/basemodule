@@ -1,3 +1,22 @@
 <resources>
     <dimen name="action_bar_height">70.0dp</dimen>
+    <dimen name="dialog_width">420.0dp</dimen>
+    <dimen name="dialog_image_height">140.0dp</dimen>
+    <dimen name="button_height_35">49.0dp</dimen>
+    <dimen name="button_height_40">56.0dp</dimen>
+    <dimen name="button_width_100">140.0dp</dimen>
+    <dimen name="loading_size">35.0dp</dimen>
+    <dimen name="empty_box_size">126.0dp</dimen>
+
+    <dimen name="margin_5">7.0dp</dimen>
+    <dimen name="margin_7">7.0dp</dimen>
+    <dimen name="margin_10">14.0dp</dimen>
+    <dimen name="margin_20">28.0dp</dimen>
+    <dimen name="margin_30">42.0dp</dimen>
+
+    <dimen name="radius_20">28.0dp</dimen>
+    <dimen name="text_size_10">14.0sp</dimen>
+    <dimen name="text_size_12">16.8sp</dimen>
+    <dimen name="text_size_13">18.2sp</dimen>
+    <dimen name="text_size_15">21.0sp</dimen>
 </resources>

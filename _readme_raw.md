@@ -66,6 +66,12 @@ These concept are covered in sample app:
 1.  Paging Component: using paging tools loading paged list from server. supporting both offline and online loading simultaneously.
 2.  Room: load and cache data based on ssot pattern
  
+<br>
+<p align="center">
+  <img src="https://mgit.mparsict.com/android/base/project-sample/raw/master/screenshots/screenshot_1.png" width="250"/>
+  <img src="https://mgit.mparsict.com/android/base/project-sample/raw/master/screenshots/screenshot_2.png" width="250"/>
+</p>
+<br>
  
  
 ### <a name="wiki">Wiki</a>
