@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/movie_list">
+
+    <fragment
+        android:id="@+id/home_page"
+        android:name="mehrpars.mobile.sample.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/movie_list"
+        android:name="mehrpars.mobile.sample.ui.paging_sample.MovieListFragment"
+        android:label="@string/menu_paging_sample">
+
+        <action
+            android:id="@+id/action_movie_to_detail"
+            app:destination="@id/movie_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/movie_detail"
+        android:name="mehrpars.mobile.sample.ui.offline_load_sample.MovieDetailFragment"
+        android:label="@string/menu_offline_loading"
+        tools:layout="@layout/fragment_movie_detail">
+
+        <argument
+            android:name="movieId"
+            app:argType="string" />
+    </fragment>
+</navigation>

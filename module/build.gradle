@@ -8,6 +8,8 @@ apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 def libraryGroupId = project.libraryGroup
 def libraryArtifactId = project.libraryName
 def libraryVersion = project.versionName
@@ -15,10 +17,10 @@ def libraryVersion = project.versionName
 android {
     signingConfigs {
         release {
-            storeFile file('C:\\mehrpars.jks')
-            storePassword 'mehrpars2019'
-            keyAlias = 'Mehr Pars'
-            keyPassword 'mehrpars2019'
+            storeFile file(project.mpars_sign_key_dir)
+            storePassword project.mpars_sign_key_password
+            keyAlias = project.mpars_sign_key_alias
+            keyPassword project.mpars_sign_key_password
         }
     }
 
@@ -55,13 +57,66 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$testEspresso"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    implementation "com.google.android.gms:play-services-auth:$playServicesVersion"
+    implementation "com.android.support:multidex:$multidexVersion"
+    api "androidx.core:core-ktx:$coreVersion"
+    api "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshVersion"
+    api "androidx.recyclerview:recyclerview:$recyclerViewVersion"
     api "androidx.appcompat:appcompat:$supportVersion"
-    implementation "androidx.core:core-ktx:$coreVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
+    api "com.google.android.material:material:$supportVersion"
+
+    // lifecycle components
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    api "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+
+    //dataBinding
+    kapt "com.android.databinding:compiler:$dataBindingSupport"
+
+    // paging library
+    api "androidx.paging:paging-runtime-ktx:$pagingVersion"
+//    implementation "androidx.paging:paging-rxjava2-ktx:$pagingVersion"
+
+    // Kotlin
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
+
+    // room
+    kapt "androidx.room:room-compiler:$roomVersion"
+//    api "androidx.room:room-rxjava3:$roomVersion"
+    api "androidx.room:room-runtime:$roomVersion"
+    api "androidx.room:room-ktx:$roomVersion"
+
+    // navigation component
+    api "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    api "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+
+    // Rx
+    api "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    api "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+
+    // Network
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+    api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+//    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$retrofitAdapterVersion"
+    // RxJava3 Adapter for retrofit
+
+    // reactive network check
+    implementation "com.github.pwittchen:reactivenetwork-rx2:$reactiveNetworkVersion"
+
+    //imageLoader
+    api "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
+    // countly log service
+    implementation "ly.count.android:sdk:$countlyVersion"
 }
 
 publishing {

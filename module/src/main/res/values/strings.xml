@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="network_connection_error">خطا در اتصال به شبکه، لطفا دسترسی به اینترنت را بررسی کنید</string>
+    <string name="retry">سعی مجدد</string>
+    <string name="cancel">انصراف</string>
+    <string name="loading">در حال بارگزاری</string>
+    <string name="load_failed">خطا در بارگزاری</string>
+    <string name="empty_list_text">هیچ موردی یافت نشد</string>
+</resources>

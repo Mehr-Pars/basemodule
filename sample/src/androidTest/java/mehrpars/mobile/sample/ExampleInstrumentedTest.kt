@@ -1,6 +1,5 @@
 package mehrpars.mobile.sample
 
-import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -15,8 +14,6 @@ import org.junit.runner.RunWith
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.m2d.audioplayerholder", appContext.packageName)
+        assertEquals(4, 2 + 2)
     }
 }

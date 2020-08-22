@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     signingConfigs {
@@ -24,6 +26,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         signingConfig signingConfigs.release
+        dataBinding.enabled true
     }
     buildTypes {
         release {
@@ -36,16 +39,26 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    // todo using this version for lower android API support (remove after upgrading min support to api 21+)
+    configurations.all {
+        resolutionStrategy.force "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+        resolutionStrategy.force "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    }
 }
 
 dependencies {
-    // load library from repository
-//    implementation project.libraryGroup + ':' + project.libraryName + ':' + project.versionName
     implementation project(':module')
+//    implementation project.libraryGroup + ':' + project.libraryName + ':' + project.versionName
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation "junit:junit:$junitVersion"
-    implementation "androidx.core:core-ktx:$coreVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$testEspresso"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
+//    implementation "androidx.room:room-rxjava3:$roomVersion"
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }
