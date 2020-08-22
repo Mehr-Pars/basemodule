@@ -19,7 +19,7 @@ fun loadImage(view: ImageView, imageUrl: String?) {
             .load(AppConfig.getCompleteUrl(it))
             .apply(
                 RequestOptions.centerInsideTransform()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             )
             .into(view)
     }

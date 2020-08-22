@@ -1,4 +1,4 @@
-package mehrpars.mobile.sample.ui.ui.home
+package mehrpars.mobile.sample.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import mehrpars.mobile.basemodule.database.DataConverter
+import mehrpars.mobile.basemodule.data.database.DataConverter
 import mehrpars.mobile.sample.AppConfig
 import mehrpars.mobile.sample.data.database.dao.MovieDao
 import mehrpars.mobile.sample.data.model.entity.Movie

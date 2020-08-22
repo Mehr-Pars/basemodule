@@ -1,6 +1,6 @@
 package mehrpars.mobile.sample.data.network
 
-import mehrpars.mobile.basemodule.network.RetrofitConfig
+import mehrpars.mobile.basemodule.data.network.RetrofitConfig
 import mehrpars.mobile.sample.AppConfig
 
 object RetrofitConfig : RetrofitConfig() {

@@ -27,6 +27,10 @@ import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.databinding.NetworkStateItemBinding
 
 /**
+ * Created by Ali Arasteh
+ */
+
+/**
  * A View Holder that can display a loading or have click action.
  * It is used to show the network state of paging.
  */

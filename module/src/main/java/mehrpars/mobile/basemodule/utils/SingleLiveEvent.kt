@@ -1,17 +1,15 @@
 package mehrpars.mobile.basemodule.utils
 
 /**
-* SingleLiveEvent to help you work with LiveData and events
-* https://proandroiddev.com/singleliveevent-to-help-you-work-with-livedata-and-events-5ac519989c70
-* */
+ * SingleLiveEvent to help you work with LiveData and events
+ * https://proandroiddev.com/singleliveevent-to-help-you-work-with-livedata-and-events-5ac519989c70
+ * */
 
+import android.util.Log
+import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.annotation.MainThread
-import android.util.Log
-
-
 import java.util.concurrent.atomic.AtomicBoolean
 
 class SingleLiveEvent<T> : MutableLiveData<T>() {

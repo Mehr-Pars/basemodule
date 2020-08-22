@@ -1,6 +1,5 @@
 package mehrpars.mobile.basemodule.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, VM : BaseV
     lateinit var pagedListAdapter: BasePagedAdapter<T, B>
 
     override fun initViewAndBinding(inflater: LayoutInflater, container: ViewGroup?): View {
-        recyclerLayout = CustomRecyclerLayout(context!!)
+        recyclerLayout = CustomRecyclerLayout(requireContext())
         return recyclerLayout
     }
 

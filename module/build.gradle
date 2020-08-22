@@ -8,6 +8,8 @@ apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 def libraryGroupId = project.libraryGroup
 def libraryArtifactId = project.libraryName
 def libraryVersion = project.versionName
@@ -92,6 +94,7 @@ dependencies {
 
     // navigation component
     api "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    api "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
 
     // Rx
     api "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"

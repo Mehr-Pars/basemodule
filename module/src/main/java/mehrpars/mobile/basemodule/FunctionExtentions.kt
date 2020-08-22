@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.annotation.RequiresPermission
 import androidx.databinding.Observable
 import androidx.navigation.NavArgs
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
@@ -41,4 +43,9 @@ inline fun <reified Args : NavArgs> Bundle.getSafeArguments(): Args {
     val method: Method = Args::class.java.getMethod("fromBundle", Bundle::class.java)
 
     return method.invoke(null, this) as Args
+}
+
+fun NavController.safeNavigate(currentDestinationId: Int, directions: NavDirections) {
+    if (currentDestination?.id == currentDestinationId)
+        navigate(directions)
 }

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import mehrpars.mobile.sample.R
-import mehrpars.mobile.sample.ui.ui.home.HomeViewModel
 
 class HomeFragment : Fragment() {
 

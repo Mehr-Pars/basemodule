@@ -14,6 +14,8 @@ import java.util.*
 abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     protected val compositeDisposable = CompositeDisposable()
     protected val context by lazy { application }
+    protected var arguments: Bundle? = null
+    protected var passedIntent: Intent? = null
     private val networkCheckDelay: Long = 1500
     val error = MutableLiveData<Error>()
     private val requestQueue = LinkedList<SimpleRequest>()
@@ -37,12 +39,16 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     /**
      * handle passed arguments here
      */
-    open fun handleArguments(arguments: Bundle) {}
+    open fun handleArguments(arguments: Bundle) {
+        this.arguments = arguments
+    }
 
     /**
      * handle passed intent here
      */
-    open fun handleIntent(intent: Intent) {}
+    open fun handleIntent(intent: Intent) {
+        passedIntent = intent
+    }
 
     protected fun safeRequest(onExecuteAction: () -> Unit) {
         safeRequest(onExecuteAction, null)

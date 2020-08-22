@@ -1,4 +1,4 @@
-package mehrpars.mobile.basemodule.network
+package mehrpars.mobile.basemodule
 
 open class BaseConfig {
     open var countlyServerUrl = "http://5.63.8.226"
@@ -6,5 +6,5 @@ open class BaseConfig {
     open var apiUrl: String? = ""
     open var baseUrl: String? = ""
     open var networkCheckUrl: String? = "www.google.com"
-    open var dataBaseName : String = "AppDataBase"
+    open var dataBaseName: String = "AppDataBase"
 }

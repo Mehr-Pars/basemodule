@@ -10,14 +10,12 @@ data class Movie(
     @PrimaryKey
     @field:SerializedName("index")
     val id: String,
-    @field:SerializedName("title")
     val title: String,
-    @field:SerializedName("image")
-    val poster: String,
-    @field:SerializedName("year")
+    val image: String,
+    val poster: String?,
     val year: String,
-    @field:SerializedName("rate")
-    val rate: String
+    val rate: String,
+    val description: String?
 ) : Comparable {
 
     override fun objectEqualsTo(item: Comparable): Boolean {

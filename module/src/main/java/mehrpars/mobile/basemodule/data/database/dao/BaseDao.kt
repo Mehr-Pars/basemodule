@@ -1,9 +1,13 @@
-package mehrpars.mobile.basemodule.database.dao
+package mehrpars.mobile.basemodule.data.database.dao
 
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Update
+
+/**
+ * Created by Ali Arasteh
+ */
 
 interface BaseDao<T> {
 
@@ -12,7 +16,7 @@ interface BaseDao<T> {
      *
      * @param obj the object to be inserted.
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(obj: T)
 
     /**
@@ -20,7 +24,7 @@ interface BaseDao<T> {
      *
      * @param obj the objects to be inserted.
      */
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg obj: T)
 
     /**

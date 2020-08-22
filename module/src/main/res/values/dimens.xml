@@ -15,7 +15,8 @@
     <dimen name="margin_30">30dp</dimen>
 
     <dimen name="radius_20">20dp</dimen>
-    <dimen name="text_size_13">13sp</dimen>
-    <dimen name="text_size_12">12sp</dimen>
     <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
 </resources>

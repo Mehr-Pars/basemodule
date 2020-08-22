@@ -1,4 +1,4 @@
-package mehrpars.mobile.sample.ui.paging_sample
+package mehrpars.mobile.sample.ui.paging_sample.custom
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -28,9 +28,6 @@ class MovieListRemoteMediator(private val db: AppDatabase, private val apiClient
         try {
             when (loadType) {
                 REFRESH -> {
-//                    if (pageCount == -1) db.withTransaction {
-//                        pageCount = (movieDao.getMovieCount() / pageSize) + 1
-//                    }
                     pageCount = 1
                 }
                 PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
@@ -46,7 +43,7 @@ class MovieListRemoteMediator(private val db: AppDatabase, private val apiClient
                 if (loadType == REFRESH)
                     movieDao.deleteAll()
 
-                movieDao.insertAll(data.movieList)
+                movieDao.saveAll(data.movieList)
                 pageCount++
             }
 

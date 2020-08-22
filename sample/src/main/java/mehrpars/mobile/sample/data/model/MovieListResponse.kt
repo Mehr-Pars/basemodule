@@ -3,7 +3,7 @@ package mehrpars.mobile.sample.data.model
 import com.google.gson.annotations.SerializedName
 import mehrpars.mobile.sample.data.model.entity.Movie
 
-open class MovieResponse(
+open class MovieListResponse(
     @SerializedName("count")
     var count: Int,
     @SerializedName("current_page")

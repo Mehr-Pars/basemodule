@@ -6,6 +6,14 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.paging.PagingDataAdapter
 
+/**
+ * Created by Ali Arasteh
+ */
+
+/**
+ * Adapter for displaying a RecyclerView item based on [LoadState], such as a loading spinner, or
+ * a retry error button.
+ * */
 class DefaultLoadStateAdapter(private val adapter: PagingDataAdapter<*, *>) :
     LoadStateAdapter<NetworkStateItemViewHolder>() {
 

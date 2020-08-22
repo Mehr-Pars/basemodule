@@ -6,6 +6,9 @@ import android.os.Build
 import android.view.ContextThemeWrapper
 import java.util.*
 
+/**
+ * Locale utils for changing app default locale and configuration
+ * */
 object LocaleUtils {
 
     private var sLocale: Locale? = null

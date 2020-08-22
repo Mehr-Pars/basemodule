@@ -1,4 +1,4 @@
-package mehrpars.mobile.basemodule.network
+package mehrpars.mobile.basemodule.data.network
 
 import android.content.Context
 import android.os.Build
@@ -49,12 +49,11 @@ abstract class RetrofitConfig {
      * initialize OkHttpClient instance and setup configurations like connection timeout etc.
      * */
     open fun getRetrofitBuilder(): Retrofit.Builder {
-        val b = httpClient.build()
         return Retrofit.Builder()
             .baseUrl(getBaseUrl())
             .addCallAdapterFactory(getCallAdapterFactory())
             .addConverterFactory(getConverterFactory())
-            .client(b)
+            .client(httpClient.build())
     }
 
     /**
