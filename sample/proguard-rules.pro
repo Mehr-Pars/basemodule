@@ -21,3 +21,6 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class org.openudid.** { *; }
+-keep class mehrpars.mobile.basemodule.** {
+  public protected private *;
+}

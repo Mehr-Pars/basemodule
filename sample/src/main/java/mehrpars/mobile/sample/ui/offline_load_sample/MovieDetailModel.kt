@@ -11,6 +11,7 @@ import mehrpars.mobile.sample.data.model.entity.Movie
 import mehrpars.mobile.sample.data.network.ApiClient
 import mehrpars.mobile.sample.data.network.RetrofitConfig
 
+// todo: context must not be passed directly to model layer. use DI in real usage
 class MovieDetailModel(context: Context) {
     private val db: AppDatabase by lazy { AppDatabase.getInstance(context) }
     private val client: ApiClient by lazy { RetrofitConfig.createService(ApiClient::class.java) }

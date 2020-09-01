@@ -10,10 +10,10 @@ object AppConfig : BaseConfig() {
 
     init {
         // using mocking server
-//        apiUrl = "https://112e1af1-2948-4ea1-b328-cc794458237a.mock.pstmn.io/"
-//        networkCheckUrl = "112e1af1-2948-4ea1-b328-cc794458237a.mock.pstmn.io"
-        apiUrl = "https://mgit.mparsict.com/public-android/fakedata/-/raw/master/"
-        networkCheckUrl = "mgit.mparsict.com"
+        apiUrl = "https://e6614244-6bfe-4910-87d4-1679412909c4.mock.pstmn.io"
+        networkCheckUrl = "e6614244-6bfe-4910-87d4-1679412909c4.mock.pstmn.io"
+//        apiUrl = "https://mgit.mparsict.com/public-android/fakedata/-/raw/master/"
+//        networkCheckUrl = "mgit.mparsict.com"
         dataBaseName = "BaseModuleSample.sqlite"
     }
 

@@ -8,7 +8,6 @@ import com.google.android.gms.security.ProviderInstaller
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
-import mehrpars.mobile.basemodule.BuildConfig
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
@@ -31,6 +30,8 @@ abstract class RetrofitConfig {
     }
 
     abstract fun getBaseUrl(): String
+
+    abstract fun isLogEnabled(): Boolean
 
     /**
      * initialize Retrofit
@@ -93,8 +94,7 @@ abstract class RetrofitConfig {
      * initialize logger interceptor
      * */
     open fun getLogger(): Interceptor {
-        val debuggable = BuildConfig.DEBUG
-        return if (debuggable) HttpLoggingInterceptor().apply {
+        return if (isLogEnabled()) HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         } else HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.NONE

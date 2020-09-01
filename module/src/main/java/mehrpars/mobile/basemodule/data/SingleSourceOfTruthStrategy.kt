@@ -4,7 +4,6 @@ package mehrpars.mobile.basemodule.data
  * https://proandroiddev.com/android-architecture-starring-kotlin-coroutines-jetpack-mvvm-room-paging-retrofit-and-dagger-7749b2bae5f7
  * */
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
@@ -41,13 +40,13 @@ fun <T, A> resultLiveData(
     emitSource(localSource)
 
     // try loading data from network and handle possible network errors
-    val responseStatus = getResult { networkCall.invoke() }
-    if (responseStatus.status == Result.Status.SUCCESS) {
+    val response = getResult { networkCall.invoke() }
+    if (response.status == Result.Status.SUCCESS) {
         /* save data loaded from network into database. as we are using LiveData
            observers will be automatically triggered on database change */
-        saveCallResult(responseStatus.data!!)
-    } else if (responseStatus.status == Result.Status.ERROR) {
-        emit(Result.error<T>(responseStatus.message!!))
+        saveCallResult(response.data!!)
+    } else if (response.status == Result.Status.ERROR) {
+        emit(Result.error<T>(response.message, response.error))
 //            emitSource(source)
     }
 }
@@ -66,13 +65,12 @@ fun <T> resultLiveData(
     emit(Result.loading<T>())
 
     // try loading data from network and handle possible network errors
-    val responseStatus =
-        getResult { networkCall.invoke() }
-    if (responseStatus.status == Result.Status.SUCCESS) {
+    val response = getResult { networkCall.invoke() }
+    if (response.status == Result.Status.SUCCESS) {
         // emit data from network
-        emitSource(MutableLiveData(responseStatus))
-    } else if (responseStatus.status == Result.Status.ERROR) {
-        emit(Result.error<T>(responseStatus.message!!))
+        emitSource(MutableLiveData(response))
+    } else if (response.status == Result.Status.ERROR) {
+        emit(Result.error<T>(response.message, response.error))
     }
 }
 // endregion
@@ -102,7 +100,7 @@ fun <T : Any, A> resultPager(
         private var reachedEnd = false
 
         override suspend fun load(loadType: LoadType, state: PagingState<Int, T>): MediatorResult {
-            try {
+            return try {
                 when (loadType) {
                     LoadType.REFRESH -> {
                         pageCount = 1
@@ -126,11 +124,13 @@ fun <T : Any, A> resultPager(
                 // check if reached last page
                 reachedEnd = reachedEndStrategy.invoke(response, pageCount)
 
-                return MediatorResult.Success(endOfPaginationReached = reachedEnd)
+                MediatorResult.Success(endOfPaginationReached = reachedEnd)
             } catch (e: IOException) {
-                return MediatorResult.Error(e)
+                MediatorResult.Error(e)
             } catch (e: HttpException) {
-                return MediatorResult.Error(e)
+                MediatorResult.Error(e)
+            } catch (e: Exception) {
+                MediatorResult.Error(e)
             }
         }
 
@@ -172,6 +172,8 @@ fun <T : Any, A> resultPager(
                 LoadResult.Error(e)
             } catch (e: HttpException) {
                 LoadResult.Error(e)
+            } catch (e: Exception) {
+                LoadResult.Error(e)
             }
         }
     }
@@ -186,16 +188,11 @@ suspend fun <T> getResult(call: suspend () -> Response<T>): Result<T> {
             val body = response.body()
             if (body != null) return Result.success(body)
         }
-        return error(" ${response.code()} ${response.message()}")
+        val message = " ${response.code()} ${response.message()}"
+        return Result.error("request failure: $message")
     } catch (e: Exception) {
-        return error(
-            e.message ?: e.toString()
-        )
+        val message = e.message ?: e.toString()
+        return Result.error("request failure: $message", e)
     }
-}
-
-fun <T> error(message: String): Result<T> {
-    Log.e("Error", message)
-    return Result.error("network call failure: $message")
 }
 // endregion

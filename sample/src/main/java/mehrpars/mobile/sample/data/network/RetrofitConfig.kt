@@ -4,6 +4,11 @@ import mehrpars.mobile.basemodule.data.network.RetrofitConfig
 import mehrpars.mobile.sample.AppConfig
 
 object RetrofitConfig : RetrofitConfig() {
+
+    override fun isLogEnabled(): Boolean {
+        return true
+    }
+
     override fun getBaseUrl(): String {
         return AppConfig.apiUrl!!
     }

@@ -11,6 +11,7 @@ import mehrpars.mobile.basemodule.ui.BaseFragment
 import mehrpars.mobile.sample.databinding.FragmentMovieDetailBinding
 
 class MovieDetailFragment : BaseFragment<MovieDetailViewModel>() {
+    private val TAG = "MovieDetailFragment"
     lateinit var binding: FragmentMovieDetailBinding
 
     override fun initViewModel() {
@@ -33,11 +34,11 @@ class MovieDetailFragment : BaseFragment<MovieDetailViewModel>() {
 
             when (result.status) {
                 Result.Status.LOADING -> {
-                    Log.i("test", "~~~~loading: $result")
+                    Log.i(TAG, "loading: $result")
                 }
 
                 Result.Status.SUCCESS -> {
-                    Log.i("test", "~~~~success: $result")
+                    Log.i(TAG, "success: $result")
                     result.data?.let { movieDetail ->
                         binding.movie = movieDetail
                     }
@@ -45,7 +46,7 @@ class MovieDetailFragment : BaseFragment<MovieDetailViewModel>() {
                 }
 
                 Result.Status.ERROR -> {
-                    Log.i("test", "~~~~fail: ${result.message}")
+                    Log.e(TAG, result.message)
                 }
             }
 

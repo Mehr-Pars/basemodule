@@ -2,21 +2,65 @@
     <dimen name="action_bar_height">70.0dp</dimen>
     <dimen name="dialog_width">420.0dp</dimen>
     <dimen name="dialog_image_height">140.0dp</dimen>
-    <dimen name="button_height_35">49.0dp</dimen>
-    <dimen name="button_height_40">56.0dp</dimen>
-    <dimen name="button_width_100">140.0dp</dimen>
     <dimen name="loading_size">35.0dp</dimen>
     <dimen name="empty_box_size">126.0dp</dimen>
 
+    <!-- Default screen margins -->
+    <dimen name="margin_3">4.2dp</dimen>
     <dimen name="margin_5">7.0dp</dimen>
-    <dimen name="margin_7">7.0dp</dimen>
+    <dimen name="margin_7">9.8dp</dimen>
     <dimen name="margin_10">14.0dp</dimen>
+    <dimen name="margin_15">21.0dp</dimen>
     <dimen name="margin_20">28.0dp</dimen>
     <dimen name="margin_30">42.0dp</dimen>
+    <dimen name="margin_40">56.0dp</dimen>
 
-    <dimen name="radius_20">28.0dp</dimen>
+    <!-- Default text sizes -->
+    <dimen name="text_size_8">11.2sp</dimen>
     <dimen name="text_size_10">14.0sp</dimen>
     <dimen name="text_size_12">16.8sp</dimen>
     <dimen name="text_size_13">18.2sp</dimen>
-    <dimen name="text_size_15">21.0sp</dimen>
+    <dimen name="text_size_15">21.7sp</dimen>
+    <dimen name="text_size_18">25.2sp</dimen>
+    <dimen name="text_size_20">28.0sp</dimen>
+    <dimen name="text_size_23">32.2sp</dimen>
+    <dimen name="text_size_27">37.8sp</dimen>
+
+    <!-- default radius -->
+    <dimen name="radius_3">4.2dp</dimen>
+    <dimen name="radius_7">9.8dp</dimen>
+    <dimen name="radius_15">21.0dp</dimen>
+    <dimen name="radius_20">28.0dp</dimen>
+    <dimen name="radius_50">70.0dp</dimen>
+
+    <!-- default icon sizes -->
+    <dimen name="icon_size_20">28.0dp</dimen>
+    <dimen name="icon_size_25">35.0dp</dimen>
+    <dimen name="icon_size_30">42.0dp</dimen>
+    <dimen name="icon_size_35">49.0dp</dimen>
+    <dimen name="icon_size_40">56.0dp</dimen>
+
+    <!-- default button sizes -->
+    <dimen name="button_width_80">112.0dp</dimen>
+    <dimen name="button_width_100">140.0dp</dimen>
+    <dimen name="button_width_120">168.0dp</dimen>
+    <dimen name="button_width_150">210.0dp</dimen>
+    <dimen name="button_width_280">392.0dp</dimen>
+    <dimen name="button_height_30">42.0dp</dimen>
+    <dimen name="button_height_35">49.0dp</dimen>
+    <dimen name="button_height_40">56.0dp</dimen>
+    <dimen name="button_height_45">63.0dp</dimen>
+    <dimen name="button_height_50">70.0dp</dimen>
+
+    <!-- bottom sheet sizes -->
+    <dimen name="bottom_sheet_anchor_height">4.2dp</dimen>
+    <dimen name="bottom_sheet_anchor_width">56.0dp</dimen>
+    <dimen name="bottom_sheet_min_height">238.0dp</dimen>
+    <dimen name="bottom_sheet_radius">42.0dp</dimen>
+
+    <dimen name="edit_text_height_37">51.8dp</dimen>
+    <dimen name="edit_text_height_40">56.0dp</dimen>
+    <dimen name="edit_text_height_45">63.0dp</dimen>
+    <dimen name="divider_width">1.0dp</dimen>
+    <dimen name="dialog_min_height">224.0dp</dimen>
 </resources>

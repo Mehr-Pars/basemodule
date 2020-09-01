@@ -14,6 +14,7 @@ import mehrpars.mobile.sample.data.network.RetrofitConfig
 import mehrpars.mobile.sample.ui.paging_sample.custom.MovieListPagingSource
 import mehrpars.mobile.sample.ui.paging_sample.custom.MovieListRemoteMediator
 
+// todo: context must not be passed directly to model layer. use DI in real usage
 class MovieListModel(context: Context) {
     private val db: AppDatabase by lazy { AppDatabase.getInstance(context) }
     private val client: ApiClient by lazy { RetrofitConfig.createService(ApiClient::class.java) }

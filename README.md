@@ -2,7 +2,8 @@ This module defines main architecture as well as Android components to be used i
 *  [Features](#features)
 *  [Installation](#install)
 *  [Setup Counly](#setup_countly)
-*  [Sample Application](sample)
+*  [Sample Application](#sample)
+*  [Third Party](#third_party)
 *  [Wiki](#wiki)
 
 
@@ -21,7 +22,7 @@ This module defines main architecture as well as Android components to be used i
 ### <a name="install">Installation</a> 
 Add to _build.gradle_ (app):
 ```groovy
-implementation 'mehrpars.mobile.lib:basemodule:2.0.0-alpha01'
+implementation 'mehrpars.mobile.lib:basemodule:2.0.0-alpha04'
 ```
 
 Add to _build.gradle_ (Project):
@@ -63,15 +64,22 @@ allprojects {
  
 ### <a name="sample">Sample Application</a>
 These concept are covered in sample app:
-1.  Paging Component: using paging tools loading paged list from server. supporting both offline and online loading simultaneously.
+1.  Paging Component: using paging tools in order to load paged list from server. supporting both offline and online loading simultaneously.
 2.  Room: load and cache data based on ssot pattern
  
 <br>
 <p align="center">
-  <img src="https://mgit.mparsict.com/android/base/project-sample/raw/master/screenshots/screenshot_1.png" width="250"/>
-  <img src="https://mgit.mparsict.com/android/base/project-sample/raw/master/screenshots/screenshot_2.png" width="250"/>
+  <img src="https://mgit.mparsict.com/android/libs/basemodule/-/raw/mehrpars/screenshots/screenshot_1.png" width="250"/>
+  <img src="https://mgit.mparsict.com/android/libs/basemodule/-/raw/mehrpars/screenshots/screenshot_2.png" width="250"/>
 </p>
 <br>
+ 
+ 
+### <a name="third_party">Third Party</a>
+1. [Countly][countly]: crash report and app logs
+2. [Glide][glide]: media management and image loading tool 
+3. [ReactiveNetwork][reactivenetwork]: an Android library listening network connection state and internet connectivity with RxJava
+4. [Retrofit][retrofit]: A type-safe HTTP client for Android and Java
  
  
 ### <a name="wiki">Wiki</a>
@@ -88,3 +96,7 @@ You can read documents about main features here.
 [room]: https://mgit.mparsict.com/android/libs/basemodule/-/wikis/%DA%A9%D8%AA%D8%A7%D8%A8%D8%AE%D8%A7%D9%86%D9%87-Room
 [paging]: https://mgit.mparsict.com/android/libs/basemodule/-/wikis/%DA%A9%D8%AA%D8%A7%D8%A8%D8%AE%D8%A7%D9%86%D9%87-Paging-3
 [architecture_components]: https://developer.android.com/topic/libraries/architecture
+[countly]: https://count.ly/
+[glide]: https://github.com/bumptech/glide
+[reactivenetwork]: https://github.com/pwittchen/ReactiveNetwork
+[retrofit]: https://github.com/square/retrofit
