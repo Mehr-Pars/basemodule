@@ -40,7 +40,7 @@
                 android:layout_marginTop="@dimen/margin_30"
                 android:text="@{movie.title}"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/text_size_15"
+                android:textSize="@dimen/text_size_16"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/poster"
                 tools:text="The Shawshank Redemption" />
@@ -80,7 +80,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/title"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/title"
-                app:srcCompat="@drawable/ic_baseline_star_24" />
+                app:srcCompat="@drawable/ic_star" />
 
             <TextView
                 android:id="@+id/description"

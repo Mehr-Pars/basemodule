@@ -4,6 +4,7 @@
     <dimen name="dialog_image_height">140.0dp</dimen>
     <dimen name="loading_size">35.0dp</dimen>
     <dimen name="empty_box_size">126.0dp</dimen>
+    <dimen name="error_image_size">280.0dp</dimen>
 
     <!-- Default screen margins -->
     <dimen name="margin_3">4.2dp</dimen>
@@ -20,7 +21,7 @@
     <dimen name="text_size_10">14.0sp</dimen>
     <dimen name="text_size_12">16.8sp</dimen>
     <dimen name="text_size_13">18.2sp</dimen>
-    <dimen name="text_size_15">21.7sp</dimen>
+    <dimen name="text_size_16">22.4sp</dimen>
     <dimen name="text_size_18">25.2sp</dimen>
     <dimen name="text_size_20">28.0sp</dimen>
     <dimen name="text_size_23">32.2sp</dimen>

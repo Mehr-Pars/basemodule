@@ -10,6 +10,12 @@
         android:hardwareAccelerated="true"
         android:largeHeap="true">
 
+        <activity
+            android:name="mehrpars.mobile.basemodule.ui.crash_handler.DefaultErrorActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:process=":error_activity"
+            android:screenOrientation="sensorPortrait" />
+
         <service android:name="org.openudid.OpenUDID_service">
             <intent-filter>
                 <action android:name="org.openudid.GETUDID" />

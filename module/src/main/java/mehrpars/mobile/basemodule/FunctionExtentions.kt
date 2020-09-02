@@ -1,6 +1,8 @@
 package mehrpars.mobile.basemodule
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.annotation.RequiresPermission
@@ -12,6 +14,19 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import java.lang.reflect.Method
+
+
+fun Context.isDebuggable(): Boolean {
+    var debuggable = false
+    val pm = packageManager
+    try {
+        val appInfo = pm.getApplicationInfo(packageName, 0)
+        debuggable = 0 != appInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE
+    } catch (e: PackageManager.NameNotFoundException) {
+        /*debuggable variable will remain false*/
+    }
+    return debuggable
+}
 
 fun Disposable.disposedBy(disposable: CompositeDisposable) {
     disposable.add(this)

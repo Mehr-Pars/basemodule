@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:layout_marginLeft="@dimen/margin_30"
     android:layout_marginRight="@dimen/margin_30"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="@color/colorWhite"
     app:cardCornerRadius="7dp"
     app:cardElevation="@dimen/margin_5"
     app:cardUseCompatPadding="true">
@@ -55,7 +55,7 @@
             android:gravity="center"
             android:minWidth="@dimen/button_width_100"
             android:text="@string/retry"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/text_size_10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

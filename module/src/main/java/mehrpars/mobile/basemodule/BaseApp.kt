@@ -1,6 +1,7 @@
 package mehrpars.mobile.basemodule
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.net.NetworkInfo
 import android.util.Log
 import androidx.databinding.ObservableField
@@ -14,6 +15,7 @@ import ly.count.android.sdk.Countly
 import ly.count.android.sdk.CountlyConfig
 import ly.count.android.sdk.DeviceId
 import mehrpars.mobile.basemodule.utils.LocaleUtils
+import mehrpars.mobile.debugtools.ui.activity.error_activity.CustomActivityOnCrash
 import java.util.*
 
 
@@ -26,14 +28,48 @@ abstract class BaseApp : MultiDexApplication() {
         var appLocale: Locale? = null
     }
 
+    /**
+     * countly server url for logging app events and crash report
+     * */
+    abstract fun getCountlyServerUrl(): String?
+
+    /**
+     * API key for configuring countly
+     * */
+    abstract fun getCountlyApiKey(): String?
+
+    /**
+     * base url without prefix for checking network connectivity (ping url)
+     * */
+    abstract fun getNetworkCheckUrl(): String?
+
+    /**
+     * returns restart activity class (ie, MainActivity in your project) to be called after app crash
+     * */
+    abstract fun getRestartActivity(): Class<out Activity>?
+
     override fun onCreate() {
         super.onCreate()
 
         initAppLocale()
+
+        installCrashHandler()
+
         initCountly()
+
         initNetworkCheckUrl()
 
 //        checkNetworkConnectivity()
+    }
+
+    /**
+     * initialize crash handler
+     * */
+    open fun installCrashHandler() {
+        getRestartActivity()?.let { activity ->
+            CustomActivityOnCrash.restartActivityClass = activity
+            CustomActivityOnCrash.install(this)
+        }
     }
 
     /**
@@ -44,10 +80,6 @@ abstract class BaseApp : MultiDexApplication() {
         LocaleUtils.setLocale(appLocale!!)
         LocaleUtils.updateConfig(this, baseContext.resources.configuration)
     }
-
-    abstract fun getCountlyServerUrl(): String?
-
-    abstract fun getCountlyApiKey(): String?
 
     /**
      * setup countly for crash reporting
@@ -60,13 +92,11 @@ abstract class BaseApp : MultiDexApplication() {
 
         // setup countly for crash reporting
         val config = CountlyConfig(this, getCountlyApiKey(), getCountlyServerUrl())
-        config.setLoggingEnabled(BuildConfig.DEBUG)
+        config.setLoggingEnabled(isDebuggable())
             .enableCrashReporting()
             .setIdMode(DeviceId.Type.OPEN_UDID)
         Countly.sharedInstance().init(config)
     }
-
-    abstract fun getNetworkCheckUrl(): String?
 
     open fun initNetworkCheckUrl() {
         isConnectedToNetwork.set(false)

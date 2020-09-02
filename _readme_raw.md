@@ -2,6 +2,7 @@ This module defines main architecture as well as Android components to be used i
 *  [Features](#features)
 *  [Installation](#install)
 *  [Setup Counly](#setup_countly)
+*  [Install Crash Handler](#install_crash_handler)
 *  [Sample Application](#sample)
 *  [Third Party](#third_party)
 *  [Wiki](#wiki)
@@ -17,6 +18,7 @@ This module defines main architecture as well as Android components to be used i
 7. manage and enqueue request with **safeRequest** in ViewModel
 8. easy config of **retrofit** for networking
 9. easy config of **countly** for crash report and app logs
+10. manually **handle app crash** instead of default android crash dialog 
 
 
 ### <a name="install">Installation</a> 
@@ -42,11 +44,24 @@ allprojects {
 }
 ```
  
+### <a name="install_crash_handler">Install Crash Handler</a>
+
+just extend your application from BaseApp and return restart activity in getRestartActivity().
+this activity will be considered as the main activity to be launched after app crash
+```Kotlin
+class App : BaseApp() {
+
+    override fun getRestartActivity(): Class<out Activity> {
+        return HomeActivity::class.java
+    }
+}
+```
+
 ### <a name="setup_countly">Setup Counly</a>
 
 [Countly](count.ly) is used as main tool for crash reporting and logging app events
-1. Call `initCountly(serverUrl, apiKey)` in your application class which extends BaseApp.
-2. Define OpenUDID_service in project manifest
+1. call `initCountly(serverUrl, apiKey)` in your application class which extends BaseApp.
+2. define OpenUDID_service in project manifest
 ```xml
 <service android:name="org.openudid.OpenUDID_service">  
 	<intent-filter> 
@@ -54,7 +69,7 @@ allprojects {
 	</intent-filter>
 </service>
 ```
-3. Add countly serverUrl to network_security_config.xml avoiding CleartextTraffic error on newer android APIs
+3. add countly serverUrl to network_security_config.xml avoiding CleartextTraffic error on newer android APIs
 ```xml
 <domain-config cleartextTrafficPermitted="true">  
 	<!-- Countly Server URL -->  
