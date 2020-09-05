@@ -1,7 +1,7 @@
 package mehrpars.mobile.basemodule
 
 open class BaseConfig {
-    open var countlyServerUrl = "http://5.63.8.226"
+    open var countlyServerUrl = ""
     open var countlyApiKey = "countly_api_key"
     open var apiUrl: String? = ""
     open var baseUrl: String? = ""

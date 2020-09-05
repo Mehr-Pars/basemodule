@@ -45,8 +45,15 @@ allprojects {
 ```
  
 ### <a name="install_crash_handler">Install Crash Handler</a>
-
-just extend your application from BaseApp and return restart activity in getRestartActivity().
+1. add DefaultErrorActivity to project manifest as below
+```xml
+<activity
+    android:name="mehrpars.mobile.basemodule.ui.crash_handler.DefaultErrorActivity"
+    android:configChanges="keyboardHidden|orientation|screenSize"
+    android:process=":error_activity"
+    android:screenOrientation="sensorPortrait" />
+```
+2. extend your application from BaseApp and return restart activity in getRestartActivity().
 this activity will be considered as the main activity to be launched after app crash
 ```Kotlin
 class App : BaseApp() {
