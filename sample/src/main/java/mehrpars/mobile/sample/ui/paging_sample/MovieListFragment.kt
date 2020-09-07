@@ -3,8 +3,7 @@ package mehrpars.mobile.sample.ui.paging_sample
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
+import androidx.paging.Pager
 import mehrpars.mobile.basemodule.safeNavigate
 import mehrpars.mobile.basemodule.ui.BasePagedFragment
 import mehrpars.mobile.sample.R
@@ -30,8 +29,8 @@ class MovieListFragment :
     }
 
     @ExperimentalPagingApi
-    override fun getPagingDataFlow(): Flow<PagingData<Movie>> {
-        return viewModel!!.getMoviesFlow()
+    override fun getDataPager(): Pager<Int, Movie> {
+        return viewModel!!.getMoviesPager()
     }
 
 }

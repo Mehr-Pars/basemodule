@@ -31,5 +31,5 @@ abstract class BasePagedAdapter<T : Comparable, B : ViewDataBinding>(
         onBindView(holder.binding, item, position)
     }
 
-    open fun onBindView(binding: B, item: T?, position: Int) {}
+    abstract fun onBindView(binding: B, item: T?, position: Int)
 }

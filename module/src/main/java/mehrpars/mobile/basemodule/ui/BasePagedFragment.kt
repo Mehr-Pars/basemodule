@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import androidx.paging.PagingData
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
+import androidx.paging.Pager
 import kotlinx.coroutines.flow.collectLatest
 import mehrpars.mobile.basemodule.paging.util.Comparable
 import mehrpars.mobile.basemodule.paging.util.DefaultLoadStateAdapter
@@ -34,8 +32,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, VM : BaseV
     }
 
     override fun initAdapter() {
-        pagedListAdapter = object :
-            BasePagedAdapter<T, B>(layoutId = layoutRes) {
+        pagedListAdapter = object : BasePagedAdapter<T, B>(layoutId = layoutRes) {
 
             override fun onBindView(binding: B, item: T?, position: Int) {
                 bindRecyclerItem(binding, item)
@@ -47,14 +44,12 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, VM : BaseV
         super.observeViewModelChange(viewModel)
 
         lifecycleScope.launchWhenCreated {
-            @OptIn(ExperimentalCoroutinesApi::class)
-            getPagingDataFlow().collectLatest {
+            getDataPager().flow.collectLatest {
                 pagedListAdapter.submitData(it)
             }
         }
 
         lifecycleScope.launchWhenCreated {
-            @OptIn(ExperimentalCoroutinesApi::class)
             pagedListAdapter.loadStateFlow.collectLatest { loadStates ->
                 recyclerLayout.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
             }
@@ -68,7 +63,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, VM : BaseV
 //        }
     }
 
-    abstract fun getPagingDataFlow(): Flow<PagingData<T>>
+    abstract fun getDataPager(): Pager<Int, T>
 
     abstract fun bindRecyclerItem(binding: B, item: T?)
 
