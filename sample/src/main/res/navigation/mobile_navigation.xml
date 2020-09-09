@@ -22,6 +22,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/sample_list"
+        android:name="mehrpars.mobile.sample.ui.list_sample.SampleListFragment"
+        android:label="@string/menu_sample_list"
+        tools:layout="@layout/fragment_sample_list" />
+
+    <fragment
         android:id="@+id/movie_detail"
         android:name="mehrpars.mobile.sample.ui.offline_load_sample.MovieDetailFragment"
         android:label="@string/menu_offline_loading"
