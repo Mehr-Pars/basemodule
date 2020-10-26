@@ -25,7 +25,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import mehrpars.mobile.basemodule.BuildConfig
 import mehrpars.mobile.basemodule.ui.crash_handler.DefaultErrorActivity
 import java.io.PrintWriter
 import java.io.Serializable

@@ -3,6 +3,7 @@ package mehrpars.mobile.basemodule.ui
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -50,11 +51,11 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
         passedIntent = intent
     }
 
-    protected fun safeRequest(onExecuteAction: () -> Unit) {
-        safeRequest(onExecuteAction, null)
-    }
-
-    protected fun safeRequest(onExecuteAction: () -> Unit, onCancelAction: (() -> Unit)? = null) {
+    protected fun safeRequest(
+        retry: Boolean = true,
+        onCancelAction: (() -> Unit)? = null,
+        onExecuteAction: () -> Unit
+    ) {
         safeRequest(object : SimpleRequest() {
             override fun onExecute() {
                 onExecuteAction()
@@ -63,19 +64,21 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
             override fun onCancel() {
                 onCancelAction?.invoke()
             }
-        })
+        }, retry)
     }
 
-    protected fun safeRequest(simpleRequest: SimpleRequest) {
+    protected fun safeRequest(simpleRequest: SimpleRequest, retry: Boolean = true) {
         GlobalScope.launch {
             if (!application.isConnectedToInternet()) // wait for network check
                 delay(networkCheckDelay)
 
             if (application.isConnectedToInternet()) {
                 withContext(Dispatchers.Main) { simpleRequest.onExecute() }
-            } else {
+            } else if (retry) {
                 requestQueue.add(simpleRequest)
                 error.postValue(Error(ErrorType.CONNECTION_ERROR))
+            } else {
+                Log.e("SafeRequest", "Request canceled due to internet connection error!")
             }
         }
     }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.Result
 import mehrpars.mobile.basemodule.ui.BaseFragment
 import mehrpars.mobile.sample.databinding.FragmentMovieDetailBinding
@@ -24,33 +25,32 @@ class MovieDetailFragment : BaseFragment<MovieDetailViewModel>() {
     }
 
     override fun initLayoutView() {
-
+        binding.swipeRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorGreen)
+        binding.swipeRefresh.setOnRefreshListener { viewModel?.reloadMovieDetail() }
     }
 
     override fun observeViewModelChange(viewModel: MovieDetailViewModel?) {
         super.observeViewModelChange(viewModel)
 
-        viewModel?.movieDetail?.observe(viewLifecycleOwner, Observer { result ->
-
+        viewModel?.movieDetail1?.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.LOADING -> {
-                    Log.i(TAG, "loading: $result")
+                    Log.i(TAG, "~~~~loading: $result")
                 }
 
                 Result.Status.SUCCESS -> {
-                    Log.i(TAG, "success: $result")
-                    result.data?.let { movieDetail ->
-                        binding.movie = movieDetail
-                    }
-
+                    Log.i(TAG, "~~~~success: $result")
+                    binding.swipeRefresh.isRefreshing = false
+                    binding.movie = result?.data
                 }
 
                 Result.Status.ERROR -> {
-                    Log.e(TAG, result.message)
+                    binding.swipeRefresh.isRefreshing = false
+                    Log.e(TAG, "~~~~error: ${result.message}")
                 }
             }
-
         })
+
     }
 
 }

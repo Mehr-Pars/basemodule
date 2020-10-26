@@ -63,9 +63,9 @@ abstract class RetrofitConfig {
     open fun getHttpClientBuilder(): OkHttpClient.Builder {
         return OkHttpClient.Builder()
             .retryOnConnectionFailure(false)
-            .writeTimeout(10000, TimeUnit.SECONDS)
-            .connectTimeout(10000, TimeUnit.SECONDS)
-            .readTimeout(10000, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
     }
 
     /**

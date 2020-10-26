@@ -4,12 +4,13 @@ package mehrpars.mobile.basemodule.data
  * https://proandroiddev.com/android-architecture-starring-kotlin-coroutines-jetpack-mvvm-room-paging-retrofit-and-dagger-7749b2bae5f7
  * */
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.map
+import androidx.annotation.CallSuper
+import androidx.lifecycle.*
 import androidx.paging.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
@@ -19,10 +20,149 @@ import java.io.IOException
  */
 
 // region LiveData Related Functions
+
 /**
- * The database serves as the single source of truth.
- * Therefore UI can receive data updates from database only.
- * Function notify UI about:
+ * this class handles remote repository data load
+ * also saving data loaded from remote repository
+ */
+class RemoteRepository<A>(
+    private val networkCall: suspend () -> Response<A>,
+    private val saveCallResult: suspend (A) -> Unit
+) {
+
+    suspend fun load(
+        onDone: () -> Unit,
+        onError: (message: String?, error: Throwable?) -> Unit
+    ) {
+        // try loading data from network and handle possible network errors
+        val response = getResult { networkCall.invoke() }
+        if (response.status == Result.Status.SUCCESS) {
+            // save data loaded from network into database
+            saveCallResult(response.data!!)
+            onDone()
+        } else if (response.status == Result.Status.ERROR) {
+            onError(response.message, response.error)
+        }
+    }
+
+}
+
+/**
+ * this class handles local and remote data sources with SSOT architecture
+ * database serves as the single source of truth
+ * therefore UI can only receive data updates from database
+ * network request updates local database and UI observers will be triggered afterward
+ * this class also provides "refresh" function in case remote data reload required
+ * @see refresh
+ */
+class RepositoryLiveData<T>(
+    private val databaseQuery: () -> LiveData<T>,
+    private val remoteRepository: RemoteRepository<*>
+) : MutableLiveData<Result<T>>() {
+    private var localSource: Source<*>? = null
+    private var loadingJob: Job? = null
+
+    init {
+        loadFromLocal()
+    }
+
+    /**
+     * function invokes database query and uses returned LiveData as the source for loading data.
+     * */
+    private fun loadFromLocal() {
+        val localLiveData = databaseQuery.invoke().map {
+            if (it == null) {
+                Result.error("Object not found in database")
+            } else {
+                Result.success(it)
+            }
+        }
+        localSource = Source(localLiveData) {
+            // emit data upstream whenever localSource LiveData emits something
+            this@RepositoryLiveData.value = it
+        }
+    }
+
+    /**
+     * function invokes network call and saves loaded data into database
+     * note: no data will be emitted here, because we only have one source for data and it's database.
+     * all other sources save and read from database
+     * */
+    private fun loadFromRemote() {
+        // emit loading state
+        this@RepositoryLiveData.postValue(Result.loading())
+
+        // run network call in background
+        loadingJob = CoroutineScope(Dispatchers.IO).launch {
+            remoteRepository.load(
+                onDone = { loadingJob = null },
+                onError = { message, error ->
+                    this@RepositoryLiveData.postValue(Result.error(message, error))
+                    loadingJob = null
+                }
+            )
+        }
+    }
+
+    /**
+     * invokes network request to load data from remote repository
+     * use this if data reload required
+     * */
+    fun refresh() {
+        loadingJob?.let {
+            it.cancel()
+            loadingJob = null
+        }
+
+        loadFromRemote()
+    }
+
+    @CallSuper
+    override fun onActive() {
+        localSource?.plug()
+        if (loadingJob == null) loadFromRemote()
+    }
+
+    @CallSuper
+    override fun onInactive() {
+        localSource?.unplug()
+        loadingJob?.cancel()
+    }
+
+    private class Source<V> internal constructor(
+        val liveData: LiveData<V>,
+        val observer: (V?) -> Unit
+    ) : Observer<V?> {
+
+        fun plug() {
+            liveData.observeForever(this)
+        }
+
+        fun unplug() {
+            liveData.removeObserver(this)
+        }
+
+        override fun onChanged(v: V?) {
+            observer.invoke(v)
+        }
+    }
+}
+
+fun <T, A> repositoryLiveData(
+    databaseQuery: () -> LiveData<T>,
+    networkCall: suspend () -> Response<A>,
+    saveCallResult: suspend (A) -> Unit
+): RepositoryLiveData<T> {
+    val remoteRepository = RemoteRepository(networkCall, saveCallResult)
+    return RepositoryLiveData(databaseQuery, remoteRepository)
+}
+
+
+/**
+ * the database serves as the single source of truth.
+ * therefore UI can receive data updates from database only.
+ * function Returns LiveData Instance of data loaded from database.
+ * function notify UI about:
  * [Result.Status.SUCCESS] - with data from database
  * [Result.Status.ERROR] - if error has occurred from any source
  * [Result.Status.LOADING]
@@ -52,8 +192,8 @@ fun <T, A> resultLiveData(
 }
 
 /**
- * The network serves as the single source of truth.
- * Function notify UI about:
+ * the network serves as the single source of truth.
+ * function notify UI about:
  * [Result.Status.SUCCESS] - with data from network
  * [Result.Status.ERROR] - if error has occurred from any source
  * [Result.Status.LOADING]
@@ -77,9 +217,9 @@ fun <T> resultLiveData(
 
 // region Pager Related Functions
 /**
- * Creates Pager for using in paging architecture. creates RemoteMediator
- * The database serves as the single source of truth.
- * Therefore UI can receive data updates from database only.
+ * creates Pager for using in paging architecture. creates RemoteMediator
+ * the database serves as the single source of truth.
+ * therefore UI can receive data updates from database only.
  * @param pageSize: number of items loaded per page
  * @param databaseQuery: query for loading data from database
  * @param networkCall: network call for loading data from network

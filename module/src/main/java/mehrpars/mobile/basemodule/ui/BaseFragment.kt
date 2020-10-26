@@ -94,7 +94,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
         }
     }
 
-    private fun showNetworkErrorDialog() {
+    protected fun showNetworkErrorDialog() {
         if (!networkErrorDialogShown && context != null) {
             networkErrorDialogShown = true
 

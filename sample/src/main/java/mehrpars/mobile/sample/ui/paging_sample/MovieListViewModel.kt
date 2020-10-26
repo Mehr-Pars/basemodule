@@ -10,8 +10,12 @@ class MovieListViewModel(application: Application) : BaseViewModel(application) 
     private val model: MovieListModel by lazy { MovieListModel(application) }
 
     @ExperimentalPagingApi
+    private val moviePager by lazy { model.getMovies() }
+
+
+    @ExperimentalPagingApi
     fun getMoviesPager(): Pager<Int, Movie> {
-        return model.getMovies()
+        return moviePager
     }
 
 }

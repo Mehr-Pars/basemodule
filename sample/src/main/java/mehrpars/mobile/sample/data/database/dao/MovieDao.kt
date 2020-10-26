@@ -13,8 +13,8 @@ import mehrpars.mobile.sample.data.model.entity.Movie
  * The Data Access Object for the Movie class.
  */
 @Dao
-interface MovieDao :
-    BaseDao<Movie> {
+interface MovieDao : BaseDao<Movie> {
+
     @Query("SELECT * FROM movie WHERE id = :movieId")
     fun getMovieDetail(movieId: String): LiveData<Movie>
 
