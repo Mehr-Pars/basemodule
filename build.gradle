@@ -28,6 +28,7 @@ buildscript {
         constraintlayoutVersion = '2.0.0'
 
         // third party
+        baseutil = '1.0.9'
         retrofitVersion ='2.9.0'
         okhttpVersion ='3.12.2' // todo using this version for lower android API support (remove after upgrading min support to api 21+)
         retrofitAdapterVersion ='3.0.0'
@@ -60,6 +61,12 @@ allprojects {
             credentials {
                 username = "${mpars_artifactory_username}"
                 password = "${mpars_artifactory_password}"
+            }
+        }
+        maven {
+            url "https://jitpack.io"
+            content {
+                excludeGroup("Kotlin/Native")
             }
         }
     }

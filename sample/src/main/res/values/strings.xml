@@ -12,5 +12,6 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_paging_sample">Paging Sample</string>
+    <string name="menu_sample_list">Sample List</string>
     <string name="menu_offline_loading">Offline Loading Sample</string>
 </resources>
