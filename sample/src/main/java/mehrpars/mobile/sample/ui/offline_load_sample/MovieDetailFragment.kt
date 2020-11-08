@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.Result
+import mehrpars.mobile.basemodule.isNetworkError
 import mehrpars.mobile.basemodule.ui.BaseFragment
 import mehrpars.mobile.sample.databinding.FragmentMovieDetailBinding
 
@@ -26,31 +28,55 @@ class MovieDetailFragment : BaseFragment<MovieDetailViewModel>() {
 
     override fun initLayoutView() {
         binding.swipeRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorGreen)
-        binding.swipeRefresh.setOnRefreshListener { viewModel?.reloadMovieDetail() }
+        binding.swipeRefresh.setOnRefreshListener { viewModel?.movieDetail?.refresh() }
     }
 
     override fun observeViewModelChange(viewModel: MovieDetailViewModel?) {
         super.observeViewModelChange(viewModel)
 
-        viewModel?.movieDetail1?.observe(viewLifecycleOwner, Observer { result ->
+        viewModel?.movieDetail?.observe(viewLifecycleOwner, Observer { result ->
             when (result.status) {
                 Result.Status.LOADING -> {
-                    Log.i(TAG, "~~~~loading: $result")
+                    if (!binding.swipeRefresh.isRefreshing)
+                        binding.swipeRefresh.isRefreshing = true
                 }
 
                 Result.Status.SUCCESS -> {
-                    Log.i(TAG, "~~~~success: $result")
                     binding.swipeRefresh.isRefreshing = false
                     binding.movie = result?.data
                 }
 
                 Result.Status.ERROR -> {
                     binding.swipeRefresh.isRefreshing = false
-                    Log.e(TAG, "~~~~error: ${result.message}")
+                    result.error?.let { showError(it) }
+                    Log.e(TAG, "result error: ${result.message}")
                 }
             }
         })
 
+    }
+
+    private fun showError(error: Throwable) {
+        val snackBar = when {
+            error.isNetworkError() -> {
+                Snackbar.make(
+                    binding.swipeRefresh,
+                    "Network Connection Error",
+                    Snackbar.LENGTH_LONG
+                )
+                    .setAction(R.string.retry) { viewModel?.movieDetail?.refresh() }
+            }
+            else -> {
+                Snackbar.make(
+                    binding.swipeRefresh,
+                    error.message ?: "error occurred",
+                    Snackbar.LENGTH_LONG
+                )
+            }
+        }
+
+        snackBar.setBackgroundTint(resources.getColor(R.color.colorRed))
+            .show()
     }
 
 }

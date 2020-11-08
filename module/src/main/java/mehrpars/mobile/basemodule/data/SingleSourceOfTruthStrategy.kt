@@ -47,6 +47,11 @@ class RemoteRepository<A>(
 
 }
 
+open class RefreshableLiveData<T> : LiveData<T>() {
+
+    open fun refresh() {}
+}
+
 /**
  * this class handles local and remote data sources with SSOT architecture
  * database serves as the single source of truth
@@ -58,9 +63,10 @@ class RemoteRepository<A>(
 class RepositoryLiveData<T>(
     private val databaseQuery: () -> LiveData<T>,
     private val remoteRepository: RemoteRepository<*>
-) : MutableLiveData<Result<T>>() {
+) : RefreshableLiveData<Result<T>>() {
     private var localSource: Source<*>? = null
     private var loadingJob: Job? = null
+    private var firstLoad = true
 
     init {
         loadFromLocal()
@@ -71,15 +77,20 @@ class RepositoryLiveData<T>(
      * */
     private fun loadFromLocal() {
         val localLiveData = databaseQuery.invoke().map {
-            if (it == null) {
+            if (it == null)
                 Result.error("Object not found in database")
-            } else {
+            else
                 Result.success(it)
-            }
         }
         localSource = Source(localLiveData) {
             // emit data upstream whenever localSource LiveData emits something
             this@RepositoryLiveData.value = it
+
+            // trigger remote data call if not already triggered
+            if (firstLoad) {
+                firstLoad = false
+                loadFromRemote()
+            }
         }
     }
 
@@ -108,7 +119,7 @@ class RepositoryLiveData<T>(
      * invokes network request to load data from remote repository
      * use this if data reload required
      * */
-    fun refresh() {
+    override fun refresh() {
         loadingJob?.let {
             it.cancel()
             loadingJob = null
@@ -120,13 +131,20 @@ class RepositoryLiveData<T>(
     @CallSuper
     override fun onActive() {
         localSource?.plug()
-        if (loadingJob == null) loadFromRemote()
     }
 
     @CallSuper
     override fun onInactive() {
         localSource?.unplug()
         loadingJob?.cancel()
+    }
+
+    public override fun postValue(value: Result<T>?) {
+        super.postValue(value)
+    }
+
+    public override fun setValue(value: Result<T>?) {
+        super.setValue(value)
     }
 
     private class Source<V> internal constructor(

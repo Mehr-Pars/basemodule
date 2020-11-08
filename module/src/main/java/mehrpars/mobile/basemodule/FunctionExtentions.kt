@@ -14,6 +14,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import java.lang.reflect.Method
+import java.net.UnknownHostException
 
 
 fun Context.isDebuggable(): Boolean {
@@ -64,3 +65,5 @@ fun NavController.safeNavigate(currentDestinationId: Int, directions: NavDirecti
     if (currentDestination?.id == currentDestinationId)
         navigate(directions)
 }
+
+fun Throwable?.isNetworkError(): Boolean = this is UnknownHostException

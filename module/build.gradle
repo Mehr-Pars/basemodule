@@ -33,7 +33,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
         vectorDrawables.useSupportLibrary = true
-        dataBinding.enabled true
+        android.dataBinding.enabled true
     }
     buildTypes {
         release {

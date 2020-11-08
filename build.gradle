@@ -25,7 +25,7 @@ buildscript {
         multidexVersion = '1.0.3'
         rxJavaVersion = '3.0.0'
         rxAndroidVersion = '3.0.0'
-        constraintlayoutVersion = '2.0.0'
+        constraintlayoutVersion = '2.0.3'
 
         // third party
         baseutil = '1.0.9'
