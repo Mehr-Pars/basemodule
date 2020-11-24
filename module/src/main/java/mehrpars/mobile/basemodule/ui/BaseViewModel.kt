@@ -27,16 +27,6 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
             app
     }
 
-    init {
-        this.initAdapter()
-    }
-
-    /**
-     * initialize your adapter(s) here
-     */
-    protected open fun initAdapter() {
-    }
-
     /**
      * handle passed arguments here
      */

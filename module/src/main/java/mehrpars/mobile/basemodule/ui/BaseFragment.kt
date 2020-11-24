@@ -9,13 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.annotation.CallSuper
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import mehrpars.mobile.basemodule.R
 
-abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
+abstract class BaseFragment<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int? = null) :
+    Fragment() {
+
     protected var viewModel: VM? = null
+    protected lateinit var binding: B
     private var networkErrorDialogShown = false
+
+    /**
+     * initialize your viewModel in here
+     */
+    protected abstract fun initViewModel()
+
+    /**
+     * do any data binding related action in here
+     */
+    protected abstract fun bindView(binding: B)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,51 +43,25 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return initViewAndBinding(inflater, container)
+        binding = DataBindingUtil.inflate(inflater, layoutId!!, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        initAdapter()
-
-        initLayoutView()
+        bindView(binding)
 
         observeViewModelChange(viewModel)
     }
 
     /**
-     * initialize your viewModel in here
-     */
-    protected abstract fun initViewModel()
-
-    /**
      * get your arguments here
      */
     @CallSuper
-    open fun handleArguments(arguments: Bundle) {
+    protected open fun handleArguments(arguments: Bundle) {
         viewModel?.handleArguments(arguments)
     }
-
-    /**
-     * Inflate view in function
-     *
-     * make binding object of your class then
-     * initialize binding in here
-     *
-     * do not forget to add binding in your xml layout
-     */
-    protected abstract fun initViewAndBinding(inflater: LayoutInflater, container: ViewGroup?): View
-
-    /**
-     * initialize your adapter(s) here then assign to a recycler or viewpager
-     */
-    protected open fun initAdapter() {}
-
-    /**
-     * If you want init view set in this function
-     */
-    protected abstract fun initLayoutView()
 
     /**
      *  observe your viewModel's liveData here
@@ -88,7 +77,7 @@ abstract class BaseFragment<VM : BaseViewModel?> : Fragment() {
      *  handle errors passed from ViewModel (ie, network errors etc)
      */
     @CallSuper
-    open fun handleError(error: BaseViewModel.Error) {
+    protected open fun handleError(error: BaseViewModel.Error) {
         if (error.type == BaseViewModel.ErrorType.CONNECTION_ERROR) {
             showNetworkErrorDialog()
         }

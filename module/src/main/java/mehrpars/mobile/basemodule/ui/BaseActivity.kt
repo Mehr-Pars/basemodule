@@ -9,6 +9,8 @@ import android.view.View
 import android.view.Window
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import ly.count.android.sdk.Countly
@@ -16,8 +18,11 @@ import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.utils.LocaleUtils
 
-abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), LifecycleOwner {
+abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int? = null) :
+    AppCompatActivity(), LifecycleOwner {
+
     protected var viewModel: VM? = null
+    protected lateinit var binding: B
     private var networkErrorDialogShown = false
 
     /**
@@ -26,6 +31,16 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
     init {
         BaseApp.appLocale?.let { LocaleUtils.updateConfig(this) }
     }
+
+    /**
+     * initialize your viewModel in here
+     */
+    protected abstract fun initViewModel()
+
+    /**
+     * do any data binding related action in here
+     */
+    protected abstract fun bindView(binding: B)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +51,7 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
 
         initBinding()
 
-        initAdapter()
-
-        initViews()
+        bindView(binding)
 
         observeViewModelChange(viewModel)
     }
@@ -56,15 +69,10 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
     }
 
     /**
-     * initialize your viewModel in here
-     */
-    protected abstract fun initViewModel()
-
-    /**
      * get your passed intent here
      */
     @CallSuper
-    open fun handleIntent(intent: Intent) {
+    protected open fun handleIntent(intent: Intent) {
         viewModel?.handleIntent(intent)
     }
 
@@ -72,19 +80,11 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
      * make binding object of your class then
      * initialize binding in here
      *
-     * dont forget to add binding in your xml layout
+     * do not forget to add binding in your xml layout
      */
-    protected abstract fun initBinding()
-
-    /**
-     * initialize your adapter(s) here then assign to a recycler or viewpager
-     */
-    protected open fun initAdapter() {}
-
-    /**
-     * initialize your views in here
-     */
-    protected abstract fun initViews()
+    protected open fun initBinding() {
+        binding = DataBindingUtil.setContentView(this, layoutId!!)
+    }
 
     /**
      *  observe your viewModel's liveData here
@@ -106,7 +106,7 @@ abstract class BaseActivity<VM : BaseViewModel?> : AppCompatActivity(), Lifecycl
         }
     }
 
-    private fun showNetworkErrorDialog() {
+    protected fun showNetworkErrorDialog() {
         if (!networkErrorDialogShown) {
             networkErrorDialogShown = true
 

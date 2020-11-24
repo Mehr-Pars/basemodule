@@ -17,13 +17,4 @@ object AppConfig : BaseConfig() {
         dataBaseName = "BaseModuleSample.sqlite"
     }
 
-    fun getCompleteUrl(path: String?): String {
-        return when {
-            path == null -> "-"
-            path.isEmpty() -> "-"
-            path.startsWith("http") -> path
-            path.startsWith("/") -> baseUrl + path.substring(1)
-            else -> baseUrl + path
-        }
-    }
 }
