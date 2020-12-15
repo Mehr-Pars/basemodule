@@ -353,4 +353,17 @@ suspend fun <T> getResult(call: suspend () -> Response<T>): Result<T> {
         return Result.error("request failure: $message", e)
     }
 }
+
+/**
+ * in case LoadState is Error this function gets related error from loadState
+ * */
+fun CombinedLoadStates.getError(): Throwable? {
+    val errorState = this.source.append as? LoadState.Error
+        ?: this.source.prepend as? LoadState.Error
+        ?: this.append as? LoadState.Error
+        ?: this.prepend as? LoadState.Error
+        ?: this.mediator?.refresh as? LoadState.Error
+
+    return errorState?.error
+}
 // endregion

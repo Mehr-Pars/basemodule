@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -11,6 +12,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.layout_custom_recycler.view.*
+import kotlinx.android.synthetic.main.layout_retry.view.*
 import mehrpars.mobile.basemodule.R
 
 /**
@@ -21,6 +23,7 @@ class CustomRecyclerLayout : FrameLayout, LifecycleObserver {
     lateinit var swipeRefresh: SwipeRefreshLayout
     lateinit var recyclerView: RecyclerView
     lateinit var emptyLayout: View
+    lateinit var retryLayout: View
 
     /**
      * observer for adapter data change. checks if list has no items shows empty view
@@ -57,10 +60,27 @@ class CustomRecyclerLayout : FrameLayout, LifecycleObserver {
         val rootLayout = View.inflate(context, R.layout.layout_custom_recycler, this)
 
         emptyLayout = rootLayout.emptyLayout
+        retryLayout = rootLayout.retryLayout
         recyclerView = rootLayout.recyclerView
         swipeRefresh = rootLayout.swipeRefresh
 
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary, R.color.colorGreen)
+    }
+
+    /**
+     * set retry layout visibility to visible
+     * */
+    fun showRetryLayout() {
+        if (!retryLayout.isVisible)
+            retryLayout.isVisible = true
+    }
+
+    /**
+     * set retry layout visibility to invisible
+     * */
+    fun hideRetryLayout() {
+        if (retryLayout.isVisible)
+            retryLayout.isVisible = false
     }
 
     /**
@@ -83,6 +103,13 @@ class CustomRecyclerLayout : FrameLayout, LifecycleObserver {
      * */
     fun setOnRefreshListener(onRefresh: () -> Unit) {
         swipeRefresh.setOnRefreshListener { onRefresh() }
+    }
+
+    /**
+     * set action for retry event
+     * */
+    fun setOnRetryListener(onRetry: () -> Unit) {
+        retryButton.setOnClickListener { onRetry() }
     }
 
     /**
