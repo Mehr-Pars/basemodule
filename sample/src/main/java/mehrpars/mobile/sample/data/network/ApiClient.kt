@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface ApiClient {
 
-    @GET("top_rated_movies1")
+    @GET("top_rated_movies")
     suspend fun getMovies(@Query("page") page: Int): MovieListResponse
 //    @GET("imdb_top_250/page={page}")
 //    suspend fun getMovies(@Path("page") page: Int): MovieListResponse

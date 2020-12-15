@@ -18,19 +18,15 @@ import mehrpars.mobile.basemodule.paging.views.CustomRecyclerLayout
 
 abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewDataBinding, VM : BaseViewModel>(
     val fragmentLayoutRes: Int,
-    val recyclerId: Int,
     val listItemRes: Int
 ) :
     Fragment() {
     protected var viewModel: VM? = null
-    lateinit var recyclerLayout: CustomRecyclerLayout
+    var recyclerLayout: CustomRecyclerLayout?= null
     lateinit var pagedListAdapter: BasePagedAdapter<T, B>
-    protected lateinit var fragmentLayoutBinding: FB
+    protected lateinit var binding: FB
 
-    /**
-     * do any data binding related action in here
-     */
-    protected abstract fun fragmentLayoutBindView(binding: FB)
+    protected abstract fun initRecyclerLayout(): CustomRecyclerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +40,10 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        fragmentLayoutBinding =
+        binding =
             DataBindingUtil.inflate(inflater, fragmentLayoutRes, container, false)
 
-        recyclerLayout = fragmentLayoutBinding.root.findViewById(recyclerId)
-
-        return fragmentLayoutBinding.root
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -57,9 +51,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
 
         initAdapter()
 
-        initView()
-
-        fragmentLayoutBindView(fragmentLayoutBinding)
+        bindView(binding)
 
         viewModel?.let { observeViewModelChange(it) }
     }
@@ -103,13 +95,15 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
     /**
      * initialize your views and set listeners in here
      */
-    protected open fun initView() {
-        recyclerLayout.setLifecycleOwner(this)
-        recyclerLayout.setAdapter(
+    protected open fun bindView(binding: FB) {
+        recyclerLayout = initRecyclerLayout()
+
+        recyclerLayout?.setLifecycleOwner(this)
+        recyclerLayout?.setAdapter(
             pagedListAdapter.withLoadStateFooter(DefaultLoadStateAdapter(pagedListAdapter))
         )
 
-        recyclerLayout.setOnRefreshListener { pagedListAdapter.refresh() }
+        recyclerLayout?.setOnRefreshListener { pagedListAdapter.refresh() }
     }
 
     /**
@@ -125,7 +119,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
 
         lifecycleScope.launchWhenCreated {
             pagedListAdapter.loadStateFlow.collectLatest { loadStates ->
-                recyclerLayout.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
+                recyclerLayout?.swipeRefresh?.isRefreshing = loadStates.refresh is LoadState.Loading
             }
         }
 

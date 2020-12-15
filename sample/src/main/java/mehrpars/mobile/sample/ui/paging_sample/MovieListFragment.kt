@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
+import mehrpars.mobile.basemodule.paging.views.CustomRecyclerLayout
 import mehrpars.mobile.basemodule.safeNavigate
 import mehrpars.mobile.basemodule.ui.BasePagedFragment
 import mehrpars.mobile.sample.R
@@ -15,7 +16,6 @@ import mehrpars.mobile.sample.databinding.ListItemMovieBinding
 class MovieListFragment :
     BasePagedFragment<Movie, ListItemMovieBinding, FragmentPaggingSampleBinding, MovieListViewModel>(
         R.layout.fragment_pagging_sample,
-        R.id.recyclerLayoutView,
         R.layout.list_item_movie
     ) {
 
@@ -38,8 +38,8 @@ class MovieListFragment :
         return viewModel!!.getMoviesPager()
     }
 
-    override fun fragmentLayoutBindView(binding: FragmentPaggingSampleBinding) {
-
+    override fun initRecyclerLayout(): CustomRecyclerLayout {
+        return binding.recyclerLayoutView
     }
 
 }
