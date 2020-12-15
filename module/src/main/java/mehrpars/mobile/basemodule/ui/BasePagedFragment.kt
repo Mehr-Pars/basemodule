@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -15,12 +16,21 @@ import mehrpars.mobile.basemodule.paging.util.Comparable
 import mehrpars.mobile.basemodule.paging.util.DefaultLoadStateAdapter
 import mehrpars.mobile.basemodule.paging.views.CustomRecyclerLayout
 
-abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, VM : BaseViewModel>(val listItemRes: Int) :
+abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewDataBinding, VM : BaseViewModel>(
+    val fragmentLayoutRes: Int,
+    val recyclerId: Int,
+    val listItemRes: Int
+) :
     Fragment() {
     protected var viewModel: VM? = null
     lateinit var recyclerLayout: CustomRecyclerLayout
     lateinit var pagedListAdapter: BasePagedAdapter<T, B>
+    protected lateinit var fragmentLayoutBinding: FB
 
+    /**
+     * do any data binding related action in here
+     */
+    protected abstract fun fragmentLayoutBindView(binding: FB)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +43,13 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, VM : BaseV
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        recyclerLayout = CustomRecyclerLayout(requireContext())
-        return recyclerLayout
+
+        fragmentLayoutBinding =
+            DataBindingUtil.inflate(inflater, fragmentLayoutRes, container, false)
+
+        recyclerLayout = fragmentLayoutBinding.root.findViewById(recyclerId)
+
+        return fragmentLayoutBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -43,6 +58,8 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, VM : BaseV
         initAdapter()
 
         initView()
+
+        fragmentLayoutBindView(fragmentLayoutBinding)
 
         viewModel?.let { observeViewModelChange(it) }
     }

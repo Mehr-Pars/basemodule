@@ -8,11 +8,16 @@ import mehrpars.mobile.basemodule.safeNavigate
 import mehrpars.mobile.basemodule.ui.BasePagedFragment
 import mehrpars.mobile.sample.R
 import mehrpars.mobile.sample.data.model.entity.Movie
+import mehrpars.mobile.sample.databinding.FragmentPaggingSampleBinding
 import mehrpars.mobile.sample.databinding.ListItemMovieBinding
 
 
 class MovieListFragment :
-    BasePagedFragment<Movie, ListItemMovieBinding, MovieListViewModel>(R.layout.list_item_movie) {
+    BasePagedFragment<Movie, ListItemMovieBinding, FragmentPaggingSampleBinding, MovieListViewModel>(
+        R.layout.fragment_pagging_sample,
+        R.id.recyclerLayoutView,
+        R.layout.list_item_movie
+    ) {
 
     override fun initViewModel() {
         viewModel = ViewModelProvider(this).get(MovieListViewModel::class.java)
@@ -31,6 +36,10 @@ class MovieListFragment :
     @ExperimentalPagingApi
     override fun getDataPager(): Pager<Int, Movie> {
         return viewModel!!.getMoviesPager()
+    }
+
+    override fun fragmentLayoutBindView(binding: FragmentPaggingSampleBinding) {
+
     }
 
 }
