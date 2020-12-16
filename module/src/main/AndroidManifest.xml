@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="epeyk.mobile.basemodule">
+    package="mehrpars.mobile.basemodule">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:largeHeap="true">
 
+        <activity
+            android:name="mehrpars.mobile.basemodule.ui.crash_handler.DefaultErrorActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:process=":error_activity"
+            android:screenOrientation="sensorPortrait" />
+
+        <service android:name="org.openudid.OpenUDID_service">
+            <intent-filter>
+                <action android:name="org.openudid.GETUDID" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>

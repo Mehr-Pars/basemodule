@@ -1,9 +1,17 @@
 <resources>
-    <string name="app_name">BaseModuleHolder</string>
+    <string name="app_name">BaseModuleSample</string>
 
-    <string name="rateG"> به معنی این است که همه سنین قادر به تماشای این فیلم‌ها می‌باشند، و به این معنی است که فیلم چیزی را شامل نمی‌شود و حتی خطری برای بچه‌های جوان هم ندارد</string>
-    <string name="ratePG">به معنی تصمیم‌گیری با والدین است که ممکن است مواردی برای بچه‌ها مناسب نباشد، و به این معنی است که والدین ممکن است دوست نداشته باشند بچه‌های جوانشان این سری فیلم‌ها را ببینند و ممکن است مسئله‌ای هم نداشته باشد</string>
-    <string name="ratePG13">به معنی تذکر قاطع به والدین است که بعضی موارد برای بچه‌های زیر ۱۳ سال نامناسب است و والدین باید برای اجازه دادن به بچه‌های جوان‌ترشان به دیدن این فیلم‌ها دقت نمایند. این فیلم‌ها حاوی خشونت، سکس و برهنگی نیستند؛ فقط حاوی مقداری صحنه عشقی (سکس) معمول و کم و کوتاه و مصرف مواد مخدر و دخانیات باز هم کم می‌باشند</string>
-    <string name="rateR">به معنی بچه‌های زیر ۱۷ سال باید با والدین همراه باشند یا شخص بزرگتری سرپرست آنها باشد و به این معنی است که هیئت تشخیص داده است که موارد این فیلم‌ها برای بزرگ‌سالان است و والدین بیشتر از فرزندانشان ترغیب می‌شوند که این فیلم‌ها را ببینند. همچنین ممکن است رتبه R به معنی‌های دیگری باشد، فیلم حاوی کلمات رکیک، خشونت، سکس و نمایش استعمال مواد مخدر و دخانیات است</string>
-    <string name="rateNC">به معنی هیچ شخص ۱۷ سال و زیر ۱۷ سال قادر به تماشای این نوع فیلم‌ها نمی‌باشد، ممکن است فیلم حاوی مناظر واضح سکس یا کلمات ناخوشایند یا خشونت زیاد یا تمام موارد باشد. درجه NC-17 بر این دلالت ندارد که فیلم مستهجن و ضد اخلاقی است</string>
+    <string name="_year">Release Year: %s</string>
+    <string name="_imdb">IMDB Rank: %s</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_paging_sample">Paging Sample</string>
+    <string name="menu_sample_list">Sample List</string>
+    <string name="menu_offline_loading">Offline Loading Sample</string>
 </resources>

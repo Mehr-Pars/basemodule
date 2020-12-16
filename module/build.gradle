@@ -8,6 +8,8 @@ apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
 def libraryGroupId = project.libraryGroup
 def libraryArtifactId = project.libraryName
 def libraryVersion = project.versionName
@@ -15,10 +17,10 @@ def libraryVersion = project.versionName
 android {
     signingConfigs {
         release {
-            keyAlias 'epeyk mobile'
-            keyPassword 'epeyk2014'
-            storeFile file('C:/key.android')
-            storePassword 'epeyk2014'
+            storeFile file(project.mpars_sign_key_dir)
+            storePassword project.mpars_sign_key_password
+            keyAlias = project.mpars_sign_key_alias
+            keyPassword project.mpars_sign_key_password
         }
     }
 
@@ -31,7 +33,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
         vectorDrawables.useSupportLibrary = true
-        dataBinding.enabled true
+        android.dataBinding.enabled true
     }
     buildTypes {
         release {
@@ -56,52 +58,65 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$testEspresso"
+    implementation "com.google.android.gms:play-services-auth:$playServicesVersion"
+    implementation "com.android.support:multidex:$multidexVersion"
+    api "androidx.core:core-ktx:$coreVersion"
+    api "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:$swipeRefreshVersion"
+    api "androidx.recyclerview:recyclerview:$recyclerViewVersion"
+    api "androidx.appcompat:appcompat:$supportVersion"
+    api "com.google.android.material:material:$supportVersion"
 
-
-    // Multidex
-    api 'com.android.support:multidex:1.0.3'
-
-    // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.1'
-
-    implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    api 'androidx.core:core-ktx:1.2.0'
-    // Architecture Component
-//    implementation 'android.arch.lifecycle:extensions:1.1.1'
-    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
-    api 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-//    kapt 'android.arch.lifecycle:compiler:1.1.1'
-//    api 'android.arch.persistence.room:runtime:1.1.1'
-//    kapt 'android.arch.persistence.room:compiler:1.1.1'
-//    api 'android.arch.persistence.room:rxjava2:1.1.1'
-
-//    // Network
-    api 'com.squareup.retrofit2:retrofit:2.6.1'
-    api 'com.squareup.retrofit2:converter-gson:2.6.1'
-    api 'com.squareup.okhttp3:logging-interceptor:3.12.2'
-
-    // Rx
-    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    api 'io.reactivex.rxjava2:rxjava:2.2.11'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.6.1'
-
-    // check network
-    implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.6'
-
-    //imageLoader
-    api 'com.github.bumptech.glide:glide:4.9.0'
-    kapt 'com.github.bumptech.glide:compiler:4.9.0'
-
-    //view
-    api 'com.google.android.material:material:1.0.0'
+    // lifecycle components
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    api "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
 
     //dataBinding
-    kapt 'com.android.databinding:compiler:3.2.0-alpha10'
+    kapt "com.android.databinding:compiler:$dataBindingSupport"
+
+    // paging library
+    api "androidx.paging:paging-runtime-ktx:$pagingVersion"
+//    implementation "androidx.paging:paging-rxjava2-ktx:$pagingVersion"
+
+    // Kotlin
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutineVersion"
+
+    // room
+    kapt "androidx.room:room-compiler:$roomVersion"
+//    api "androidx.room:room-rxjava3:$roomVersion"
+    api "androidx.room:room-runtime:$roomVersion"
+    api "androidx.room:room-ktx:$roomVersion"
+
+    // navigation component
+    api "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+    api "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+
+    // Rx
+    api "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    api "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+
+    // Network
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+    api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+//    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:$retrofitAdapterVersion"
+    // RxJava3 Adapter for retrofit
+
+    // reactive network check
+    implementation "com.github.pwittchen:reactivenetwork-rx2:$reactiveNetworkVersion"
+
+    //imageLoader
+    api "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
+    // countly log service
+    implementation "ly.count.android:sdk:$countlyVersion"
 }
 
 publishing {
@@ -138,13 +153,13 @@ publishing {
 }
 
 artifactory {
-    contextUrl = 'http://maven.worthnet.ir:8081/artifactory'
+    contextUrl = 'http://maven2.mpars.ir/artifactory'
     publish {
         repository {
             repoKey = 'libs-release-local'
 
-            username = artifactory_username
-            password = artifactory_password
+            username = mpars_artifactory_username
+            password = mpars_artifactory_password
         }
         defaults {
             publications('aar')
