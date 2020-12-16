@@ -22,7 +22,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
 ) :
     Fragment() {
     protected var viewModel: VM? = null
-    var recyclerLayout: CustomRecyclerLayout?= null
+    var recyclerLayout: CustomRecyclerLayout? = null
     lateinit var pagedListAdapter: BasePagedAdapter<T, B>
     protected lateinit var binding: FB
 
@@ -100,7 +100,10 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
 
         recyclerLayout?.setLifecycleOwner(this)
         recyclerLayout?.setAdapter(
-            pagedListAdapter.withLoadStateFooter(DefaultLoadStateAdapter(pagedListAdapter))
+            pagedListAdapter.withLoadStateHeaderAndFooter(
+                DefaultLoadStateAdapter(pagedListAdapter),
+                DefaultLoadStateAdapter(pagedListAdapter)
+            )
         )
 
         recyclerLayout?.setOnRefreshListener { pagedListAdapter.refresh() }
@@ -110,25 +113,29 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
      * observe your viewModel's liveData variables whenever they emit any data
      * */
     protected open fun observeViewModelChange(viewModel: VM) {
-
         lifecycleScope.launchWhenCreated {
             getDataPager().flow.collectLatest {
                 pagedListAdapter.submitData(it)
             }
         }
-
         lifecycleScope.launchWhenCreated {
             pagedListAdapter.loadStateFlow.collectLatest { loadStates ->
                 recyclerLayout?.swipeRefresh?.isRefreshing = loadStates.refresh is LoadState.Loading
+
+                when (loadStates.refresh) {
+                    is LoadState.Loading -> {
+                        recyclerLayout?.emptyLayout?.visibility = View.GONE
+                    }
+                    is LoadState.Error -> {
+                        if (pagedListAdapter.itemCount == 0) {
+                            recyclerLayout?.emptyLayout?.visibility = View.VISIBLE
+                        }else{
+                            recyclerLayout?.emptyLayout?.visibility = View.GONE
+                        }
+                    }
+                }
             }
         }
-
-//        lifecycleScope.launchWhenCreated {
-//            @OptIn(ExperimentalPagingApi::class, ExperimentalCoroutinesApi::class)
-//            pagedListAdapter.dataRefreshFlow.collectLatest {
-//                recyclerLayout.recyclerView.scrollToPosition(0)
-//            }
-//        }
     }
 
 }
