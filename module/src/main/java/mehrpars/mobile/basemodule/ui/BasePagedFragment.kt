@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.Pager
 import kotlinx.coroutines.flow.collectLatest
@@ -27,6 +28,21 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
     protected lateinit var binding: FB
 
     protected abstract fun initRecyclerLayout(): CustomRecyclerLayout
+
+    /**
+     * initialize your viewModel in here
+     */
+    protected abstract fun initViewModel()
+
+    /**
+     * return data pager for pagination
+     */
+    protected abstract fun getDataPager(): Pager<Int, T>
+
+    /**
+     * bind recyclerview view items
+     * */
+    protected abstract fun bindRecyclerItem(binding: B, item: T?)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,28 +73,12 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
     }
 
     /**
-     * initialize your viewModel in here
-     */
-    protected abstract fun initViewModel()
-
-    /**
-     * return data pager for pagination
-     */
-    protected abstract fun getDataPager(): Pager<Int, T>
-
-    /**
-     * bind recyclerview view items
-     * */
-    protected abstract fun bindRecyclerItem(binding: B, item: T?)
-
-    /**
      * get your arguments here
      */
     @CallSuper
     protected open fun handleArguments(arguments: Bundle) {
         viewModel?.handleArguments(arguments)
     }
-
 
     /**
      * initialize your adapter if you have one
@@ -105,8 +105,32 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
                 DefaultLoadStateAdapter(pagedListAdapter)
             )
         )
+        recyclerLayout?.setOnRetryListener {
+            pagedListAdapter.retry()
+            recyclerLayout?.hideRetryLayout()
+        }
 
         recyclerLayout?.setOnRefreshListener { pagedListAdapter.refresh() }
+    }
+
+    /**
+     * handle load state here (ie, show retry button if load state is Error)
+     */
+    protected open fun onStateChange(loadState: CombinedLoadStates) {
+        recyclerLayout?.swipeRefresh?.isRefreshing = loadState.refresh is LoadState.Loading
+
+        when (loadState.refresh) {
+            is LoadState.Loading -> {
+                recyclerLayout?.hideRetryLayout()
+            }
+            is LoadState.Error -> {
+                if (pagedListAdapter.itemCount == 0) {
+                    recyclerLayout?.showRetryLayout()
+                } else {
+                    recyclerLayout?.hideRetryLayout()
+                }
+            }
+        }
     }
 
     /**
@@ -119,23 +143,17 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
             }
         }
         lifecycleScope.launchWhenCreated {
-            pagedListAdapter.loadStateFlow.collectLatest { loadStates ->
-                recyclerLayout?.swipeRefresh?.isRefreshing = loadStates.refresh is LoadState.Loading
-
-                when (loadStates.refresh) {
-                    is LoadState.Loading -> {
-                        recyclerLayout?.emptyLayout?.visibility = View.GONE
-                    }
-                    is LoadState.Error -> {
-                        if (pagedListAdapter.itemCount == 0) {
-                            recyclerLayout?.emptyLayout?.visibility = View.VISIBLE
-                        }else{
-                            recyclerLayout?.emptyLayout?.visibility = View.GONE
-                        }
-                    }
-                }
+            pagedListAdapter.loadStateFlow.collectLatest { loadState ->
+                onStateChange(loadState)
             }
         }
+
+//        lifecycleScope.launchWhenCreated {
+//            @OptIn(ExperimentalPagingApi::class, ExperimentalCoroutinesApi::class)
+//            pagedListAdapter.dataRefreshFlow.collectLatest {
+//                recyclerLayout.recyclerView.scrollToPosition(0)
+//            }
+//        }
     }
 
 }
