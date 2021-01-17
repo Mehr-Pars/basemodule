@@ -84,6 +84,7 @@ abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private va
      */
     protected open fun initBinding() {
         binding = DataBindingUtil.setContentView(this, layoutId!!)
+        binding.lifecycleOwner = this
     }
 
     /**

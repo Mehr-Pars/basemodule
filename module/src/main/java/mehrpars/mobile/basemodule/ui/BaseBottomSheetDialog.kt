@@ -48,6 +48,7 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?, B : ViewDataBinding>(p
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutId!!, container, false)
+        binding.lifecycleOwner = this
         return binding.root
     }
 

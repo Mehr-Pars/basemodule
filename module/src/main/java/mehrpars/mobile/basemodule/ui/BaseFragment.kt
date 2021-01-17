@@ -44,6 +44,7 @@ abstract class BaseFragment<VM : BaseViewModel?, B : ViewDataBinding>(private va
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, layoutId!!, container, false)
+        binding.lifecycleOwner = this
         return binding.root
     }
 

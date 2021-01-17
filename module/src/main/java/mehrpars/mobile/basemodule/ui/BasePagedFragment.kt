@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.Pager
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import mehrpars.mobile.basemodule.paging.util.Comparable
 import mehrpars.mobile.basemodule.paging.util.DefaultLoadStateAdapter
@@ -20,12 +21,13 @@ import mehrpars.mobile.basemodule.paging.views.CustomRecyclerLayout
 abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewDataBinding, VM : BaseViewModel>(
     val fragmentLayoutRes: Int,
     val listItemRes: Int
-) :
-    Fragment() {
+) : Fragment() {
     protected var viewModel: VM? = null
     var recyclerLayout: CustomRecyclerLayout? = null
     lateinit var pagedListAdapter: BasePagedAdapter<T, B>
     protected lateinit var binding: FB
+    private var job: Job? = null
+
 
     protected abstract fun initRecyclerLayout(): CustomRecyclerLayout
 
@@ -42,7 +44,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
     /**
      * bind recyclerview view items
      * */
-    protected abstract fun bindRecyclerItem(binding: B, item: T?)
+    protected abstract fun bindRecyclerItem(binding: B, item: T?, position: Int)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +58,8 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        binding =
-            DataBindingUtil.inflate(inflater, fragmentLayoutRes, container, false)
+        binding = DataBindingUtil.inflate(inflater, fragmentLayoutRes, container, false)
+        binding.lifecycleOwner = this
 
         return binding.root
     }
@@ -87,9 +89,22 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
         pagedListAdapter = object : BasePagedAdapter<T, B>(layoutId = listItemRes) {
 
             override fun onBindView(binding: B, item: T?, position: Int) {
-                bindRecyclerItem(binding, item)
+                bindRecyclerItem(binding, item, position)
             }
         }
+
+        lifecycleScope.launchWhenCreated {
+            pagedListAdapter.loadStateFlow.collectLatest { loadState ->
+                onStateChange(loadState)
+            }
+        }
+
+//        lifecycleScope.launchWhenCreated {
+//            @OptIn(ExperimentalPagingApi::class, ExperimentalCoroutinesApi::class)
+//            pagedListAdapter.dataRefreshFlow.collectLatest {
+//                recyclerLayout.recyclerView.scrollToPosition(0)
+//            }
+//        }
     }
 
     /**
@@ -137,23 +152,16 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
      * observe your viewModel's liveData variables whenever they emit any data
      * */
     protected open fun observeViewModelChange(viewModel: VM) {
-        lifecycleScope.launchWhenCreated {
+        loadData()
+    }
+
+    open fun loadData() {
+        job?.cancel()
+        job = lifecycleScope.launchWhenCreated {
             getDataPager().flow.collectLatest {
                 pagedListAdapter.submitData(it)
             }
         }
-        lifecycleScope.launchWhenCreated {
-            pagedListAdapter.loadStateFlow.collectLatest { loadState ->
-                onStateChange(loadState)
-            }
-        }
-
-//        lifecycleScope.launchWhenCreated {
-//            @OptIn(ExperimentalPagingApi::class, ExperimentalCoroutinesApi::class)
-//            pagedListAdapter.dataRefreshFlow.collectLatest {
-//                recyclerLayout.recyclerView.scrollToPosition(0)
-//            }
-//        }
     }
 
 }

@@ -23,7 +23,7 @@ class MovieListFragment :
         viewModel = ViewModelProvider(this).get(MovieListViewModel::class.java)
     }
 
-    override fun bindRecyclerItem(binding: ListItemMovieBinding, item: Movie?) {
+    override fun bindRecyclerItem(binding: ListItemMovieBinding, item: Movie?, position: Int) {
         binding.movie = item
         binding.container.setOnClickListener {
             findNavController().safeNavigate(
