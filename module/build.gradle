@@ -173,7 +173,7 @@ artifactory {
 
 task generateSources {
     doFirst {
-        def script = "kotlinc.bat _generator_helper.kt -include-runtime -d _generator.jar".execute()
+        def script = "kotlinc _generator_helper.kt -include-runtime -d _generator.jar".execute()
         script.in.eachLine { line -> println line }
         script.err.eachLine { line -> println "ERROR: " + line }
         script.waitFor()
@@ -190,7 +190,7 @@ task generateSources {
 
 task assembleModule {
     doFirst {
-        def script = "gradlew.bat assemble".execute()
+        def script = "./gradlew assemble".execute()
         script.in.eachLine { line -> println line }
         script.err.eachLine { line -> println "ERROR: " + line }
         script.waitFor()
@@ -199,7 +199,7 @@ task assembleModule {
 
 task publishModule {
     doFirst {
-        def script = "gradlew.bat artifactoryPublish".execute()
+        def script = "./gradlew artifactoryPublish".execute()
         script.in.eachLine { line -> println line }
         script.err.eachLine { line -> println "ERROR: " + line }
         script.waitFor()

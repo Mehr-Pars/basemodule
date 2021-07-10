@@ -346,11 +346,11 @@ suspend fun <T> getResult(call: suspend () -> Response<T>): Result<T> {
             val body = response.body()
             if (body != null) return Result.success(body)
         }
-        val message = " ${response.code()} ${response.message()}"
-        return Result.error("request failure: $message")
+        val error = HttpException(response)
+        return Result.error(error = error)
     } catch (e: Exception) {
         val message = e.message ?: e.toString()
-        return Result.error("request failure: $message", e)
+        return Result.error(message, e)
     }
 }
 
