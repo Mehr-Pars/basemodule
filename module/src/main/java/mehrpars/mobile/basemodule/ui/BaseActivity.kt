@@ -16,6 +16,8 @@ import androidx.lifecycle.Observer
 import ly.count.android.sdk.Countly
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.R
+import mehrpars.mobile.basemodule.data.error.GeneralError
+import mehrpars.mobile.basemodule.data.error.NetworkError
 import mehrpars.mobile.basemodule.utils.LocaleUtils
 
 abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int? = null) :
@@ -92,19 +94,16 @@ abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private va
      */
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
-        viewModel?.error?.observe(this, Observer {
-            handleError(it)
+        viewModel?.generalError?.observe(this, Observer { errorList ->
+            errorList?.forEach { error -> handleError(error) }
         })
     }
 
     /**
      *  handle errors passed from ViewModel (ie, network errors etc)
      */
-    @CallSuper
-    open fun handleError(error: BaseViewModel.Error) {
-        if (error.type == BaseViewModel.ErrorType.CONNECTION_ERROR) {
-            showNetworkErrorDialog()
-        }
+    protected open fun handleError(error: GeneralError) {
+        if (error is NetworkError) showNetworkErrorDialog()
     }
 
     protected fun showNetworkErrorDialog() {

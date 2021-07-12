@@ -44,9 +44,9 @@ fun generateReadme() {
 // endregion
 
 // region dimen.xml generator
-val dimenPath = "module\\src\\main\\res\\values\\dimens.xml"
-val dimenSmallPath = "module\\src\\main\\res\\values-small\\dimens.xml"
-val dimenLargePath = "module\\src\\main\\res\\values-large\\dimens.xml"
+val dimenPath = "module/src/main/res/values/dimens.xml"
+val dimenSmallPath = "module/src/main/res/values-small/dimens.xml"
+val dimenLargePath = "module/src/main/res/values-large/dimens.xml"
 
 fun extractNumbers(input: String): String {
     val pattern = Pattern.compile("[0-9]*\\.?[0-9]+")
@@ -88,7 +88,7 @@ fun generateDimens(multiply: Float, filePath: String) {
 }
 // endregion
 
-fun main(args: Array<String>) {
+fun main() {
     //generate Readme
     generateReadme()
 

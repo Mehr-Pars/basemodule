@@ -5,7 +5,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import mehrpars.mobile.basemodule.data.Result
-import mehrpars.mobile.basemodule.isNetworkError
+import mehrpars.mobile.basemodule.data.error.DefaultError
+import mehrpars.mobile.basemodule.data.error.GeneralError
+import mehrpars.mobile.basemodule.data.error.NetworkError
 import mehrpars.mobile.basemodule.ui.BaseFragment
 import mehrpars.mobile.sample.R
 import mehrpars.mobile.sample.databinding.FragmentMovieDetailBinding
@@ -41,7 +43,6 @@ class MovieDetailFragment :
 
                 Result.Status.ERROR -> {
                     binding.swipeRefresh.isRefreshing = false
-                    result.error?.let { showError(it) }
                     Log.e(TAG, "result error: ${result.message}")
                 }
             }
@@ -49,9 +50,9 @@ class MovieDetailFragment :
 
     }
 
-    private fun showError(error: Throwable) {
-        val snackBar = when {
-            error.isNetworkError() -> {
+    override fun handleError(error: GeneralError) {
+        val snackBar = when (error) {
+            is NetworkError -> {
                 Snackbar.make(
                     binding.swipeRefresh,
                     "Network Connection Error",
@@ -59,17 +60,17 @@ class MovieDetailFragment :
                 )
                     .setAction(R.string.retry) { viewModel?.movieDetail?.refresh() }
             }
-            else -> {
+            is DefaultError -> {
                 Snackbar.make(
                     binding.swipeRefresh,
-                    error.message ?: "error occurred",
+                    error.error.message ?: "error occurred",
                     Snackbar.LENGTH_LONG
                 )
             }
+            else -> null
         }
 
-        snackBar.setBackgroundTint(resources.getColor(R.color.colorRed))
-            .show()
+        snackBar?.setBackgroundTint(resources.getColor(R.color.colorRed))?.show()
     }
 
 }

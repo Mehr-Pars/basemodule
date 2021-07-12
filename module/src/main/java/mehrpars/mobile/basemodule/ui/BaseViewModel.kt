@@ -5,10 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 import mehrpars.mobile.basemodule.BaseApp
+import mehrpars.mobile.basemodule.data.error.GeneralError
+import mehrpars.mobile.basemodule.data.error.NetworkError
+import mehrpars.mobile.basemodule.utils.SingleLiveEvent
 import java.util.*
 
 
@@ -18,13 +21,15 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     protected var arguments: Bundle? = null
     protected var passedIntent: Intent? = null
     private val networkCheckDelay: Long = 1500
-    val error = MutableLiveData<Error>()
     private val requestQueue = LinkedList<SimpleRequest>()
+    private val _generalError = SingleLiveEvent<List<GeneralError>>()
+    val generalError: LiveData<List<GeneralError>> by lazy { _generalError }
     private val application: BaseApp by lazy {
-        if (app !is BaseApp)
+        if (app !is BaseApp) {
             throw Exception("application must be of type BaseApp, open manifest and set application -> name to BaseApp or just extend your application from BaseApp")
-        else
-            app
+        } else {
+        }
+        app
     }
 
     /**
@@ -59,14 +64,15 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
 
     protected fun safeRequest(simpleRequest: SimpleRequest, retry: Boolean = true) {
         GlobalScope.launch {
-            if (!application.isConnectedToInternet()) // wait for network check
-                delay(networkCheckDelay)
+            if (!application.isConnectedToInternet()) {
+            } // wait for network check
+            delay(networkCheckDelay)
 
             if (application.isConnectedToInternet()) {
                 withContext(Dispatchers.Main) { simpleRequest.onExecute() }
             } else if (retry) {
                 requestQueue.add(simpleRequest)
-                error.postValue(Error(ErrorType.CONNECTION_ERROR))
+                setError(NetworkError.instance())
             } else {
                 Log.e("SafeRequest", "Request canceled due to internet connection error!")
             }
@@ -100,13 +106,13 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
         open fun onCancel() {}
     }
 
-    enum class ErrorType {
-        DEFAULT, NETWORK_ERROR, CONNECTION_ERROR
+    // region Error Handling Helper Methods
+    protected fun setError(error: GeneralError) {
+        _generalError.postValue(listOf(error))
     }
 
-    data class Error(
-        val type: ErrorType = ErrorType.DEFAULT,
-        var errorMessage: String? = "",
-        var rawError: Throwable? = null
-    )
+    protected fun setErrors(errorList: List<GeneralError>?) {
+        _generalError.postValue(errorList)
+    }
+    // endregion
 }

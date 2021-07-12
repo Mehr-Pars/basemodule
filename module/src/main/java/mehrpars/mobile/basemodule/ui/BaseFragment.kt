@@ -14,6 +14,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import mehrpars.mobile.basemodule.R
+import mehrpars.mobile.basemodule.data.error.GeneralError
+import mehrpars.mobile.basemodule.data.error.NetworkError
 
 abstract class BaseFragment<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int? = null) :
     Fragment() {
@@ -69,19 +71,16 @@ abstract class BaseFragment<VM : BaseViewModel?, B : ViewDataBinding>(private va
      */
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
-        viewModel?.error?.observe(viewLifecycleOwner, Observer {
-            handleError(it)
+        viewModel?.generalError?.observe(viewLifecycleOwner, Observer { errorList ->
+            errorList?.forEach { error -> handleError(error) }
         })
     }
 
     /**
      *  handle errors passed from ViewModel (ie, network errors etc)
      */
-    @CallSuper
-    protected open fun handleError(error: BaseViewModel.Error) {
-        if (error.type == BaseViewModel.ErrorType.CONNECTION_ERROR) {
-            showNetworkErrorDialog()
-        }
+    protected open fun handleError(error: GeneralError) {
+        if (error is NetworkError) showNetworkErrorDialog()
     }
 
     protected fun showNetworkErrorDialog() {
