@@ -344,7 +344,10 @@ suspend fun <T> getResult(call: suspend () -> Response<T>): Result<T> {
         val response = call()
         if (response.isSuccessful) {
             val body = response.body()
-            if (body != null) return Result.success(body)
+            if (body != null)
+                return Result.success(body)
+            else if (isVoidType<T>())
+                return Result.success()
         }
         val error = HttpException(response)
         return Result.error(error = error)
@@ -352,6 +355,12 @@ suspend fun <T> getResult(call: suspend () -> Response<T>): Result<T> {
         val message = e.message ?: e.toString()
         return Result.error(message, e)
     }
+}
+
+class Generic<T>
+
+fun <T> isVoidType(): Boolean {
+    return Generic<T>()::class.java == Generic<Void>()::class.java
 }
 
 /**

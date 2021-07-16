@@ -19,6 +19,10 @@ data class Result<out T>(
             return Result(Status.SUCCESS, data, null, null)
         }
 
+        fun <T> success(): Result<T> {
+            return Result(Status.SUCCESS, null, null, null)
+        }
+
         fun <T> error(
             message: String? = null, error: Throwable? = null, data: T? = null
         ): Result<T> {

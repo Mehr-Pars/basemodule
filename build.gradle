@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        gradleVersion = '4.0.1'
+        gradleVersion = '4.2.0'
         jfrogVersion = '4.9.8'
         kotlinVersion = '1.4.10'
 
