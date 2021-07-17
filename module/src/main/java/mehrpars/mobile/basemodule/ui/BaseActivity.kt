@@ -92,7 +92,6 @@ abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private va
     /**
      *  observe your viewModel's liveData here
      */
-    @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
         viewModel?.generalError?.observe(this, Observer { errorList ->
             errorList?.forEach { error -> handleError(error) }

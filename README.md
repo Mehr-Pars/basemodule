@@ -24,7 +24,7 @@ This module defines main architecture as well as Android components to be used i
 ### <a name="install">Installation</a> 
 Add to _build.gradle_ (app):
 ```groovy
-implementation 'mehrpars.mobile.lib:basemodule:2.0.0-rc02'
+implementation 'mehrpars.mobile.lib:basemodule:2.0.0-rc03'
 ```
 
 Add to _build.gradle_ (Project):
