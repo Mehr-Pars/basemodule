@@ -44,6 +44,7 @@ class MovieListModel(context: Context) {
      * implement and use custom RemoteMediator for handling network request and saving data strategy
      * define database query for loading data from database
      * */
+    @ExperimentalPagingApi
     fun getMovies2() = Pager(
         config = PagingConfig(10),
         remoteMediator = MovieListRemoteMediator(db, client)

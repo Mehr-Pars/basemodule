@@ -313,17 +313,18 @@ fun <T : Any, A> resultPager(
     config = PagingConfig(pageSize)
 ) {
     object : PagingSource<Int, T>() {
+        private val STARTING_PAGE_INDEX = 1
 
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
             return try {
-                val pageNumber = params.key ?: 1
+                val pageNumber = params.key ?: STARTING_PAGE_INDEX
 
                 // try loading data from network
                 val response = networkCall(pageNumber)
 
                 LoadResult.Page(
                     data = mapResponse.invoke(response),
-                    prevKey = null,
+                    prevKey = if (pageNumber == STARTING_PAGE_INDEX) null else pageNumber - 1,
                     nextKey = pageNumber + 1
                 )
             } catch (e: IOException) {
@@ -334,6 +335,18 @@ fun <T : Any, A> resultPager(
                 LoadResult.Error(e)
             }
         }
+
+        // The refresh key is used for subsequent refresh calls to PagingSource.load after the initial load
+        override fun getRefreshKey(state: PagingState<Int, T>): Int? {
+            // We need to get the previous key (or next key if previous is null) of the page
+            // that was closest to the most recently accessed index.
+            // Anchor position is the most recently accessed index
+            return state.anchorPosition?.let { anchorPosition ->
+                state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                    ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+            }
+        }
+
     }
 }
 // endregion
