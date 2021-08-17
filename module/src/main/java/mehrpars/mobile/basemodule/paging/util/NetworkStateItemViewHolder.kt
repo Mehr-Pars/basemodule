@@ -17,6 +17,7 @@
 package mehrpars.mobile.basemodule.paging.util
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
@@ -39,10 +40,9 @@ class NetworkStateItemViewHolder(
 ) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.network_state_item, parent, false)
 ) {
-    private val binding = NetworkStateItemBinding.bind(itemView)
-    private val loadingView = binding.loadingView
-    private val loadFailView = binding.loadFailView
-    private val retryButton = binding.retryButton
+    private val loadingView: View by lazy { itemView.findViewById(R.id.loadingView) }
+    private val loadFailView: View by lazy { itemView.findViewById(R.id.loadFailView) }
+    private val retryButton: View by lazy { itemView.findViewById(R.id.retryButton) }
 
     fun bindTo(loadState: LoadState) {
         loadingView.isVisible = loadState is Loading
