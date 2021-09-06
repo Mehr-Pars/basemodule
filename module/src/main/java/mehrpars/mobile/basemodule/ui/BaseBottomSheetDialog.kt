@@ -94,7 +94,7 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?, B : ViewDataBinding>(p
      * get your arguments here
      */
     @CallSuper
-    protected fun handleArguments(arguments: Bundle) {
+    protected open fun handleArguments(arguments: Bundle) {
         viewModel?.handleArguments(arguments)
     }
 

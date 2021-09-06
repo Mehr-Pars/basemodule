@@ -308,7 +308,8 @@ fun <T : Any, A> resultPager(
 fun <T : Any, A> resultPager(
     pageSize: Int = 10,
     networkCall: suspend (page: Int) -> A,
-    mapResponse: (A) -> List<T>
+    mapResponse: (A) -> List<T>,
+    reachedEndStrategy: (A, page: Int) -> Boolean
 ): Pager<Int, T> = Pager(
     config = PagingConfig(pageSize)
 ) {
@@ -322,10 +323,12 @@ fun <T : Any, A> resultPager(
                 // try loading data from network
                 val response = networkCall(pageNumber)
 
+                val reachedEnd = reachedEndStrategy.invoke(response, pageNumber)
                 LoadResult.Page(
+                    itemsAfter = 0,
                     data = mapResponse.invoke(response),
                     prevKey = if (pageNumber == STARTING_PAGE_INDEX) null else pageNumber - 1,
-                    nextKey = pageNumber + 1
+                    nextKey = if (reachedEnd) null else pageNumber + 1
                 )
             } catch (e: IOException) {
                 LoadResult.Error(e)
