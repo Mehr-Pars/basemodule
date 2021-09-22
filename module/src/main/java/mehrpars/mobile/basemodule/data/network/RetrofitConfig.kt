@@ -39,11 +39,11 @@ abstract class RetrofitConfig {
     fun init(context: Context) {
         installLowerApiCertificates(context)
 
-        // add logger interceptor
-        httpClient.addInterceptor(getLogger())
-
         // add main interceptor
         httpClient.addInterceptor(getMainInterceptor())
+
+        // add logger interceptor
+        httpClient.addInterceptor(getLogger())
     }
 
     /**
@@ -62,7 +62,7 @@ abstract class RetrofitConfig {
      * */
     open fun getHttpClientBuilder(): OkHttpClient.Builder {
         return OkHttpClient.Builder()
-            .retryOnConnectionFailure(false)
+            .retryOnConnectionFailure(true)
             .writeTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
