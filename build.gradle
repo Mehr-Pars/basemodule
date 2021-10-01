@@ -28,7 +28,7 @@ buildscript {
         constraintlayoutVersion = '2.1.0'
 
         // third party
-        baseutil = '1.0.9'
+        baseutil = '1.1.0'
         retrofitVersion ='2.9.0'
 //        okhttpVersion ='3.12.2' // todo using this version for lower android API support (remove after upgrading min support to api 21+)
         okhttpVersion ='4.9.1'
@@ -60,12 +60,20 @@ allprojects {
             url "http://dl.bintray.com/countly/maven"
         }
         maven { url "https://oss.jfrog.org/libs-snapshot" }
+//        maven {
+//            url "http://maven2.mpars.ir/artifactory/libs-release-local"
+//            allowInsecureProtocol = true
+//            credentials {
+//                username = "${mpars_artifactory_username}"
+//                password = "${mpars_artifactory_password}"
+//            }
+//        }
         maven {
-            url "http://maven2.mpars.ir/artifactory/libs-release-local"
-            allowInsecureProtocol = true
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Mehr-Pars/android-packages")
             credentials {
-                username = "${mpars_artifactory_username}"
-                password = "${mpars_artifactory_password}"
+                username = mpars_github_packages_username
+                password = mpars_github_packages_consume_auth_key
             }
         }
         maven {

@@ -149,26 +149,37 @@ publishing {
             }
         }
     }
-}
 
-artifactory {
-    contextUrl = 'http://maven2.mpars.ir/artifactory'
-    publish {
-        repository {
-            repoKey = 'libs-release-local'
-
-            username = mpars_artifactory_username
-            password = mpars_artifactory_password
-        }
-        defaults {
-            publications('aar')
-            publishArtifacts = true
-
-            properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
-            publishPom = true
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Mehr-Pars/android-packages")
+            credentials {
+                username = mpars_github_packages_username
+                password = mpars_github_packages_auth_key
+            }
         }
     }
 }
+
+//artifactory {
+//    contextUrl = 'http://maven2.mpars.ir/artifactory'
+//    publish {
+//        repository {
+//            repoKey = 'libs-release-local'
+//
+//            username = mpars_artifactory_username
+//            password = mpars_artifactory_password
+//        }
+//        defaults {
+//            publications('aar')
+//            publishArtifacts = true
+//
+//            properties = ['qa.level': 'basic', 'q.os': 'android', 'dev.team': 'core']
+//            publishPom = true
+//        }
+//    }
+//}
 
 task generateSources {
     doFirst {
