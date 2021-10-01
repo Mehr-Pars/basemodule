@@ -11,8 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
-import androidx.paging.Pager
+import androidx.paging.PagingData
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import mehrpars.mobile.basemodule.paging.util.Comparable
 import mehrpars.mobile.basemodule.paging.util.DefaultLoadStateAdapter
@@ -39,7 +40,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
     /**
      * return data pager for pagination
      */
-    protected abstract fun getDataPager(): Pager<Int, T>
+    protected abstract fun getDataPager(): Flow<PagingData<T>>
 
     /**
      * bind recyclerview view items
@@ -158,7 +159,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
     open fun loadData() {
         job?.cancel()
         job = lifecycleScope.launchWhenCreated {
-            getDataPager().flow.collectLatest {
+            getDataPager().collectLatest {
                 pagedListAdapter.submitData(it)
             }
         }
