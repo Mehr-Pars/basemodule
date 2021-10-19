@@ -11,9 +11,6 @@ import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.Inter
 import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.strategy.SocketInternetObservingStrategy
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import ly.count.android.sdk.Countly
-import ly.count.android.sdk.CountlyConfig
-import ly.count.android.sdk.DeviceId
 import mehrpars.mobile.basemodule.utils.LocaleUtils
 import mehrpars.mobile.debugtools.ui.activity.error_activity.CustomActivityOnCrash
 import java.util.*
@@ -27,16 +24,6 @@ abstract class BaseApp : MultiDexApplication() {
     companion object {
         var appLocale: Locale? = null
     }
-
-    /**
-     * countly server url for logging app events and crash report
-     * */
-    abstract fun getCountlyServerUrl(): String?
-
-    /**
-     * API key for configuring countly
-     * */
-    abstract fun getCountlyApiKey(): String?
 
     /**
      * base url without prefix for checking network connectivity (ping url)
@@ -54,8 +41,6 @@ abstract class BaseApp : MultiDexApplication() {
         initAppLocale()
 
         installCrashHandler()
-
-        initCountly()
 
         initNetworkCheckUrl()
 
@@ -79,23 +64,6 @@ abstract class BaseApp : MultiDexApplication() {
         appLocale = Locale("en", "US")
         LocaleUtils.setLocale(appLocale!!)
         LocaleUtils.updateConfig(this, baseContext.resources.configuration)
-    }
-
-    /**
-     * setup countly for crash reporting
-     * */
-    open fun initCountly() {
-        if (getCountlyServerUrl().isNullOrEmpty() || getCountlyApiKey().isNullOrEmpty()) {
-            Log.i("Countly", "----countly SERVER_URL or API_KEY is empty")
-            return
-        }
-
-        // setup countly for crash reporting
-        val config = CountlyConfig(this, getCountlyApiKey(), getCountlyServerUrl())
-        config.setLoggingEnabled(isDebuggable())
-            .enableCrashReporting()
-            .setIdMode(DeviceId.Type.OPEN_UDID)
-        Countly.sharedInstance().init(config)
     }
 
     open fun initNetworkCheckUrl() {

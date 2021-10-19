@@ -113,9 +113,6 @@ dependencies {
     //imageLoader
     api "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
-
-    // countly log service
-    implementation "ly.count.android:sdk:$countlyVersion"
 }
 
 publishing {

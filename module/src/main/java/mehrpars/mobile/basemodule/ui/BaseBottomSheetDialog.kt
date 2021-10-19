@@ -18,7 +18,7 @@ import mehrpars.mobile.basemodule.data.error.GeneralError
 import mehrpars.mobile.basemodule.data.error.NetworkError
 
 
-abstract class BaseBottomSheetDialog<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int? = null) :
+abstract class BaseBottomSheetDialog<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int) :
     BottomSheetDialogFragment() {
 
     protected var viewModel: VM? = null

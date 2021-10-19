@@ -13,14 +13,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
-import ly.count.android.sdk.Countly
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.error.GeneralError
 import mehrpars.mobile.basemodule.data.error.NetworkError
 import mehrpars.mobile.basemodule.utils.LocaleUtils
 
-abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int? = null) :
+abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int) :
     AppCompatActivity(), LifecycleOwner {
 
     protected var viewModel: VM? = null
@@ -56,18 +55,6 @@ abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private va
         bindView(binding)
 
         observeViewModelChange(viewModel)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (Countly.sharedInstance().isInitialized) // set countly onStart for accurate application session tracking.
-            Countly.sharedInstance().onStart(this)
-    }
-
-    override fun onStop() {
-        if (Countly.sharedInstance().isInitialized) // set countly onStop for accurate application session tracking.
-            Countly.sharedInstance().onStop()
-        super.onStop()
     }
 
     /**

@@ -17,7 +17,7 @@ import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.error.GeneralError
 import mehrpars.mobile.basemodule.data.error.NetworkError
 
-abstract class BaseFragment<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int? = null) :
+abstract class BaseFragment<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int) :
     Fragment() {
 
     protected var viewModel: VM? = null
