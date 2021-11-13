@@ -13,6 +13,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.error.GeneralError
@@ -80,9 +83,9 @@ abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private va
      *  observe your viewModel's liveData here
      */
     protected open fun observeViewModelChange(viewModel: VM?) {
-        viewModel?.generalError?.observe(this, Observer { errorList ->
-            errorList?.forEach { error -> handleError(error) }
-        })
+        viewModel?.generalError?.onEach { error ->
+            if (error != null) handleError(error)
+        }?.launchIn(lifecycleScope)
     }
 
     /**

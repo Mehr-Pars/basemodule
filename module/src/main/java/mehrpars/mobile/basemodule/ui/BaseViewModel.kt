@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.data.error.GeneralError
 import mehrpars.mobile.basemodule.data.error.NetworkError
@@ -22,8 +26,8 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     protected var passedIntent: Intent? = null
     private val networkCheckDelay: Long = 1500
     private val requestQueue = LinkedList<SimpleRequest>()
-    private val _generalError = SingleLiveEvent<List<GeneralError>>()
-    val generalError: LiveData<List<GeneralError>> by lazy { _generalError }
+    private val _generalError = MutableStateFlow<GeneralError?>(null)
+    val generalError: StateFlow<GeneralError?> by lazy { _generalError}
     private val application: BaseApp by lazy {
         if (app !is BaseApp) {
             throw Exception("application must be of type BaseApp, open manifest and set application -> name to BaseApp or just extend your application from BaseApp")
@@ -108,11 +112,13 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
 
     // region Error Handling Helper Methods
     protected fun setError(error: GeneralError) {
-        _generalError.postValue(listOf(error))
+        viewModelScope.launch { _generalError.emit(error) }
     }
 
     protected fun setErrors(errorList: List<GeneralError>?) {
-        _generalError.postValue(errorList)
+        viewModelScope.launch {
+            errorList?.forEach { error -> _generalError.emit(error) }
+        }
     }
     // endregion
 }
