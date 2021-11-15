@@ -7,12 +7,14 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.annotation.RequiresPermission
 import androidx.databinding.Observable
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavArgs
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
+import mehrpars.mobile.basemodule.utils.Event
 import java.lang.reflect.Method
 import java.net.UnknownHostException
 
@@ -67,3 +69,7 @@ fun NavController.safeNavigate(currentDestinationId: Int, directions: NavDirecti
 }
 
 fun Throwable?.isNetworkError(): Boolean = this is UnknownHostException
+
+fun <T> MutableLiveData<Event<T>>.postEvent(value: T) {
+    postValue(Event(value))
+}

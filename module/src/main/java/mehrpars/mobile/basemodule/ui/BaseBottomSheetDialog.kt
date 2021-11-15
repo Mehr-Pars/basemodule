@@ -11,11 +11,11 @@ import android.view.Window
 import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.error.GeneralError
 import mehrpars.mobile.basemodule.data.error.NetworkError
+import mehrpars.mobile.basemodule.utils.EventObserver
 
 
 abstract class BaseBottomSheetDialog<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int) :
@@ -103,7 +103,7 @@ abstract class BaseBottomSheetDialog<VM : BaseViewModel?, B : ViewDataBinding>(p
      */
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
-        viewModel?.generalError?.observe(viewLifecycleOwner, Observer { errorList ->
+        viewModel?.generalError?.observe(viewLifecycleOwner, EventObserver { errorList ->
             errorList?.forEach { error -> handleError(error) }
         })
     }

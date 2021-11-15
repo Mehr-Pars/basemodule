@@ -11,6 +11,8 @@ import kotlinx.coroutines.*
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.data.error.GeneralError
 import mehrpars.mobile.basemodule.data.error.NetworkError
+import mehrpars.mobile.basemodule.postEvent
+import mehrpars.mobile.basemodule.utils.Event
 import mehrpars.mobile.basemodule.utils.SingleLiveEvent
 import java.util.*
 
@@ -22,8 +24,8 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
     protected var passedIntent: Intent? = null
     private val networkCheckDelay: Long = 1500
     private val requestQueue = LinkedList<SimpleRequest>()
-    private val _generalError = SingleLiveEvent<List<GeneralError>>()
-    val generalError: LiveData<List<GeneralError>> by lazy { _generalError }
+    private val _generalError = SingleLiveEvent<Event<List<GeneralError>?>>()
+    val generalError: LiveData<Event<List<GeneralError>?>> by lazy { _generalError }
     private val application: BaseApp by lazy {
         if (app !is BaseApp) {
             throw Exception("application must be of type BaseApp, open manifest and set application -> name to BaseApp or just extend your application from BaseApp")
@@ -108,11 +110,11 @@ abstract class BaseViewModel(app: Application) : AndroidViewModel(app) {
 
     // region Error Handling Helper Methods
     protected fun setError(error: GeneralError) {
-        _generalError.postValue(listOf(error))
+        _generalError.postEvent(listOf(error))
     }
 
     protected fun setErrors(errorList: List<GeneralError>?) {
-        _generalError.postValue(errorList)
+        _generalError.postEvent(errorList)
     }
     // endregion
 }

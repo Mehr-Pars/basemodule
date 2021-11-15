@@ -12,11 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import mehrpars.mobile.basemodule.BaseApp
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.error.GeneralError
 import mehrpars.mobile.basemodule.data.error.NetworkError
+import mehrpars.mobile.basemodule.utils.EventObserver
 import mehrpars.mobile.basemodule.utils.LocaleUtils
 
 abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int) :
@@ -80,7 +80,7 @@ abstract class BaseActivity<VM : BaseViewModel?, B : ViewDataBinding>(private va
      *  observe your viewModel's liveData here
      */
     protected open fun observeViewModelChange(viewModel: VM?) {
-        viewModel?.generalError?.observe(this, Observer { errorList ->
+        viewModel?.generalError?.observe(this, EventObserver { errorList ->
             errorList?.forEach { error -> handleError(error) }
         })
     }

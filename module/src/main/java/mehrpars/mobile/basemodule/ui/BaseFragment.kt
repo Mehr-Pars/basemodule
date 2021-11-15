@@ -12,10 +12,10 @@ import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import mehrpars.mobile.basemodule.R
 import mehrpars.mobile.basemodule.data.error.GeneralError
 import mehrpars.mobile.basemodule.data.error.NetworkError
+import mehrpars.mobile.basemodule.utils.EventObserver
 
 abstract class BaseFragment<VM : BaseViewModel?, B : ViewDataBinding>(private val layoutId: Int) :
     Fragment() {
@@ -71,7 +71,7 @@ abstract class BaseFragment<VM : BaseViewModel?, B : ViewDataBinding>(private va
      */
     @CallSuper
     protected open fun observeViewModelChange(viewModel: VM?) {
-        viewModel?.generalError?.observe(viewLifecycleOwner, Observer { errorList ->
+        viewModel?.generalError?.observe(viewLifecycleOwner, EventObserver { errorList ->
             errorList?.forEach { error -> handleError(error) }
         })
     }
