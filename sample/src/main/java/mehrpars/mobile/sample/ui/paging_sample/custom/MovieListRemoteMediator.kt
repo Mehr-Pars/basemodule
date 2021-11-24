@@ -37,17 +37,20 @@ class MovieListRemoteMediator(private val db: AppDatabase, private val apiClient
                 }
             }
 
-            val data = apiClient.getMovies(pageCount)
+            val response = apiClient.getMovies(pageCount)
+            val data = response.body()
 
             db.withTransaction {
                 if (loadType == REFRESH)
                     movieDao.deleteAll()
 
-                movieDao.saveAll(data.movieList)
-                pageCount++
+                data?.let {
+                    movieDao.saveAll(it.movieList)
+                    pageCount++
+                }
             }
 
-            reachedEnd = (pageCount * pageSize) >= data.totalResults
+            reachedEnd = data != null && (pageCount * pageSize) >= data.totalResults
             return MediatorResult.Success(endOfPaginationReached = reachedEnd)
         } catch (e: IOException) {
             return MediatorResult.Error(e)

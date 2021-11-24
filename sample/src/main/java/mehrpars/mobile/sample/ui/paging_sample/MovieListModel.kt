@@ -32,11 +32,11 @@ class MovieListModel(context: Context) {
                 if (loadType == LoadType.REFRESH)
                     db.movieDao().deleteAll()
 
-                db.movieDao().saveAll(response.movieList)
+                response?.movieList?.let { db.movieDao().saveAll(it) }
             }
         },
         reachedEndStrategy = { response, pageCount ->
-            (pageCount * 10) >= response.totalResults
+            response?.totalResults != null && (pageCount * 10) >= response.totalResults
         }
     )
 
@@ -60,7 +60,7 @@ class MovieListModel(context: Context) {
     fun getMoviesOnlyFromNetwork(): Pager<Int, Movie> = resultPager(
         pageSize = 10,
         networkCall = { page -> client.getMovies(page) },
-        mapResponse = { response -> response.movieList },
+        mapResponse = { response -> response?.movieList ?: listOf() },
         reachedEndStrategy = { response, pageCount ->
             (pageCount * 10) >= 40
         }

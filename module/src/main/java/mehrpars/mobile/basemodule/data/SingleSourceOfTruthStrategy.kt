@@ -35,13 +35,13 @@ class RemoteRepository<A>(
         onError: (message: String?, error: Throwable?) -> Unit
     ) {
         // try loading data from network and handle possible network errors
-        val response = getResult { networkCall.invoke() }
-        if (response.status == Result.Status.SUCCESS) {
+        val result = getResult { networkCall.invoke() }
+        if (result.status == Result.Status.SUCCESS) {
             // save data loaded from network into database
-            saveCallResult(response.data!!)
+            saveCallResult(result.data!!)
             onDone()
-        } else if (response.status == Result.Status.ERROR) {
-            onError(response.message, response.error)
+        } else if (result.status == Result.Status.ERROR) {
+            onError(result.message, result.error)
         }
     }
 
@@ -198,13 +198,13 @@ fun <T, A> resultLiveData(
     emitSource(localSource)
 
     // try loading data from network and handle possible network errors
-    val response = getResult { networkCall.invoke() }
-    if (response.status == Result.Status.SUCCESS) {
+    val result = getResult { networkCall.invoke() }
+    if (result.status == Result.Status.SUCCESS) {
         /* save data loaded from network into database. as we are using LiveData
            observers will be automatically triggered on database change */
-        saveCallResult(response.data!!)
-    } else if (response.status == Result.Status.ERROR) {
-        emit(Result.error<T>(response.message, response.error))
+        saveCallResult(result.data!!)
+    } else if (result.status == Result.Status.ERROR) {
+        emit(Result.error<T>(result.message, result.error))
 //            emitSource(source)
     }
 }
@@ -223,12 +223,12 @@ fun <T> resultLiveData(
     emit(Result.loading<T>())
 
     // try loading data from network and handle possible network errors
-    val response = getResult { networkCall.invoke() }
-    if (response.status == Result.Status.SUCCESS) {
+    val result = getResult { networkCall.invoke() }
+    if (result.status == Result.Status.SUCCESS) {
         // emit data from network
-        emitSource(MutableLiveData(response))
-    } else if (response.status == Result.Status.ERROR) {
-        emit(Result.error<T>(response.message, response.error))
+        emitSource(MutableLiveData(result))
+    } else if (result.status == Result.Status.ERROR) {
+        emit(Result.error<T>(result.message, result.error))
     }
 }
 // endregion
@@ -248,9 +248,9 @@ fun <T> resultLiveData(
 fun <T : Any, A> resultPager(
     pageSize: Int = 10,
     databaseQuery: () -> PagingSource<Int, T>,
-    networkCall: suspend (page: Int) -> A,
-    saveCallResult: suspend (A, LoadType) -> Unit,
-    reachedEndStrategy: (A, page: Int) -> Boolean
+    networkCall: suspend (page: Int) -> Response<A>,
+    saveCallResult: suspend (A?, LoadType) -> Unit,
+    reachedEndStrategy: (A?, page: Int) -> Boolean
 ): Pager<Int, T> = Pager(
     config = PagingConfig(pageSize),
     remoteMediator = object : RemoteMediator<Int, T>() {
@@ -272,17 +272,19 @@ fun <T : Any, A> resultPager(
                 }
 
                 // try loading data from network
-                val response = networkCall(pageCount)
+                val result = getResult { networkCall(pageCount) }
+                if (result.status == Result.Status.SUCCESS) {
+                    // save data loaded from network into database
+                    saveCallResult(result.data, loadType)
 
-                // save network result
-                saveCallResult(response, loadType)
+                    pageCount++
 
-                pageCount++
-
-                // check if reached last page
-                reachedEnd = reachedEndStrategy.invoke(response, pageCount)
-
-                MediatorResult.Success(endOfPaginationReached = reachedEnd)
+                    // check if reached last page
+                    reachedEnd = reachedEndStrategy.invoke(result.data, pageCount)
+                    MediatorResult.Success(endOfPaginationReached = reachedEnd)
+                } else {
+                    MediatorResult.Error(result.error ?: Throwable(result.message))
+                }
             } catch (e: IOException) {
                 MediatorResult.Error(e)
             } catch (e: HttpException) {
@@ -307,9 +309,9 @@ fun <T : Any, A> resultPager(
  *  */
 fun <T : Any, A> resultPager(
     pageSize: Int = 10,
-    networkCall: suspend (page: Int) -> A,
-    mapResponse: (A) -> List<T>,
-    reachedEndStrategy: (A, page: Int) -> Boolean
+    networkCall: suspend (page: Int) -> Response<A>,
+    mapResponse: (A?) -> List<T>,
+    reachedEndStrategy: (A?, page: Int) -> Boolean
 ): Pager<Int, T> = Pager(
     config = PagingConfig(pageSize)
 ) {
@@ -321,15 +323,18 @@ fun <T : Any, A> resultPager(
                 val pageNumber = params.key ?: STARTING_PAGE_INDEX
 
                 // try loading data from network
-                val response = networkCall(pageNumber)
-
-                val reachedEnd = reachedEndStrategy.invoke(response, pageNumber)
-                LoadResult.Page(
-                    itemsAfter = 0,
-                    data = mapResponse.invoke(response),
-                    prevKey = if (pageNumber == STARTING_PAGE_INDEX) null else pageNumber - 1,
-                    nextKey = if (reachedEnd) null else pageNumber + 1
-                )
+                val result = getResult { networkCall(pageNumber) }
+                if (result.status == Result.Status.SUCCESS) {
+                    val reachedEnd = reachedEndStrategy.invoke(result.data, pageNumber)
+                    LoadResult.Page(
+                        itemsAfter = 0,
+                        data = mapResponse.invoke(result.data),
+                        prevKey = if (pageNumber == STARTING_PAGE_INDEX) null else pageNumber - 1,
+                        nextKey = if (reachedEnd) null else pageNumber + 1
+                    )
+                } else {
+                    LoadResult.Error(result.error ?: Throwable(result.message))
+                }
             } catch (e: IOException) {
                 LoadResult.Error(e)
             } catch (e: HttpException) {

@@ -1,6 +1,5 @@
 package mehrpars.mobile.sample.ui.paging_sample.custom
 
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingSource
 import androidx.paging.PagingSource.LoadResult.Page
 import androidx.paging.PagingState
@@ -18,7 +17,9 @@ class MovieListPagingSource(private val apiClient: ApiClient) : PagingSource<Int
 
             val response = apiClient.getMovies(pageNumber)
 
-            Page(data = response.movieList, prevKey = null, nextKey = response.currentPage + 1)
+            val movieList = response.body()?.movieList ?: listOf()
+            val currentPage = response.body()?.currentPage ?: 0
+            Page(data = movieList, prevKey = null, nextKey = currentPage + 1)
         } catch (e: IOException) {
             LoadResult.Error(e)
         } catch (e: HttpException) {
