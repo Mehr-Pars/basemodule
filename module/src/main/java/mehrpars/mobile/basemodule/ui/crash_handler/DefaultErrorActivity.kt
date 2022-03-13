@@ -18,6 +18,7 @@ package mehrpars.mobile.basemodule.ui.crash_handler
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.activity_default_error_handler.*
@@ -30,6 +31,10 @@ import mehrpars.mobile.debugtools.ui.activity.error_activity.CustomActivityOnCra
  * فراخوانی میشود و بجای بیرون رفتن از برناهم کاربر را به صفحه اصلی برنامه هدایت میکند
  */
 class DefaultErrorActivity : AppCompatActivity() {
+
+    companion object {
+        const val TAG = "DefaultErrorActivity"
+    }
 
     init {
 //        LocaleUtils.updateConfig(this)
@@ -61,10 +66,16 @@ class DefaultErrorActivity : AppCompatActivity() {
 
         // show error
         if (isDebuggable()) {
+
             errorText.isVisible = true
-            errorText.text = CustomActivityOnCrash.getAllErrorDetailsFromIntent(
+
+            val errorDetail = CustomActivityOnCrash.getAllErrorDetailsFromIntent(
                 this@DefaultErrorActivity, intent
             )
+            errorText.text = errorDetail
+
+            Log.e(TAG, errorDetail)
+
         } else {
             errorText.isVisible = false
         }

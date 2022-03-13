@@ -6,8 +6,9 @@ import androidx.paging.LoadType
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.room.withTransaction
-import mehrpars.mobile.basemodule.data.resultPager
+import mehrpars.mobile.basemodule.data.PagerBuilder
 import mehrpars.mobile.sample.data.database.AppDatabase
+import mehrpars.mobile.sample.data.model.MovieListResponse
 import mehrpars.mobile.sample.data.model.entity.Movie
 import mehrpars.mobile.sample.data.network.ApiClient
 import mehrpars.mobile.sample.data.network.RetrofitConfig
@@ -23,22 +24,24 @@ class MovieListModel(context: Context) {
      * uses default RemoteMediator to create Pager object
      * */
     @ExperimentalPagingApi
-    fun getMovies(): Pager<Int, Movie> = resultPager(
-        pageSize = 10,
-        databaseQuery = { db.movieDao().getMovieList() },
-        networkCall = { page -> client.getMovies(page) },
-        saveCallResult = { response, loadType ->
-            db.withTransaction {
-                if (loadType == LoadType.REFRESH)
-                    db.movieDao().deleteAll()
+    fun getMovies(): Pager<Int, Movie> {
+        val builder = PagerBuilder<Movie, MovieListResponse>()
+        builder.withPageSize(10)
+            .withDatabaseQuery { db.movieDao().getMovieList() }
+            .withNetworkCall { page -> client.getMovies(page) }
+            .withSaveNetworkResultStrategy { response, loadType, _ ->
+                db.withTransaction {
+                    if (loadType == LoadType.REFRESH)
+                        db.movieDao().deleteAll()
 
-                response?.movieList?.let { db.movieDao().saveAll(it) }
+                    response?.movieList?.let { db.movieDao().saveAll(it) }
+                }
             }
-        },
-        reachedEndStrategy = { response, pageCount ->
-            response?.totalResults != null && (pageCount * 10) >= response.totalResults
-        }
-    )
+            .withReachedEndStrategy { response, pageCount ->
+                response?.totalResults != null && (pageCount * 10) >= response.totalResults
+            }
+        return builder.build()
+    }
 
     /**
      * implement and use custom RemoteMediator for handling network request and saving data strategy
@@ -57,14 +60,17 @@ class MovieListModel(context: Context) {
      * uses default PagingSource to create Pager object
      * */
     @ExperimentalPagingApi
-    fun getMoviesOnlyFromNetwork(): Pager<Int, Movie> = resultPager(
-        pageSize = 10,
-        networkCall = { page -> client.getMovies(page) },
-        mapResponse = { response -> response?.movieList ?: listOf() },
-        reachedEndStrategy = { response, pageCount ->
-            (pageCount * 10) >= 40
-        }
-    )
+    fun getMoviesOnlyFromNetwork(): Pager<Int, Movie> {
+        val builder = PagerBuilder<Movie, MovieListResponse>()
+        builder.withPageSize(10)
+            .withNetworkCall { page -> client.getMovies(page) }
+            .withMapNetworkResponseStrategy { response -> response?.movieList ?: listOf() }
+            .withReachedEndStrategy { _, pageCount ->
+                (pageCount * 10) >= 40
+            }
+
+        return builder.build()
+    }
 
     /**
      * implement and use custom PagingSource for handling network request

@@ -39,19 +39,21 @@ buildscript {
     }
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$jfrogVersion"
+//        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$jfrogVersion"
     }
 }
 
 allprojects {
     repositories {
         google() // make it first element
+        mavenCentral()
         jcenter()
         maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }

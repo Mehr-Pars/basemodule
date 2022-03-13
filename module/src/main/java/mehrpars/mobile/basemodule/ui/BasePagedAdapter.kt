@@ -14,22 +14,22 @@ import mehrpars.mobile.basemodule.paging.util.DefaultComparator
 open class BaseViewHolder<B : ViewDataBinding>(val binding: B) :
     RecyclerView.ViewHolder(binding.root)
 
-abstract class BasePagedAdapter<T : Comparable, B : ViewDataBinding>(
+abstract class BasePagedAdapter<T : Comparable, VB : ViewDataBinding>(
     comparator: DiffUtil.ItemCallback<T>? = null, private val layoutId: Int
-) : PagingDataAdapter<T, BaseViewHolder<B>>(comparator ?: DefaultComparator<T>()) {
+) : PagingDataAdapter<T, BaseViewHolder<VB>>(comparator ?: DefaultComparator()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<B> {
-        val binding = DataBindingUtil.inflate<B>(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<VB> {
+        val binding = DataBindingUtil.inflate<VB>(
             LayoutInflater.from(parent.context), layoutId, parent, false
         )
         return BaseViewHolder(binding)
     }
 
     @CallSuper
-    override fun onBindViewHolder(holder: BaseViewHolder<B>, position: Int) {
+    override fun onBindViewHolder(holder: BaseViewHolder<VB>, position: Int) {
         val item = getItem(position)
         onBindView(holder.binding, item, position)
     }
 
-    abstract fun onBindView(binding: B, item: T?, position: Int)
+    abstract fun onBindView(binding: VB, item: T?, position: Int)
 }

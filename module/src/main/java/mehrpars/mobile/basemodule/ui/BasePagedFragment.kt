@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.viewbinding.ViewBinding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
@@ -19,23 +20,37 @@ import mehrpars.mobile.basemodule.paging.util.Comparable
 import mehrpars.mobile.basemodule.paging.util.DefaultLoadStateAdapter
 import mehrpars.mobile.basemodule.paging.views.CustomRecyclerLayout
 
-abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewDataBinding, VM : BaseViewModel>(
-    val fragmentLayoutRes: Int,
+abstract class BasePagedFragment<T : Comparable, IB : ViewDataBinding, FB : ViewBinding?, VM : BaseViewModel>(
     val listItemRes: Int
 ) : Fragment() {
+
+    protected var binding: FB? = null
+        private set
+
     protected var viewModel: VM? = null
+        private set
+
     var recyclerLayout: CustomRecyclerLayout? = null
-    lateinit var pagedListAdapter: BasePagedAdapter<T, B>
-    protected lateinit var binding: FB
+
+    lateinit var pagedListAdapter: BasePagedAdapter<T, IB>
+
     private var job: Job? = null
 
-
-    protected abstract fun initRecyclerLayout(): CustomRecyclerLayout
 
     /**
      * initialize your viewModel in here
      */
-    protected abstract fun initViewModel()
+    protected abstract fun onCreateViewModel(): VM
+
+    /**
+     * initialize your view binding in here
+     */
+    protected abstract fun onCreateViewBinding(inflater: LayoutInflater, container: ViewGroup?): FB
+
+    /**
+     * initialize your RecyclerLayout
+     */
+    protected abstract fun initRecyclerLayout(): CustomRecyclerLayout
 
     /**
      * return data pager for pagination
@@ -45,34 +60,36 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
     /**
      * bind recyclerview view items
      * */
-    protected abstract fun bindRecyclerItem(binding: B, item: T?, position: Int)
+    protected abstract fun bindRecyclerItem(binding: IB, item: T?, position: Int)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initViewModel()
+        viewModel = onCreateViewModel()
 
         arguments?.let { handleArguments(it) }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
 
-        binding = DataBindingUtil.inflate(inflater, fragmentLayoutRes, container, false)
-        binding.lifecycleOwner = this
+        binding = onCreateViewBinding(inflater, container)
 
-        return binding.root
+        return binding?.root
+
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
 
-        bindView(binding)
+        binding?.let { bindView(it) }
 
         viewModel?.let { observeViewModelChange(it) }
+
     }
 
     /**
@@ -80,16 +97,18 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
      */
     @CallSuper
     protected open fun handleArguments(arguments: Bundle) {
+
         viewModel?.handleArguments(arguments)
+
     }
 
     /**
      * initialize your adapter if you have one
      */
     protected open fun initAdapter() {
-        pagedListAdapter = object : BasePagedAdapter<T, B>(layoutId = listItemRes) {
+        pagedListAdapter = object : BasePagedAdapter<T, IB>(layoutId = listItemRes) {
 
-            override fun onBindView(binding: B, item: T?, position: Int) {
+            override fun onBindView(binding: IB, item: T?, position: Int) {
                 bindRecyclerItem(binding, item, position)
             }
         }
@@ -147,6 +166,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
                 }
             }
         }
+
     }
 
     /**

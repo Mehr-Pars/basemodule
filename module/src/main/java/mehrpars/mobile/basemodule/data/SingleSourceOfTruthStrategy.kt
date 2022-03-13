@@ -245,12 +245,144 @@ fun <T> resultLiveData(
  * @param reachedEndStrategy: this function checks when last page reached
  *  */
 @ExperimentalPagingApi
+@Deprecated(
+    "Use #PagerBuilder api instead", ReplaceWith(
+        "createPagerWithDatabaseAndNetwork(pageSize, databaseQuery, networkCall, saveCall, reachedEndStrategy)"
+    )
+)
 fun <T : Any, A> resultPager(
     pageSize: Int = 10,
     databaseQuery: () -> PagingSource<Int, T>,
     networkCall: suspend (page: Int) -> Response<A>,
     saveCallResult: suspend (A?, LoadType) -> Unit,
     reachedEndStrategy: (A?, page: Int) -> Boolean
+): Pager<Int, T> {
+    val saveCall: suspend (A?, LoadType, Int) -> Unit = { response, loadType, page ->
+        saveCallResult(response, loadType)
+    }
+    return createPagerWithDatabaseAndNetwork(
+        pageSize,
+        databaseQuery,
+        networkCall,
+        saveCall,
+        reachedEndStrategy
+    )
+}
+
+/**
+ * Creates Pager for using in paging architecture, creates PagingSource
+ * The network serves as the single source of truth.
+ * Therefore UI can receive data updates from database only.
+ * @param pageSize: number of items loaded per page
+ * @param networkCall: network call for loading data from network
+ * @param mapResponse: maps response to desire object list
+ *  */
+@Deprecated(
+    "Use #PagerBuilder api instead",
+    ReplaceWith("createPagerWithNetworkOnly(pageSize, networkCall, mapResponse, reachedEndStrategy)")
+)
+fun <T : Any, A> resultPager(
+    pageSize: Int = 10,
+    networkCall: suspend (page: Int) -> Response<A>,
+    mapResponse: (A?) -> List<T>,
+    reachedEndStrategy: (A?, page: Int) -> Boolean
+): Pager<Int, T> {
+    return createPagerWithNetworkOnly(
+        pageSize,
+        networkCall,
+        mapResponse,
+        reachedEndStrategy
+    )
+}
+
+open class PagerBuilder<T : Any, A> {
+    internal var pageSize: Int = 10
+    internal var databaseQuery: (() -> PagingSource<Int, T>)? = null
+    internal var networkCall: (suspend (page: Int) -> Response<A>)? = null
+    internal var saveNetworkResultStrategy: (suspend (A?, LoadType, Int) -> Unit)? = null
+    internal var mapNetworkResponseStrategy: ((A?) -> List<T>)? = null
+    internal var reachedEndStrategy: ((A?, page: Int) -> Boolean)? = null
+
+    fun withPageSize(pageSize: Int) = apply {
+        this.pageSize = pageSize
+    }
+
+    fun withDatabaseQuery(databaseQuery: () -> PagingSource<Int, T>) = apply {
+        this.databaseQuery = databaseQuery
+    }
+
+    fun withNetworkCall(networkCall: suspend (page: Int) -> Response<A>) = apply {
+        this.networkCall = networkCall
+    }
+
+    fun withSaveNetworkResultStrategy(strategy: suspend (A?, LoadType, Int) -> Unit) = apply {
+        this.saveNetworkResultStrategy = strategy
+    }
+
+    fun withMapNetworkResponseStrategy(strategy: (A?) -> List<T>) = apply {
+        this.mapNetworkResponseStrategy = strategy
+    }
+
+    fun withReachedEndStrategy(strategy: (A?, page: Int) -> Boolean) = apply {
+        this.reachedEndStrategy = strategy
+    }
+
+    fun build(): Pager<Int, T> {
+        return if (databaseQuery != null && networkCall != null) {
+            if (saveNetworkResultStrategy == null)
+                throw java.lang.Exception("No strategy considered for saving data fetched from network!")
+            else if (reachedEndStrategy == null)
+                throw java.lang.Exception("No strategy considered for detecting when reached end page!")
+
+            createPagerWithDatabaseAndNetwork(
+                pageSize = pageSize,
+                databaseQuery = databaseQuery!!,
+                networkCall = networkCall!!,
+                saveCallResult = saveNetworkResultStrategy!!,
+                reachedEndStrategy = reachedEndStrategy!!
+
+            )
+        } else if (networkCall != null) {
+            if (mapNetworkResponseStrategy == null)
+                throw java.lang.Exception("No strategy considered for mapping data fetched from network!")
+            else if (reachedEndStrategy == null)
+                throw java.lang.Exception("No strategy considered for detecting when reached end page!")
+
+            createPagerWithNetworkOnly(
+                pageSize = pageSize,
+                networkCall = networkCall!!,
+                reachedEndStrategy = reachedEndStrategy!!,
+                mapResponse = mapNetworkResponseStrategy!!
+            )
+        } else if (databaseQuery != null) {
+            createPagerWithDatabaseOnly(
+                pageSize = pageSize,
+                databaseQuery = databaseQuery!!
+            )
+        } else {
+            throw java.lang.Exception("PagerBuilder not configured correctly!")
+        }
+    }
+}
+
+/**
+ * creates Pager for using in paging architecture. creates RemoteMediator
+ * the database serves as the single source of truth.
+ * therefore UI can receive data updates from database only.
+ * fetched data from network will be saved in database.
+ * @param pageSize: number of items loaded per page
+ * @param databaseQuery: query for loading data from database
+ * @param networkCall: network call for loading data from network
+ * @param saveCallResult: this function is meant to save network result into database
+ * @param reachedEndStrategy: this function checks when last page reached
+ *  */
+@OptIn(ExperimentalPagingApi::class)
+fun <T : Any, A> createPagerWithDatabaseAndNetwork(
+    pageSize: Int,
+    databaseQuery: () -> PagingSource<Int, T>,
+    networkCall: suspend (page: Int) -> Response<A>,
+    saveCallResult: suspend (response: A?, loadType: LoadType, page: Int) -> Unit,
+    reachedEndStrategy: (response: A?, page: Int) -> Boolean
 ): Pager<Int, T> = Pager(
     config = PagingConfig(pageSize),
     remoteMediator = object : RemoteMediator<Int, T>() {
@@ -272,10 +404,10 @@ fun <T : Any, A> resultPager(
                 }
 
                 // try loading data from network
-                val result = getResult { networkCall(pageCount) }
+                val result = getResult { networkCall.invoke(pageCount) }
                 if (result.status == Result.Status.SUCCESS) {
                     // save data loaded from network into database
-                    saveCallResult(result.data, loadType)
+                    saveCallResult(result.data, loadType, pageCount)
 
                     pageCount++
 
@@ -300,18 +432,34 @@ fun <T : Any, A> resultPager(
 }
 
 /**
+ * creates Pager for using in paging architecture. creates RemoteMediator
+ * the database serves as the single source of truth.
+ * therefore UI can receive data updates from database only.
+ * @param pageSize: number of items loaded per page
+ * @param databaseQuery: query for loading data from database
+ *  */
+fun <T : Any> createPagerWithDatabaseOnly(
+    pageSize: Int,
+    databaseQuery: () -> PagingSource<Int, T>
+): Pager<Int, T> = Pager(
+    config = PagingConfig(pageSize)
+) {
+    databaseQuery.invoke()
+}
+
+/**
  * Creates Pager for using in paging architecture, creates PagingSource
  * The network serves as the single source of truth.
- * Therefore UI can receive data updates from database only.
+ * Therefore UI can receive data updates from network only.
  * @param pageSize: number of items loaded per page
  * @param networkCall: network call for loading data from network
  * @param mapResponse: maps response to desire object list
  *  */
-fun <T : Any, A> resultPager(
+fun <T : Any, A> createPagerWithNetworkOnly(
     pageSize: Int = 10,
     networkCall: suspend (page: Int) -> Response<A>,
-    mapResponse: (A?) -> List<T>,
-    reachedEndStrategy: (A?, page: Int) -> Boolean
+    mapResponse: (response: A?) -> List<T>,
+    reachedEndStrategy: (response: A?, page: Int) -> Boolean
 ): Pager<Int, T> = Pager(
     config = PagingConfig(pageSize)
 ) {

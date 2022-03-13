@@ -50,7 +50,7 @@ android {
 }
 
 dependencies {
-    implementation project(':module')
+    implementation project(path: ':module')
 //    implementation project.libraryGroup + ':' + project.libraryName + ':' + project.versionName
 
     testImplementation "junit:junit:$junitVersion"

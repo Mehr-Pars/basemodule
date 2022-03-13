@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-apply plugin: 'com.jfrog.artifactory'
+//apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
@@ -206,7 +206,7 @@ task assembleModule {
 
 task publishModule {
     doFirst {
-        def script = "./gradlew artifactoryPublish".execute()
+        def script = "./gradlew publish".execute()
         script.in.eachLine { line -> println line }
         script.err.eachLine { line -> println "ERROR: " + line }
         script.waitFor()
