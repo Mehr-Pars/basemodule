@@ -146,6 +146,7 @@ abstract class BasePagedFragment<T : Comparable, B : ViewDataBinding, FB : ViewD
                     recyclerLayout?.hideRetryLayout()
                 }
             }
+            else -> {}
         }
     }
 

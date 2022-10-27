@@ -31,6 +31,7 @@ android {
         versionName project.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         android.buildFeatures.dataBinding true
     }
@@ -42,11 +43,11 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_17.toString()
     }
     lintOptions {
         checkReleaseBuilds false
@@ -89,6 +90,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
 //    api "androidx.room:room-rxjava3:$roomVersion"
     api "androidx.room:room-runtime:$roomVersion"
+    api "androidx.room:room-paging:$roomVersion"
     api "androidx.room:room-ktx:$roomVersion"
 
     // navigation component
