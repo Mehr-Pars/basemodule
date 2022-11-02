@@ -7,10 +7,10 @@ apply plugin: 'kotlin-kapt'
 android {
     signingConfigs {
         release {
-            storeFile file('C:\\mehrpars.jks')
-            storePassword 'mehrpars2019'
-            keyAlias = 'Mehr Pars'
-            keyPassword 'mehrpars2019'
+            storeFile file(project.mpars_sign_key_dir)
+            storePassword project.mpars_sign_key_password
+            keyAlias = project.mpars_sign_key_alias
+            keyPassword project.mpars_sign_key_password
         }
     }
     compileSdkVersion project.targetSdkVersion.toInteger()
@@ -24,7 +24,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         signingConfig signingConfigs.release
-        dataBinding.enabled true
+        android.buildFeatures.dataBinding true
     }
     buildTypes {
         release {
@@ -34,8 +34,11 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility JavaVersion.VERSION_1_8
-        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
     }
 }
 
@@ -46,15 +49,15 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation "junit:junit:$junitVersion"
     implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
-    implementation "androidx.recyclerview:recyclerview:$supportVersion"
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "com.google.android.material:material:$supportVersion"
     androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$testEspresso"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
-    implementation "androidx.appcompat:appcompat:$supportVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.20"
+    implementation "androidx.appcompat:appcompat:1.5.1"
     implementation "androidx.core:core-ktx:$coreVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
-    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation "androidx.room:room-rxjava3:2.4.3"
     kapt "androidx.room:room-compiler:$roomVersion"
     implementation "androidx.room:room-rxjava2:$roomVersion"
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.50'

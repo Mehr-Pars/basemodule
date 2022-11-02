@@ -10,7 +10,8 @@
         android:hardwareAccelerated="true"
         android:largeHeap="true">
 
-        <service android:name="org.openudid.OpenUDID_service">
+        <service android:name="org.openudid.OpenUDID_service"
+            android:exported="false">
             <intent-filter>
                 <action android:name="org.openudid.GETUDID" />
             </intent-filter>

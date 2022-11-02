@@ -78,7 +78,7 @@ object RetrofitUtil {
             val request = req.build()
 
             val response = it.proceed(request)
-            if (response.code() == 429) { // Too Many Requests Error
+            if (response.code == 429) { // Too Many Requests Error
                 // todo : consider this error as warning and handle response
                 return@addNetworkInterceptor response.newBuilder()
                     .code(200) // faking status code

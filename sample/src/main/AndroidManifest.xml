@@ -12,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.dataBaseSample.list.MovieListWithLike"></activity>
-        <activity android:name=".activity.movieDetail.MovieDetailActivity" />
-        <activity android:name=".activity.movies.MovieListActivity" />
-        <activity android:name=".activity.target.TargetActivity" />
-        <activity android:name=".activity.main.MainActivity">
+        <activity
+            android:exported="false" android:name=".activity.dataBaseSample.list.MovieListWithLike"></activity>
+        <activity android:exported="false" android:name=".activity.movieDetail.MovieDetailActivity" />
+        <activity android:exported="false" android:name=".activity.movies.MovieListActivity" />
+        <activity android:exported="false" android:name=".activity.target.TargetActivity" />
+        <activity android:exported="true" android:name=".activity.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
